@@ -17,18 +17,30 @@ bool HelloWorldScene::init()
 		return false;
 	}
 
-	sprite = Sprite::create("veyron.png");
-	sprite->setPosition(this->getBoundingBox().getMidX(), this->getBoundingBox().getMidY());
-	this->addChild(sprite, 0);
+	SpriteBatchNode* spritebatch = SpriteBatchNode::create("runner.png");
+	SpriteFrameCache* cache = SpriteFrameCache::getInstance();
+	cache->addSpriteFramesWithFile("runner.plist");
+	auto Sprite1 = Sprite::createWithSpriteFrameName("runner0.png");
+	Sprite1->setScale(2, 2);
+	Sprite1->setPosition(Vec2(200, 200));
+	spritebatch->addChild(Sprite1);
+	addChild(spritebatch);
+	Vector<SpriteFrame*> animFrames(15);
+
+	char str[100] = { 0 };
+	for (int i = 0; i <= 7; i++)
+	{
+		sprintf(str, "runner%d.png", i);
+		SpriteFrame* frame = cache->getSpriteFrameByName(str);
+		animFrames.pushBack(frame);
+	}
+	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
+	Sprite1->runAction(RepeatForever::create(Animate::create(animation)));
+
 
 	this->scheduleUpdate();
 	return true;
 }
 
 void HelloWorldScene::update(float delta){
-	auto position = sprite->getPosition();
-	position.x -= 250 * delta;
-	if (position.x  < 0 - (sprite->getBoundingBox().size.width / 2))
-		position.x = this->getBoundingBox().getMaxX() + sprite->getBoundingBox().size.width / 2;
-	sprite->setPosition(position);
 }
