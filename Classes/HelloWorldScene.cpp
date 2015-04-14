@@ -34,9 +34,9 @@ bool HelloWorldScene::init()
 		SpriteFrame* frame = cache->getSpriteFrameByName(str);
 		animFrames.pushBack(frame);
 	}
+
 	Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
 	Sprite1->runAction(RepeatForever::create(Animate::create(animation)));
-
 
 	this->scheduleUpdate();
 	return true;
