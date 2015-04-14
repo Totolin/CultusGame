@@ -13,17 +13,16 @@ void ParallaxBackground::addImage(string imageName, Vec2 imagePosition, Vec2 ima
 	int height = Director::getInstance()->getWinSize().height;
 	int width = Director::getInstance()->getWinSize().width;
 
-	ParallaxSprite* sprite = ParallaxSprite::create(imageName);
-	sprite->setPosition(imagePosition);
-	sprite->setVelocity(imageVelocity);
-	sprite->setScale(width/sprite->getBoundingBox().size.width);
-	this->addChild(sprite, zOrder, imageName);
 
-	ParallaxSprite* sprite2 = ParallaxSprite::create(imageName);
-	sprite2->setPosition(imagePosition.x + width, imagePosition.y);
-	sprite2->setVelocity(imageVelocity);
-	sprite2->setScale(width / sprite2->getBoundingBox().size.width);
-	this->addChild(sprite2, zOrder++, imageName);
+	for (int i = 0; i <= 1; i++)
+	{
+		ParallaxSprite* sprite = ParallaxSprite::create(imageName);
+		sprite->setPosition(imagePosition.x + i * width, imagePosition.y);
+		sprite->setVelocity(imageVelocity);
+		sprite->setScale(width / sprite->getBoundingBox().size.width);
+		this->addChild(sprite, zOrder, imageName);
+	}
+	zOrder++;
 }
 
 void ParallaxBackground::update(float delta)
@@ -38,21 +37,22 @@ void ParallaxBackground::update(float delta)
 		Vec2 position1 = child1->getPosition();
 		Vec2 position2 = child2->getPosition();
 
+		float pixelsMoved = DEFAULT_SCROLL_SPEED * delta;
+
+		position1.x -= child1->getVelocity().x * pixelsMoved;
+		position2.x -= child2->getVelocity().x * pixelsMoved;
+
 		if (position1.x < 0 - child1->getBoundingBox().size.width / 2)
 		{
 			position1.x = Director::getInstance()->getWinSize().width / 2;
 			position2.x = 3 * Director::getInstance()->getWinSize().width / 2 ;
 		}
-		else
-		{
-			position1.x -= DEFAULT_SCROLL_SPEED * child1->getVelocity().x * delta;
-			position2.x -= DEFAULT_SCROLL_SPEED * child2->getVelocity().x * delta;
-		}
+
+
 		child1->setPosition(position1);
 		child2->setPosition(position2);
 
 	}
-
 
 
 }
