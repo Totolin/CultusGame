@@ -22,11 +22,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
 		director->setOpenGLView(glview);
 	}
 
+	director->setAnimationInterval(1.0 / 30);
+
 	auto scene = Scene::create();
 	ParallaxBackground* bck = new ParallaxBackground();
 	
 	int height = director->getWinSize().height;
 	int width = director->getWinSize().width;
+
 
 	bck->addImage("image4.png", Vec2(width / 2, 400), Vec2(0.5, 0));
 	bck->addImage("image2.png", Vec2(width / 2, 300), Vec2(1.2, 0));
@@ -39,7 +42,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 }
 
 void AppDelegate::applicationDidEnterBackground() {
+	Director::getInstance()->stopAnimation();
 }
 
 void AppDelegate::applicationWillEnterForeground() {
+	Director::getInstance()->startAnimation();
+
 }
