@@ -1,7 +1,7 @@
 #include "ParallaxBackground.h"
 #include "ParallaxSprite.h"
 #define DEFAULT_Z_ORDER -100
-#define DEFAULT_SCROLL_SPEED 250
+#define DEFAULT_SCROLL_SPEED 350
 ParallaxBackground::ParallaxBackground()
 {
 	zOrder = DEFAULT_Z_ORDER;

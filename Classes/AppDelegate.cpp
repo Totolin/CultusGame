@@ -18,7 +18,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("Hello World");
-		glview->setFrameSize(1000, 700);
+		glview->setFrameSize(500, 500);
 		director->setOpenGLView(glview);
 	}
 
@@ -28,9 +28,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	int height = director->getWinSize().height;
 	int width = director->getWinSize().width;
 
-	//bck->addImage("image4.png", Vec2(width / 2, 400), Vec2(0.5, 0));
+	bck->addImage("image4.png", Vec2(width / 2, 400), Vec2(0.5, 0));
 	bck->addImage("image2.png", Vec2(width / 2, 300), Vec2(1.2, 0));
-	//bck->addImage("image3.png", Vec2(width / 2, 200), Vec2(1.9, 0));
+	bck->addImage("image3.png", Vec2(width / 2, 200), Vec2(1.9, 0));
 	bck->initialize();
 	scene->addChild(bck);
 	director->runWithScene(scene);
