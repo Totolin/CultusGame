@@ -14,7 +14,7 @@ Scene* GameLevel::createScene()
 	auto scene = Scene::create();
 
 	// Add level background, with lowest priority on the screen
-	scene->addChild(this->levelBackground->createParallaxBackground(), -100);
+	//scene->addChild(this->levelBackground->createParallaxBackground(), -100);
 
 	return scene;
 }

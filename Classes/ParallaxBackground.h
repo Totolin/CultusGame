@@ -1,21 +1,19 @@
 #pragma once
 #include <string>
-
+#include<vector>
 using namespace std;
 
 #include "cocos2d.h"
 USING_NS_CC;
 
-class ParallaxBackground
+class ParallaxBackground:public Layer
 {
 public:
 	ParallaxBackground();
-	~ParallaxBackground();
-
-	void addBackground(string imageName, Vec2 imageRatio, Vec2 imageOffset, Vec2 imagePosition);
-	ParallaxNode* createParallaxBackground();
-
+	void addImage(string imageName,Vec2 imagePosition, Vec2 imageVelocity);
+	void update(float delta) override;
+	void initialize();
 private:
-	int currentPositioning;
-	ParallaxNode* background;
+	int zOrder;
+
 };

@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "GameLevel.h"
+#include "ParallaxBackground.h"
 
 USING_NS_CC;
 
@@ -17,22 +18,22 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("Hello World");
-		glview->setFrameSize(1000, 1000);
+		glview->setFrameSize(1000, 700);
 		director->setOpenGLView(glview);
 	}
 
-	// TODO : Test
-	GameLevel level;
-	ParallaxBackground* background = new ParallaxBackground();
-	background->addBackground("image3.png", Vec2(1.2f, 1.0f), Vec2::ZERO, Vec2(100, 100));
-	background->addBackground("image2.png", Vec2(2.2f, 1.0f), Vec2(100, 100), Vec2(300, 300));
-	background->addBackground("image1.png", Vec2(3.2f, 1.0f), Vec2(300, 300), Vec2(500, 500));
+	auto scene = Scene::create();
+	ParallaxBackground* bck = new ParallaxBackground();
+	
+	int height = director->getWinSize().height;
+	int width = director->getWinSize().width;
 
-	level.setBackground(background);
-	director->runWithScene(level.createScene());
-
-	/*auto scene = HelloWorldScene::createScene();
-	director->runWithScene(scene);*/
+	bck->addImage("image4.png", Vec2(width / 2, 400), Vec2(0.5, 0));
+	bck->addImage("image2.png", Vec2(width / 2, 300), Vec2(1.2, 0));
+	bck->addImage("image3.png", Vec2(width / 2, 200), Vec2(1.9, 0));
+	bck->initialize();
+	scene->addChild(bck);
+	director->runWithScene(scene);
 
 	return true;
 }

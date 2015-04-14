@@ -1,5 +1,5 @@
 #include "HelloWorldScene.h"
-
+#include "ParallaxBackground.h"
 USING_NS_CC;
 
 Scene* HelloWorldScene::createScene()
@@ -17,7 +17,7 @@ bool HelloWorldScene::init()
 		return false;
 	}
 
-	SpriteBatchNode* spritebatch = SpriteBatchNode::create("runner.png");
+	/*SpriteBatchNode* spritebatch = SpriteBatchNode::create("runner.png");
 	SpriteFrameCache* cache = SpriteFrameCache::getInstance();
 	cache->addSpriteFramesWithFile("runner.plist");
 	auto Sprite1 = Sprite::createWithSpriteFrameName("runner0.png");
@@ -39,7 +39,12 @@ bool HelloWorldScene::init()
 	Sprite1->runAction(RepeatForever::create(Animate::create(animation)));
 
 	this->scheduleUpdate();
-	return true;
+	return true;*/
+
+	
+
+
+
 }
 
 void HelloWorldScene::update(float delta){
