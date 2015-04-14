@@ -18,7 +18,7 @@ void ParallaxBackground::addImage(string imageName, Vec2 imagePosition, Vec2 ima
 	{
 		ParallaxSprite* sprite = ParallaxSprite::create(imageName);
 		sprite->setPosition(imagePosition.x + i * width, imagePosition.y);
-		sprite->setVelocity(imageVelocity);
+		sprite->setVelocityFactor(imageVelocity);
 		sprite->setScale(width / sprite->getBoundingBox().size.width);
 		this->addChild(sprite, zOrder, imageName);
 	}
@@ -39,8 +39,8 @@ void ParallaxBackground::update(float delta)
 
 		float pixelsMoved = DEFAULT_SCROLL_SPEED * delta;
 
-		position1.x -= child1->getVelocity().x * pixelsMoved;
-		position2.x -= child2->getVelocity().x * pixelsMoved;
+		position1.x -= child1->getVelocityFactor().x * pixelsMoved;
+		position2.x -= child2->getVelocityFactor().x * pixelsMoved;
 
 		if (position1.x < 0 - child1->getBoundingBox().size.width / 2)
 		{
@@ -48,6 +48,7 @@ void ParallaxBackground::update(float delta)
 			position2.x = 3 * Director::getInstance()->getWinSize().width / 2 ;
 		}
 
+	
 
 		child1->setPosition(position1);
 		child2->setPosition(position2);
@@ -55,9 +56,4 @@ void ParallaxBackground::update(float delta)
 	}
 
 
-}
-
-void ParallaxBackground::initialize()
-{
-	this->scheduleUpdate();
 }

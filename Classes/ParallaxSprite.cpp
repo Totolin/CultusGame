@@ -14,12 +14,12 @@ ParallaxSprite* ParallaxSprite::create(string imgName)
 	return NULL;
 }
 
-void ParallaxSprite::setVelocity(Vec2& velocity)
+void ParallaxSprite::setVelocityFactor(Vec2& velocity)
 {
 	this->velocity = velocity;
 }
 
-Vec2& ParallaxSprite::getVelocity()
+Vec2& ParallaxSprite::getVelocityFactor()
 {
 	return velocity;
 }

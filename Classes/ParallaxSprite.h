@@ -8,8 +8,8 @@ class ParallaxSprite : public Sprite
 {
 public:
 	static ParallaxSprite* create(string imgName);
-	void setVelocity(Vec2& velocity);
-	Vec2& getVelocity();
+	void setVelocityFactor(Vec2& velocity);
+	Vec2& getVelocityFactor();
 private:
 	Vec2 velocity;
 };
