@@ -40,22 +40,33 @@ Player* Player::create(string png, string plist)
 
 void Player::initOptions()
 {
-	// Nothing to initialize at this moment
-
 	auto eventListener = EventListenerKeyboard::create();
 	Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
+
 	eventListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
-		// If a key already exists, do nothing as it will already have a time stamp
-		// Otherwise, set's the timestamp to now
 		if (keys.find(keyCode) == keys.end()){
 			keys[keyCode] = std::chrono::high_resolution_clock::now();
+		}
+		Vec2 loc = event->getCurrentTarget()->getPosition();
+		switch (keyCode){
+		case EventKeyboard::KeyCode::KEY_UP_ARROW:
+		case EventKeyboard::KeyCode::KEY_W:
+			this->jump();
+			break;
+		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+		case EventKeyboard::KeyCode::KEY_S:
+			this->slide();
+			break;
 		}
 	};
 
 	eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event){
-		// remove the key.  std::map.erase() doesn't care if the key doesnt exist
 		keys.erase(keyCode);
 	};
+
+
+
+
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 }
 
@@ -64,11 +75,6 @@ void Player::update(float delta)
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_S))
 	{
 		this->moveY(-MOVEMENT_PIXELS);
-	}
-
-	if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_W))
-	{
-		this->jump();
 	}
 
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A))
@@ -108,14 +114,15 @@ void Player::jump()
 {
 	Vec2 currentPosition = this->getPosition();
 
-	auto moveUpSlow = MoveBy::create(10, Vec2(currentPosition.x, 100));
-	auto moveUpFast = MoveBy::create(5, Vec2(currentPosition.x, 100));
-	auto moveDownSlow = MoveTo::create(1, Vec2(currentPosition.x, currentPosition.y - 50));
-	auto moveDownFast = MoveTo::create(0.5, Vec2(currentPosition.x, currentPosition.y - 100));
+	auto moveUpFast = MoveBy::create(0.5, Vec2(0,100));
+	auto moveUpSlow = MoveBy::create(1, Vec2(0, 100));
+	auto moveDownSlow = MoveBy::create(1, Vec2(0, -100));
+	auto moveDownFast = MoveBy::create(0.5, Vec2(0, -100));
 
 	//auto seq = Sequence::create(moveUpFast, moveUpSlow, moveDownSlow, moveDownFast, nullptr);
-	auto seq = Sequence::create(moveUpFast, moveUpSlow, nullptr);
+	auto seq = Sequence::create(moveUpFast,moveUpSlow,moveDownSlow,moveDownFast, nullptr);
 	this->runAction(seq);
+
 }
 
 void Player::slide()

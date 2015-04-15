@@ -6,9 +6,17 @@ USING_NS_CC;
 
 using namespace std;
 
+
 class Player : public Sprite
 {
 public:
+
+	enum Action
+	{
+		JUMPING, SLIDING, RUNNING
+	};
+
+
 	Player();
 
 	~Player();
@@ -27,4 +35,5 @@ public:
 private:
 	static std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
+	Action action = Action::RUNNING;
 };
