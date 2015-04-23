@@ -17,6 +17,7 @@ Player* Player::create(string png, string plist)
 	if (playerSprite->initWithSpriteFrameName(png + "0.png"))
 	{
 		auto animation = Animation::create();
+
 		for (int i = 0; i <= 7; i++)
 		{
 			char name[100] = { 0 };
