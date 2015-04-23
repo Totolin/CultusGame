@@ -90,8 +90,6 @@ void Player::update(float delta)
 }
 
 bool Player::isKeyPressed(EventKeyboard::KeyCode code) {
-	// Check if the key is currently pressed by seeing it it's in the std::map keys
-	// In retrospect, keys is a terrible name for a key/value paried datatype isnt it?
 	if (keys.find(code) != keys.end())
 		return true;
 	return false;
@@ -125,13 +123,6 @@ void Player::jump()
 	seq->setTag(currentAction);
 	this->runAction(seq);
 	this->setPosition(decayedPosition);
-
-	/*
-	auto jump = JumpBy::create(0.5, Vec2(0, 0), 200, 1);
-	jump->setTag(Action::JUMPING);
-
-	this->runAction(jump);
-	*/
 }
 
 void Player::doubleJump()
@@ -165,7 +156,6 @@ void Player::callback_WorUp()
 
 	if (this->currentAction == Action::JUMPING)
 	{
-		//this->getActionManager()->getNumberOfRunningActionsInTarget(this);
 		this->stopActionByTag(currentAction);
 		doubleJump();
 
