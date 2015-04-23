@@ -10,7 +10,6 @@ Player::~Player()
 
 Player* Player::create(string png, string plist)
 {
-
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist + ".plist");
 
 	Player* playerSprite = new Player();
@@ -27,7 +26,6 @@ Player* Player::create(string png, string plist)
 
 		animation->setDelayPerUnit(0.1f);
 		playerSprite->runAction(RepeatForever::create(Animate::create(animation)));
-
 		playerSprite->autorelease();
 		playerSprite->initOptions();
 		playerSprite->setScale(2);
@@ -65,14 +63,15 @@ void Player::initOptions()
 		keys.erase(keyCode);
 	};
 
-
-
-
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 }
 
 void Player::update(float delta)
 {
+	if (this->currentAction != Action::RUNNING && this->getPosition().y == this->groundLevel)
+	{
+		this->currentAction = Action::RUNNING;
+	}
 
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_S))
 	{
@@ -114,18 +113,42 @@ void Player::moveY(int pixelsToMove)
 
 void Player::jump()
 {
+	this->currentAction = Action::JUMPING;
+	Vec2 currentPosition = this->getPosition();
+	Vec2 decayedPosition(currentPosition.x, currentPosition.y + 1);
+
+	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 200));
+	auto moveUpSlow = MoveBy::create(0.1, Vec2(0, 20));
+	auto moveDownSlow = MoveBy::create(0.1, Vec2(0, -20));
+	auto moveDownFast = MoveBy::create(0.3, Vec2(0, -201));
+	auto seq = Sequence::create(moveUpFast, moveUpSlow, moveDownSlow, moveDownFast, nullptr);
+	seq->setTag(currentAction);
+	this->runAction(seq);
+	this->setPosition(decayedPosition);
+
+	/*
 	auto jump = JumpBy::create(0.5, Vec2(0, 0), 200, 1);
 	jump->setTag(Action::JUMPING);
-	
+
 	this->runAction(jump);
-		
+	*/
 }
 
 void Player::doubleJump()
 {
-	auto doubleJump = JumpBy::create(0.5, Vec2(0, 0), 100, 1);
-	doubleJump->setTag(Action::DOUBLE_JUMPING);
-	this->runAction(doubleJump);
+	Vec2 currentPosition = this->getPosition();
+	this->currentAction = Action::DOUBLE_JUMPING;
+	Vec2 roundUpPosition(currentPosition.x, (int)currentPosition.y);
+	this->setPosition(roundUpPosition);
+	int landingPosition = (-1)*(150 + (roundUpPosition.y - groundLevel));
+
+	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 150));
+	auto moveUpSlow = MoveBy::create(0.1, Vec2(0, 15));
+	auto moveDownSlow = MoveBy::create(0.1, Vec2(0, -15));
+	auto moveDownFast = MoveBy::create(0.3, Vec2(0, landingPosition));
+	auto seq = Sequence::create(moveUpFast, moveUpSlow, moveDownSlow, moveDownFast, nullptr);
+	seq->setTag(currentAction);
+	this->runAction(seq);
 }
 
 void Player::setGroundLevel(float groundLevel)
@@ -135,36 +158,25 @@ void Player::setGroundLevel(float groundLevel)
 
 void Player::callback_WorUp()
 {
-	/*if (this->getActionByTag(Action::JUMPING) != NULL)
+	if (this->currentAction == Action::DOUBLE_JUMPING)
 	{
-		if (this->getActionByTag(Action::DOUBLE_JUMPING) != NULL)
-		{
-			return;
-		}
-		this->getActionManager()->removeActionByTag(Action::JUMPING, this);
-	
-		doubleJump();
 		return;
 	}
-	jump();*/
 
+	if (this->currentAction == Action::JUMPING)
+	{
+		//this->getActionManager()->getNumberOfRunningActionsInTarget(this);
+		this->stopActionByTag(currentAction);
+		doubleJump();
 
-	if (this->getPositionY() == groundLevel)
-	{
-		jump();
+		return;
 	}
-	else if (this->getNumberOfRunningActions() == 1)
-	{
-		
-	}
+	jump();
 }
 
 void Player::slide()
 {
-
 }
-
-
 
 std::map < cocos2d::EventKeyboard::KeyCode,
 	std::chrono::high_resolution_clock::time_point > Player::keys;

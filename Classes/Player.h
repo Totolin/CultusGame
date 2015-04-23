@@ -6,17 +6,14 @@ USING_NS_CC;
 
 using namespace std;
 
-
 class Player : public Sprite
 {
 public:
 
 	enum Action
 	{
-		JUMPING = 1, DOUBLE_JUMPING = 2, SLIDING = 3, RUNNING = 4, BOSSING = 5
+		JUMP_START = 0, JUMPING = 1, DOUBLE_JUMPING = 2, SLIDING = 3, RUNNING = 4, BOSSING = 5
 	};
-
-
 
 	Player();
 
@@ -40,4 +37,5 @@ private:
 		std::chrono::high_resolution_clock::time_point > keys;
 	float groundLevel;
 	void callback_WorUp();
+	Action currentAction;
 };

@@ -27,7 +27,6 @@ void ParallaxBackground::update(float delta)
 {
 	Vector<Node*> sprites = this->getChildren();
 
-	log(to_string(delta).c_str());
 	for (int i = 0; i < sprites.size(); i += 2)
 	{
 		ParallaxSprite* child1 = dynamic_cast<ParallaxSprite*>(sprites.at(i));
