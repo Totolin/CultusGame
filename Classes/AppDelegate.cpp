@@ -38,6 +38,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	Player* hero = Player::create("runner", "runner");
 	hero->setPosition(Vec2(300, 300));
+	hero->setGroundLevel(300);
 	scene->addChild(hero);
 
 	director->runWithScene(scene);

@@ -13,8 +13,9 @@ public:
 
 	enum Action
 	{
-		JUMPING, SLIDING, RUNNING
+		JUMPING = 1, DOUBLE_JUMPING = 2, SLIDING = 3, RUNNING = 4, BOSSING = 5
 	};
+
 
 
 	Player();
@@ -32,8 +33,11 @@ public:
 
 	void jump();
 	void slide();
+	void doubleJump();
+	void setGroundLevel(float groundLevel);
 private:
 	static std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
-	Action action = Action::RUNNING;
+	float groundLevel;
+	void callback_WorUp();
 };
