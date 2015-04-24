@@ -2,11 +2,18 @@
 #include "ParallaxSprite.h"
 #define DEFAULT_Z_ORDER -100
 #define DEFAULT_SCROLL_SPEED 250
+
+// Constructor for the ParallaxBackgroud class.
 ParallaxBackground::ParallaxBackground()
 {
 	zOrder = DEFAULT_Z_ORDER;
 }
 
+// Add an image (creating a ParallaxSprite) to be contained. Will run in the same time
+// as the other images, to create the Parallax effect.
+// @param imageName - Path to the background image
+// @param imagePosition - Vec2 position to start
+// @param imageVelocity - Vec2 speed at which the background is moved
 void ParallaxBackground::addImage(string imageName, Vec2 imagePosition, Vec2 imageVelocity)
 {
 	int height = Director::getInstance()->getWinSize().height;

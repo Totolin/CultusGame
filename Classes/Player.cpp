@@ -1,36 +1,54 @@
 #include "Player.h"
 #define MOVEMENT_PIXELS 15
+#include "GameValues.h"
+
+// Constructor for the Player class.
+// Method unused. Check create() for object creation.
 Player::Player()
 {
 }
 
+// Destructor for the Player class.
 Player::~Player()
 {
 }
 
+// Creates an instance of Player
+// @param png - The path to the PNG representation of the sprite
+// @param plist - The path to the PLIST representation of the sprite
 Player* Player::create(string png, string plist)
 {
+	// Create a frame cache to animate the player using plist
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist + ".plist");
 
+	// Create an instance of Player
 	Player* playerSprite = new Player();
 
+	// Generate player movement sprites
 	if (playerSprite->initWithSpriteFrameName(png + "0.png"))
 	{
 		auto animation = Animation::create();
 
-		for (int i = 0; i <= 7; i++)
+		for (int i = 0; i <= PLAYER_SPRITE_FRAMES_RUNNING; i++)
 		{
 			char name[100] = { 0 };
 			sprintf(name, "%s%d.png", png.c_str(), i);
 			animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
 		}
 
-		animation->setDelayPerUnit(0.1f);
+		// Set delay between frames
+		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
+
+		// Run animation forever
 		playerSprite->runAction(RepeatForever::create(Animate::create(animation)));
+
+		// Set properties
 		playerSprite->autorelease();
 		playerSprite->initOptions();
 		playerSprite->setScale(2);
 		playerSprite->scheduleUpdate();
+
+		// Return
 		return playerSprite;
 	}
 
@@ -38,11 +56,14 @@ Player* Player::create(string png, string plist)
 	return NULL;
 }
 
+// Set initial predefined options for the Player
 void Player::initOptions()
 {
+	// Create keyboard mapping
 	auto eventListener = EventListenerKeyboard::create();
 	Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
 
+	// Set events on press and release
 	eventListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
 		if (keys.find(keyCode) == keys.end()){
 			keys[keyCode] = std::chrono::high_resolution_clock::now();
@@ -60,10 +81,12 @@ void Player::initOptions()
 		}
 	};
 
+	// Set mapping
 	eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event){
 		keys.erase(keyCode);
 	};
 
+	// Set listener
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 }
 
@@ -90,12 +113,18 @@ void Player::update(float delta)
 	}
 }
 
+// Checks if a key is pressed
+// @param code - EventKeyboard code of the respective key
+// @return - Bool which states if the key is pressed or not
 bool Player::isKeyPressed(EventKeyboard::KeyCode code) {
 	if (keys.find(code) != keys.end())
 		return true;
 	return false;
 }
 
+// Move a player on the X axis by a set number of pixels
+// @param pixelsToMove - Number of pixels to move
+// @return - Bool which states if the key is pressed or not
 void Player::moveX(int pixelsToMove)
 {
 	Vec2 loc = this->getPosition();
@@ -103,6 +132,8 @@ void Player::moveX(int pixelsToMove)
 	this->setPosition(loc);
 }
 
+// Move a player on the Y axis by a set number of pixels
+// @param pixelsToMove - Number of pixels to move
 void Player::moveY(int pixelsToMove)
 {
 	Vec2 loc = this->getPosition();
@@ -110,46 +141,80 @@ void Player::moveY(int pixelsToMove)
 	this->setPosition(loc);
 }
 
+// Jump action of the Player
+// Creates an animation , smooth jumping, and possibility of double-jumping if
+// jump key is pressed during this action.
+// Sets action to JUMPING
 void Player::jump()
 {
+	// Set current action to JUMPING
 	this->currentAction = Action::JUMPING;
+
+	// Save position
 	Vec2 currentPosition = this->getPosition();
+
+	// Set a decayed position to prevent RUNNING/JUMPING collisions
 	Vec2 decayedPosition(currentPosition.x, currentPosition.y + 1);
 
+	// Create smooth jump sequence
 	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 200));
 	auto moveUpSlow = MoveBy::create(0.1, Vec2(0, 20));
 	auto moveDownSlow = MoveBy::create(0.1, Vec2(0, -20));
 	auto moveDownFast = MoveBy::create(0.3, Vec2(0, -201));
 	auto seq = Sequence::create(moveUpFast, moveUpSlow, moveDownSlow, moveDownFast, nullptr);
+
+	// Set tag and run
 	seq->setTag(currentAction);
 	this->runAction(seq);
 	this->setPosition(decayedPosition);
 }
 
+// DoubleJump action of the Player
+// Creates an animation , smooth jumping, and is called when the Jump
+// key is pressed during the JUMPING action
+// Sets action to DOUBLE_JUMPING
 void Player::doubleJump()
 {
-	Vec2 currentPosition = this->getPosition();
+	// Set action to DOUBLE_JUMPING
 	this->currentAction = Action::DOUBLE_JUMPING;
+
+	// Save position
+	Vec2 currentPosition = this->getPosition();
+
+	// Create a roundUp position for landing on the ground
 	Vec2 roundUpPosition(currentPosition.x, (int)currentPosition.y);
+
+	// Set landing position
 	this->setPosition(roundUpPosition);
 	int landingPosition = (-1)*(150 + (roundUpPosition.y - groundLevel));
 
+	// Create smooth jump sequence
 	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 150));
 	auto moveUpSlow = MoveBy::create(0.1, Vec2(0, 15));
 	auto moveDownSlow = MoveBy::create(0.1, Vec2(0, -15));
 	auto moveDownFast = MoveBy::create(0.3, Vec2(0, landingPosition));
+
+	// Add the sequence and run
 	auto seq = Sequence::create(moveUpFast, moveUpSlow, moveDownSlow, moveDownFast, nullptr);
 	seq->setTag(currentAction);
 	this->runAction(seq);
 }
 
+// Sets the ground level on which the player walks/runs
+// @param groundLevel - Float value of the Y axis position of the ground.
 void Player::setGroundLevel(float groundLevel)
 {
 	this->groundLevel = groundLevel;
 }
 
+// Callback of the W / UpArrow keys
+// Runs actions according to this key
 void Player::callback_WorUp()
 {
+	// If no action is occurring, and the player is RUNNING , JUMP
+	// If JUMP action is occurring, DOUBLE JUMP
+	// If DOUBLE JUMP action is occurring, do nothing
+
 	if (this->currentAction == Action::DOUBLE_JUMPING)
 	{
 		return;
