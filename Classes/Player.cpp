@@ -34,13 +34,17 @@ Player* Player::create(string png, string plist)
 			char name[100] = { 0 };
 			sprintf(name, "%s%d.png", png.c_str(), i);
 			animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
+			animationFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
 		}
-
+		
 		// Set delay between frames
 		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
+		
+		//Create running action
+		runningAction = RepeatForever::create(Animate::create(animation));
 
 		// Run animation forever
-		playerSprite->runAction(RepeatForever::create(Animate::create(animation)));
+		playerSprite->runAction(runningAction);
 
 		// Set properties
 		playerSprite->autorelease();
@@ -94,12 +98,12 @@ void Player::update(float delta)
 {
 	if (this->currentAction != Action::RUNNING && this->getPosition().y == this->groundLevel)
 	{
+		auto animation = Animation::createWithSpriteFrames(animationFrames);
+		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
+		runningAction = RepeatForever::create(Animate::create(animation));
+		this->runAction(runningAction);
+		
 		this->currentAction = Action::RUNNING;
-	}
-
-	if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_S))
-	{
-		this->moveY(-MOVEMENT_PIXELS);
 	}
 
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A))
@@ -155,6 +159,12 @@ void Player::jump()
 
 	// Set a decayed position to prevent RUNNING/JUMPING collisions
 	Vec2 decayedPosition(currentPosition.x, currentPosition.y + 1);
+
+
+	//Stop running animation and replace the sprite png to the jumping one
+	this->getActionManager()->removeAction(runningAction);
+	runningAction = nullptr;
+	this->setDisplayFrame(animationFrames.at(1));
 
 	// Create smooth jump sequence
 	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 200));
@@ -236,3 +246,7 @@ void Player::slide()
 
 std::map < cocos2d::EventKeyboard::KeyCode,
 	std::chrono::high_resolution_clock::time_point > Player::keys;
+
+RepeatForever* Player::runningAction;
+
+Vector<SpriteFrame*>  Player::animationFrames;

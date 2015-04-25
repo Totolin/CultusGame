@@ -37,5 +37,8 @@ private:
 		std::chrono::high_resolution_clock::time_point > keys;
 	float groundLevel;
 	void callback_WorUp();
-	Action currentAction;
+	Action currentAction = Action::RUNNING;
+
+	static RepeatForever* runningAction;
+	static Vector<SpriteFrame*> animationFrames;
 };
