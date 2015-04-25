@@ -33,12 +33,12 @@ public:
 	void doubleJump();
 	void setGroundLevel(float groundLevel);
 private:
-	static std::map < cocos2d::EventKeyboard::KeyCode,
+	std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
 	float groundLevel;
 	void callback_WorUp();
 	Action currentAction = Action::RUNNING;
 
-	static RepeatForever* runningAction;
-	static Vector<SpriteFrame*> animationFrames;
+	RepeatForever* runningAction;
+	Vector<SpriteFrame*> animationFrames;
 };

@@ -34,17 +34,17 @@ Player* Player::create(string png, string plist)
 			char name[100] = { 0 };
 			sprintf(name, "%s%d.png", png.c_str(), i);
 			animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
-			animationFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
+			playerSprite->animationFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
 		}
 		
 		// Set delay between frames
 		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
 		
 		//Create running action
-		runningAction = RepeatForever::create(Animate::create(animation));
+		playerSprite->runningAction = RepeatForever::create(Animate::create(animation));
 
 		// Run animation forever
-		playerSprite->runAction(runningAction);
+		playerSprite->runAction(playerSprite->runningAction);
 
 		// Set properties
 		playerSprite->autorelease();
@@ -243,10 +243,3 @@ void Player::callback_WorUp()
 void Player::slide()
 {
 }
-
-std::map < cocos2d::EventKeyboard::KeyCode,
-	std::chrono::high_resolution_clock::time_point > Player::keys;
-
-RepeatForever* Player::runningAction;
-
-Vector<SpriteFrame*>  Player::animationFrames;
