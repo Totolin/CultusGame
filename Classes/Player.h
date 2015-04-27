@@ -19,7 +19,7 @@ public:
 
 	~Player();
 
-	static Player* create(string png, string plist);
+	static Player* create();
 	//void setPosition(Vec2 position);
 	void initOptions();
 
@@ -40,5 +40,4 @@ private:
 	Action currentAction = Action::RUNNING;
 
 	RepeatForever* runningAction;
-	Vector<SpriteFrame*> animationFrames;
 };

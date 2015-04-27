@@ -2,6 +2,8 @@
 #include "HelloWorldScene.h"
 #include "GameLevel.h"
 #include "ParallaxBackground.h"
+#include "proj.win32\ResourceLoader.h"
+#include "GameValues.h"
 
 USING_NS_CC;
 
@@ -35,9 +37,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	bck->addImage("street.png", Vec2(width / 2, 89), Vec2(1.9, 0));
 	bck->scheduleUpdate();
 	scene->addChild(bck);
-	
-	Player* hero = Player::create("runner", "runner");
-	hero->setPosition(Vec2(width/2, 130));
+
+	ResourceLoader resLoader = ResourceLoader::getInstance();
+	resLoader.addAnimation("runner", 8, PLAYER_ANIMATION_RUNNING);
+
+	Player* hero = Player::create();
+	hero->setPosition(Vec2(width / 2, 130));
 	hero->setGroundLevel(130);
 	scene->addChild(hero);
 

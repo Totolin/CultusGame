@@ -1,6 +1,7 @@
 #include "Player.h"
 #define MOVEMENT_PIXELS 15
 #include "GameValues.h"
+#include "proj.win32\ResourceLoader.h"
 
 // Constructor for the Player class.
 // Method unused. Check create() for object creation.
@@ -16,30 +17,25 @@ Player::~Player()
 // Creates an instance of Player
 // @param png - The path to the PNG representation of the sprite
 // @param plist - The path to the PLIST representation of the sprite
-Player* Player::create(string png, string plist)
+Player* Player::create()
 {
-	// Create a frame cache to animate the player using plist
-	SpriteFrameCache::getInstance()->addSpriteFramesWithFile(plist + ".plist");
-
 	// Create an instance of Player
 	Player* playerSprite = new Player();
 
-	// Generate player movement sprites
-	if (playerSprite->initWithSpriteFrameName(png + "0.png"))
-	{
-		auto animation = Animation::create();
+	// Get resournce loader instance
+	ResourceLoader resLoader = ResourceLoader::getInstance();
 
-		for (int i = 0; i <= PLAYER_SPRITE_FRAMES_RUNNING; i++)
-		{
-			char name[100] = { 0 };
-			sprintf(name, "%s%d.png", png.c_str(), i);
-			animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
-			playerSprite->animationFrames.pushBack(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
-		}
-		
+	// Get running animation
+	Vector<SpriteFrame*> runningAnimation = resLoader.getAnimation(PLAYER_ANIMATION_RUNNING);
+
+	// Generate player movement sprites
+	if (playerSprite->initWithSpriteFrame(runningAnimation.at(0)))
+	{
+		auto animation = Animation::createWithSpriteFrames(runningAnimation);
+
 		// Set delay between frames
 		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
-		
+
 		//Create running action
 		playerSprite->runningAction = RepeatForever::create(Animate::create(animation));
 
@@ -98,11 +94,17 @@ void Player::update(float delta)
 {
 	if (this->currentAction != Action::RUNNING && this->getPosition().y == this->groundLevel)
 	{
-		auto animation = Animation::createWithSpriteFrames(animationFrames);
+		// Get resournce loader instance
+		ResourceLoader resLoader = ResourceLoader::getInstance();
+
+		// Get running animation
+		Vector<SpriteFrame*> runningAnimation = resLoader.getAnimation(PLAYER_ANIMATION_RUNNING);
+
+		auto animation = Animation::createWithSpriteFrames(runningAnimation);
 		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
 		runningAction = RepeatForever::create(Animate::create(animation));
 		this->runAction(runningAction);
-		
+
 		this->currentAction = Action::RUNNING;
 	}
 
@@ -160,11 +162,19 @@ void Player::jump()
 	// Set a decayed position to prevent RUNNING/JUMPING collisions
 	Vec2 decayedPosition(currentPosition.x, currentPosition.y + 1);
 
-
 	//Stop running animation and replace the sprite png to the jumping one
 	this->getActionManager()->removeAction(runningAction);
 	runningAction = nullptr;
-	this->setDisplayFrame(animationFrames.at(1));
+
+	//TODO: Insert the jumping animation instead of a single frame
+
+	// Get resource loader instance
+	ResourceLoader resLoader = ResourceLoader::getInstance();
+
+	// Get running animation
+	Vector<SpriteFrame*> runningAnimation = resLoader.getAnimation(PLAYER_ANIMATION_RUNNING);
+
+	this->setDisplayFrame(runningAnimation.at(1));
 
 	// Create smooth jump sequence
 	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 200));
