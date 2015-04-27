@@ -1,7 +1,6 @@
 #include "Player.h"
-#define MOVEMENT_PIXELS 15
 #include "GameValues.h"
-#include "proj.win32\ResourceLoader.h"
+#include "ResourceLoader.h"
 
 // Constructor for the Player class.
 // Method unused. Check create() for object creation.
@@ -37,10 +36,13 @@ Player* Player::create()
 		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
 
 		//Create running action
-		playerSprite->runningAction = RepeatForever::create(Animate::create(animation));
+		auto runningAction = RepeatForever::create(Animate::create(animation));
+
+		//Set tag for action
+		runningAction->setTag(PLAYER_ANIMATION_RUNNING);
 
 		// Run animation forever
-		playerSprite->runAction(playerSprite->runningAction);
+		playerSprite->runAction(runningAction);
 
 		// Set properties
 		playerSprite->autorelease();
@@ -68,7 +70,6 @@ void Player::initOptions()
 		if (keys.find(keyCode) == keys.end()){
 			keys[keyCode] = std::chrono::high_resolution_clock::now();
 		}
-		Vec2 loc = event->getCurrentTarget()->getPosition();
 		switch (keyCode){
 		case EventKeyboard::KeyCode::KEY_UP_ARROW:
 		case EventKeyboard::KeyCode::KEY_W:
@@ -102,7 +103,8 @@ void Player::update(float delta)
 
 		auto animation = Animation::createWithSpriteFrames(runningAnimation);
 		animation->setDelayPerUnit(PLAYER_SPRITE_DELAY_RUNNING);
-		runningAction = RepeatForever::create(Animate::create(animation));
+		auto runningAction = RepeatForever::create(Animate::create(animation));
+		runningAction->setTag(PLAYER_ANIMATION_RUNNING);
 		this->runAction(runningAction);
 
 		this->currentAction = Action::RUNNING;
@@ -110,12 +112,12 @@ void Player::update(float delta)
 
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A))
 	{
-		this->moveX(-MOVEMENT_PIXELS);
+		this->moveX(-PLAYER_MOVE_LEFT_PIXELS);
 	}
 
 	if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D))
 	{
-		this->moveX(MOVEMENT_PIXELS);
+		this->moveX(PLAYER_MOVE_RIGHT_PIXELS);
 	}
 }
 
@@ -163,8 +165,7 @@ void Player::jump()
 	Vec2 decayedPosition(currentPosition.x, currentPosition.y + 1);
 
 	//Stop running animation and replace the sprite png to the jumping one
-	this->getActionManager()->removeAction(runningAction);
-	runningAction = nullptr;
+	this->getActionManager()->removeActionByTag(PLAYER_ANIMATION_RUNNING, this);
 
 	//TODO: Insert the jumping animation instead of a single frame
 
@@ -173,7 +174,6 @@ void Player::jump()
 
 	// Get running animation
 	Vector<SpriteFrame*> runningAnimation = resLoader.getAnimation(PLAYER_ANIMATION_RUNNING);
-
 	this->setDisplayFrame(runningAnimation.at(1));
 
 	// Create smooth jump sequence

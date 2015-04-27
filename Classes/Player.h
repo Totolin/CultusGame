@@ -39,5 +39,4 @@ private:
 	void callback_WorUp();
 	Action currentAction = Action::RUNNING;
 
-	RepeatForever* runningAction;
 };

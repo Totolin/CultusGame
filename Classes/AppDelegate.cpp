@@ -2,7 +2,7 @@
 #include "HelloWorldScene.h"
 #include "GameLevel.h"
 #include "ParallaxBackground.h"
-#include "proj.win32\ResourceLoader.h"
+#include "ResourceLoader.h"
 #include "GameValues.h"
 
 USING_NS_CC;
