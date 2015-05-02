@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "GameValues.h"
 #include "ResourceLoader.h"
+#include "Bullet.h"
 
 // Constructor for the Player class.
 // Method unused. Check create() for object creation.
@@ -79,6 +80,9 @@ void Player::initOptions()
 		case EventKeyboard::KeyCode::KEY_S:
 			this->slide();
 			break;
+		case EventKeyboard::KeyCode::KEY_SPACE:
+			this->fire();
+			break;
 		}
 	};
 
@@ -147,6 +151,18 @@ void Player::moveY(int pixelsToMove)
 	Vec2 loc = this->getPosition();
 	loc.y += pixelsToMove;
 	this->setPosition(loc);
+}
+
+void Player::fire()
+{
+	Bullet* bullet = Bullet::create();
+
+	float xPos = this->getPositionX() + this->getBoundingBox().size.width / 2;
+	float yPos = this->getPositionY();
+
+	bullet->setPosition(xPos,yPos);
+
+	Director::getInstance()->getRunningScene()->addChild(bullet);
 }
 
 // Jump action of the Player

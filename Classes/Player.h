@@ -28,6 +28,7 @@ public:
 	void moveX(int pixelsToMove);
 	void moveY(int pixelsToMove);
 
+	void fire();
 	void jump();
 	void slide();
 	void doubleJump();
