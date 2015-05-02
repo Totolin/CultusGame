@@ -1,10 +1,11 @@
 #include "Bullet.h"
+#include "ResourceLoader.h"
 
-Bullet* Bullet::create()
+Bullet* Bullet::create(int bulletFileIndex)
 {
 	Bullet* bullet = new Bullet();
 
-	if (bullet->initWithFile("bullet.png"))
+	if (bullet->initWithFile(ResourceLoader::getBulletFile(bulletFileIndex)))
 	{
 		bullet->autorelease();
 		bullet->scheduleUpdate();
@@ -23,15 +24,13 @@ void Bullet::moveX(int pixelsToMove)
 	this->setPosition(loc);
 }
 
-
-
 void Bullet::update(float delta)
 {
 	this->moveX(20);
 
-	float screenWidth = Director::getInstance()->getWinSize().width;
-	float bulletWidth = this->getBoundingBox().size.width;
-
-	if (this->getPositionX() - bulletWidth / 2 >= screenWidth)
-		release();
+	// 	float screenWidth = Director::getInstance()->getWinSize().width;
+	// 	float bulletWidth = this->getBoundingBox().size.width;
+	//
+	// 	if (this->getPositionX() - bulletWidth / 2 >= screenWidth)
+	// 		release();
 }

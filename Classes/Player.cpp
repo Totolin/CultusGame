@@ -2,6 +2,7 @@
 #include "GameValues.h"
 #include "ResourceLoader.h"
 #include "Bullet.h"
+#include "Weapon.h"
 
 // Constructor for the Player class.
 // Method unused. Check create() for object creation.
@@ -51,6 +52,10 @@ Player* Player::create()
 		playerSprite->setScale(2);
 		playerSprite->scheduleUpdate();
 
+		// Add weapon
+		Weapon* weapon = Weapon::create();
+		playerSprite->setWeapon(weapon);
+
 		// Return
 		return playerSprite;
 	}
@@ -73,15 +78,21 @@ void Player::initOptions()
 		}
 		switch (keyCode){
 		case EventKeyboard::KeyCode::KEY_UP_ARROW:
+			this->callback_WorUp();
+			break;
 		case EventKeyboard::KeyCode::KEY_W:
 			this->callback_WorUp();
 			break;
 		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+			this->slide();
+			break;
 		case EventKeyboard::KeyCode::KEY_S:
 			this->slide();
 			break;
 		case EventKeyboard::KeyCode::KEY_SPACE:
 			this->fire();
+			break;
+		default:
 			break;
 		}
 	};
@@ -123,6 +134,9 @@ void Player::update(float delta)
 	{
 		this->moveX(PLAYER_MOVE_RIGHT_PIXELS);
 	}
+
+	// Update it's weapon
+	this->weapon->update();
 }
 
 // Checks if a key is pressed
@@ -155,14 +169,9 @@ void Player::moveY(int pixelsToMove)
 
 void Player::fire()
 {
-	Bullet* bullet = Bullet::create();
-
-	float xPos = this->getPositionX() + this->getBoundingBox().size.width / 2;
-	float yPos = this->getPositionY();
-
-	bullet->setPosition(xPos,yPos);
-
-	Director::getInstance()->getRunningScene()->addChild(bullet);
+	float bullet_Y = getPosition().y;
+	float bullet_X = getPosition().x + getBoundingBox().size.width / 2;
+	this->weapon->fireBullet(bullet_X, bullet_Y);
 }
 
 // Jump action of the Player
@@ -268,4 +277,9 @@ void Player::callback_WorUp()
 
 void Player::slide()
 {
+}
+
+void Player::setWeapon(Weapon* weapon)
+{
+	this->weapon = weapon;
 }

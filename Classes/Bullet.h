@@ -9,7 +9,7 @@ using namespace std;
 class Bullet :public Sprite
 {
 public:
-	static Bullet* create();
+	static Bullet* create(int bulletFileIndex);
 	void moveX(int pixelsToMove);
 	virtual void update(float delta) override;
 };

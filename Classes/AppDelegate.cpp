@@ -32,14 +32,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	int height = director->getWinSize().height;
 	int width = director->getWinSize().width;
 
-	//bck->addImage("night.png", Vec2(width / 2, 400), Vec2(0.05, 0));
-	//bck->addImage("city.png", Vec2(width / 2, 348), Vec2(0.3, 0));
+	bck->addImage("night.png", Vec2(width / 2, 400), Vec2(0.05, 0));
+	bck->addImage("city.png", Vec2(width / 2, 348), Vec2(0.3, 0));
 	bck->addImage("street.png", Vec2(width / 2, 89), Vec2(1.9, 0));
 	bck->scheduleUpdate();
 	scene->addChild(bck);
 
 	ResourceLoader resLoader = ResourceLoader::getInstance();
 	resLoader.addAnimation("runner", 8, PLAYER_ANIMATION_RUNNING);
+	resLoader.addBulletFile("bullet.png", PLAYER_BULLET_LVL_1);
 
 	Player* hero = Player::create();
 	hero->setPosition(Vec2(width / 2, 130));

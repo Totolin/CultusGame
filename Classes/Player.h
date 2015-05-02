@@ -2,6 +2,7 @@
 
 #include "cocos2d.h"
 #include <string>
+#include "Weapon.h"
 USING_NS_CC;
 
 using namespace std;
@@ -37,7 +38,8 @@ private:
 	std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
 	float groundLevel;
+	Weapon* weapon;
 	void callback_WorUp();
+	void setWeapon(Weapon* weapon);
 	Action currentAction = Action::RUNNING;
-
 };
