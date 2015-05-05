@@ -40,6 +40,16 @@ void ResourceLoader::addBulletFile(string bulletFile, int index)
 	bulletFiles[index] = bulletFile;
 }
 
-vector<string> ResourceLoader::bulletFiles(100);
+void ResourceLoader::addImageFile(string imageFile, int index)
+{
+	interactiveObjectsFiles[index] = imageFile;
+}
 
+std::string ResourceLoader::getImageFile(int index)
+{
+	return interactiveObjectsFiles.at(index);
+}
+
+vector<string> ResourceLoader::interactiveObjectsFiles(100);
+vector<string> ResourceLoader::bulletFiles(100);
 map<int, Vector<SpriteFrame*>> ResourceLoader::animations;

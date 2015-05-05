@@ -23,7 +23,7 @@ Player* Player::create()
 	// Create an instance of Player
 	Player* playerSprite = new Player();
 
-	// Get resournce loader instance
+	// Get resource loader instance
 	ResourceLoader resLoader = ResourceLoader::getInstance();
 
 	// Get running animation
