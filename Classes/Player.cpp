@@ -110,7 +110,7 @@ void Player::update(float delta)
 {
 	if (this->currentAction != Action::RUNNING && this->getPosition().y == this->groundLevel)
 	{
-		// Get resournce loader instance
+		// Get resource loader instance
 		ResourceLoader resLoader = ResourceLoader::getInstance();
 
 		// Get running animation

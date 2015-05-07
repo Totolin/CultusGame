@@ -8,17 +8,6 @@ GameLevel::~GameLevel()
 {
 }
 
-Scene* GameLevel::createScene()
-{
-	// Create empty Scene instance and customize it by adding this level's characteristics
-	auto scene = Scene::create();
-
-	// Add level background, with lowest priority on the screen
-	//scene->addChild(this->levelBackground->createParallaxBackground(), -100);
-
-	return scene;
-}
-
 void GameLevel::setBoss(Boss* levelBoss)
 {
 	this->levelBoss = levelBoss;
@@ -47,4 +36,19 @@ void GameLevel::setMusic(string backgroundMusic)
 void GameLevel::addObjectFactory(InteractiveObjectFactory* objectFactory)
 {
 	this->objectFactories.push_back(objectFactory);
+}
+
+GameLevel* GameLevel::create()
+{
+	GameLevel* gameLevel = new GameLevel();
+	gameLevel->scheduleUpdate();
+	return gameLevel;
+}
+
+void GameLevel::update(float delta)
+{
+	for (int i = 0; i < objectFactories.size(); i++)
+	{
+		objectFactories.at(i)->createObject();
+	}
 }

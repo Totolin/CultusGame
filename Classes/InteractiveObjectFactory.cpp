@@ -20,10 +20,10 @@ InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bo
 	factory->setIsAnimated(isAnimated);
 
 	//Default speed
-	factory->setSpeed(Vec2(0, 0));
+	factory->setSpeed(Vec2(-10, 0));
 
 	//Default spawn interval
-	factory->setSpawnFrequency(50);
+	factory->setSpawnFrequency(5);
 
 	//Default position interval
 	factory->setPositionInterval(Vec2(0, 0));
@@ -48,15 +48,23 @@ void InteractiveObjectFactory::setPositionInterval(Vec2 interval)
 
 void InteractiveObjectFactory::createObject()
 {
-	unsigned int randomNumber = rand() % 101;
+	unsigned int randomNumber = rand() % 501;
 
 	if (randomNumber < frequency)
 	{
+		// Get random spawn position
+		unsigned int randomYpos = rand() % (int)((spawnInterval.y - spawnInterval.x) + spawnInterval.x);
+
+		// Create object
 		InteractiveObject* newObject = InteractiveObject::create(resourceIndex, isAnimated);
+
+		// Set members
 		newObject->setSpeed(speed);
 		newObject->setCanBeFiredAt(canBeFiredAt);
 		newObject->setCanHitPlayer(canHitPlayer);
+		newObject->setPosition(Director::getInstance()->getWinSize().width + (newObject->boundingBox().size.width) / 2, randomYpos);
 
+		Director::getInstance()->getRunningScene()->addChild(newObject);
 		this->objects.push_back(newObject);
 	}
 }
@@ -79,4 +87,9 @@ void InteractiveObjectFactory::setCanHitPlayer(bool canHitPlayer)
 void InteractiveObjectFactory::setResource(int resource)
 {
 	this->resourceIndex = resource;
+}
+
+void InteractiveObjectFactory::setParent(GameLevel* parent)
+{
+	this->parent = parent;
 }

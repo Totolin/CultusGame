@@ -47,7 +47,7 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 	}
 	else
 	{
-		if (objectSprite->initWithFile(ResourceLoader::getBulletFile(resourceIndex)))
+		if (objectSprite->initWithFile(ResourceLoader::getImageFile(resourceIndex)))
 		{
 			objectSprite->autorelease();
 			objectSprite->scheduleUpdate();
@@ -62,7 +62,7 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 
 void InteractiveObject::setSpeed(Vec2 speed)
 {
-	this->setSpeed(speed);
+	this->speed = speed;
 }
 
 void InteractiveObject::setCanBeFiredAt(bool canBeFiredAt)

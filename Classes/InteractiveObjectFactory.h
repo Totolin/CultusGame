@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "InteractiveObject.h"
+class GameLevel;
 
 USING_NS_CC;
 using namespace std;
@@ -13,7 +14,7 @@ public:
 	void setSpawnFrequency(int frequency);
 	void setPositionInterval(Vec2 interval);
 	void setIsAnimated(bool isAnimated);
-
+	void setParent(GameLevel* parent);
 	void setCanBeFiredAt(bool canBeFiredAt);
 	void setCanHitPlayer(bool canHitPlayer);
 	void setResource(int resource);
@@ -30,6 +31,7 @@ private:
 	Vec2 speed;
 	Vec2 spawnInterval;
 
+	GameLevel* parent;
 	int frequency;
 
 	~InteractiveObjectFactory();

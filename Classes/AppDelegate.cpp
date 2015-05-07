@@ -26,7 +26,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	director->setAnimationInterval(1.0 / 30);
 
-	auto scene = Scene::create();
+	// Create a new GameLevel
+	auto firstLevel = GameLevel::create();
+
+	// Create a background
 	ParallaxBackground* bck = new ParallaxBackground();
 
 	int height = director->getWinSize().height;
@@ -36,18 +39,31 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	bck->addImage("city.png", Vec2(width / 2, 348), Vec2(0.3, 0));
 	bck->addImage("street.png", Vec2(width / 2, 89), Vec2(1.9, 0));
 	bck->scheduleUpdate();
-	scene->addChild(bck);
 
+	// Create animations and bullets
 	ResourceLoader resLoader = ResourceLoader::getInstance();
 	resLoader.addAnimation("runner", 8, PLAYER_ANIMATION_RUNNING);
 	resLoader.addBulletFile("bullet.png", PLAYER_BULLET_LVL_1);
+	resLoader.addImageFile("mailbox.png", OBJECT_MAILBOX);
 
+	// Create Interactive object factory
+	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX, false, true, false);
+	mailboxFactory->setPositionInterval(Vec2(0, 100));
+
+	// Create player
 	Player* hero = Player::create();
 	hero->setPosition(Vec2(width / 2, 130));
 	hero->setGroundLevel(130);
-	scene->addChild(hero);
 
-	director->runWithScene(scene);
+	// Create music
+	CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+	audioEngine->playBackgroundMusic("darude.mp3", true);
+
+	firstLevel->addChild(bck);
+	firstLevel->addChild(hero);
+	firstLevel->addObjectFactory(mailboxFactory);
+
+	director->runWithScene(firstLevel);
 	return true;
 }
 
