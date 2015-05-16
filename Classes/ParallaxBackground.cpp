@@ -57,26 +57,13 @@ void ParallaxBackground::update(float delta)
 	}
 }
 
-void ParallaxBackground::animate()
+
+void ParallaxBackground::slowlyStop()
 {
-	int height = Director::getInstance()->getWinSize().height;
-	int width = Director::getInstance()->getWinSize().width;
 	Vector<Node*> sprites = this->getChildren();
-
-	for (int i = 0; i < sprites.size(); i += 2)
+	for (Node* node : sprites)
 	{
-		ParallaxSprite* child1 = dynamic_cast<ParallaxSprite*>(sprites.at(i));
-		ParallaxSprite* child2 = dynamic_cast<ParallaxSprite*>(sprites.at(i + 1));
-
-		MoveTo* moveTo11 = MoveTo::create(i + 2, Vec2(-width / 2, height / 2));
-		MoveTo* moveTo12 = MoveTo::create(0, Vec2(width / 2, height / 2));
-		auto seq1 = Sequence::create(moveTo11, moveTo12, nullptr);
-
-		MoveTo* moveTo21 = MoveTo::create(i + 2, Vec2(width / 2, height / 2));
-		MoveTo* moveTo22 = MoveTo::create(0, Vec2(3 * width / 2, height / 2));
-		auto seq2 = Sequence::create(moveTo21, moveTo22, nullptr);
-
-		child1->runAction(RepeatForever::create(seq1));
-		child2->runAction(RepeatForever::create(seq2));
+		ParallaxSprite* child =  dynamic_cast<ParallaxSprite*>(node);
+		child->setVelocityFactor(Vec2(0,0));
 	}
 }

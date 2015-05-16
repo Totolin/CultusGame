@@ -13,13 +13,13 @@ public:
 
 	enum Action
 	{
-		JUMP_START = 0, JUMPING = 1, DOUBLE_JUMPING = 2, SLIDING = 3, RUNNING = 4, BOSSING = 5
+		JUMP_START = 0, JUMPING = 1, DOUBLE_JUMPING = 2, SLIDING = 3, RUNNING = 4
 	};
 
 	Player();
 
 	~Player();
-
+	void setBossMode(bool b);
 	static Player* create();
 	//void setPosition(Vec2 position);
 	void initOptions();
@@ -34,6 +34,10 @@ public:
 	void slide();
 	void doubleJump();
 	void setGroundLevel(float groundLevel);
+	void setDistanceTravelled(long long dist);
+	long long getDistanceTravelled();
+	int getScore();
+	void setScore(int score);
 private:
 	std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
@@ -41,5 +45,10 @@ private:
 	Weapon* weapon;
 	void callback_WorUp();
 	void setWeapon(Weapon* weapon);
+	bool onScreenLeft();
+	bool onScreenRight();
 	Action currentAction = Action::RUNNING;
+	long long distanceTravelled;
+	bool bossMode = false;
+	int score = 0;
 };

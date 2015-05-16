@@ -54,14 +54,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	Player* hero = Player::create();
 	hero->setPosition(Vec2(width / 2, 130));
 	hero->setGroundLevel(130);
+	hero->setTag(PLAYER_TAG);
 
 	// Create music
 	CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
 	audioEngine->playBackgroundMusic("darude.mp3", true);
 
-	firstLevel->addChild(bck);
-	firstLevel->addChild(hero);
+	firstLevel->setBackground(bck);
+	firstLevel->setPlayer(hero);
 	firstLevel->addObjectFactory(mailboxFactory);
+	firstLevel->setDistanceToBoss(200);
 
 	director->runWithScene(firstLevel);
 	return true;

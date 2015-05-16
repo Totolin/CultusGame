@@ -22,10 +22,13 @@ public:
 	void setBoss(Boss* levelBoss);
 	void setBackground(ParallaxBackground* levelBackground);
 	void setPlayer(Player* mainCharacter);
+	void setDistanceToBoss(long long distance);
 	void setAudioEngine(CocosDenshion::SimpleAudioEngine* audioEngine);
 	void setMusic(string backgroundMusic);
 	void addObjectFactory(InteractiveObjectFactory* objectFactory);
 	virtual void update(float delta) override;
+	void updateScore();
+	void setScoreLabel(Label* label);
 
 private:
 	Boss* levelBoss;
@@ -34,4 +37,6 @@ private:
 	vector<InteractiveObjectFactory*> objectFactories;
 	CocosDenshion::SimpleAudioEngine* audioEngine;
 	string backgroundMusic;
+	long long distance;
+	Label* scoreLabel;
 };

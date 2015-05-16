@@ -15,6 +15,12 @@ Player::~Player()
 {
 }
 
+void Player::setBossMode(bool b)
+{
+	this->bossMode = b;
+}
+
+
 // Creates an instance of Player
 // @param png - The path to the PNG representation of the sprite
 // @param plist - The path to the PLIST representation of the sprite
@@ -22,6 +28,9 @@ Player* Player::create()
 {
 	// Create an instance of Player
 	Player* playerSprite = new Player();
+
+	// Reset travelled distance
+	playerSprite->setDistanceTravelled(0);
 
 	// Get resource loader instance
 	ResourceLoader resLoader = ResourceLoader::getInstance();
@@ -108,6 +117,10 @@ void Player::initOptions()
 
 void Player::update(float delta)
 {
+	distanceTravelled++;
+	score++;
+
+
 	if (this->currentAction != Action::RUNNING && this->getPosition().y == this->groundLevel)
 	{
 		// Get resource loader instance
@@ -125,18 +138,21 @@ void Player::update(float delta)
 		this->currentAction = Action::RUNNING;
 	}
 
-	if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A))
+	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A)) && bossMode)
 	{
-		this->moveX(-PLAYER_MOVE_LEFT_PIXELS);
+		if (onScreenLeft())
+			this->moveX(-PLAYER_MOVE_LEFT_PIXELS);
 	}
 
-	if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D))
+	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D)) && bossMode)
 	{
-		this->moveX(PLAYER_MOVE_RIGHT_PIXELS);
+		if (onScreenRight())
+			this->moveX(PLAYER_MOVE_RIGHT_PIXELS);
 	}
 
 	// Update it's weapon
 	this->weapon->update();
+
 }
 
 // Checks if a key is pressed
@@ -252,6 +268,26 @@ void Player::setGroundLevel(float groundLevel)
 	this->groundLevel = groundLevel;
 }
 
+void Player::setDistanceTravelled(long long dist)
+{
+	distanceTravelled = dist;
+}
+
+long long Player::getDistanceTravelled()
+{
+	return distanceTravelled;
+}
+
+int Player::getScore()
+{
+	return score;
+}
+
+void Player::setScore(int score)
+{
+	this->score = score;
+}
+
 // Callback of the W / UpArrow keys
 // Runs actions according to this key
 void Player::callback_WorUp()
@@ -282,4 +318,33 @@ void Player::slide()
 void Player::setWeapon(Weapon* weapon)
 {
 	this->weapon = weapon;
+}
+
+bool Player::onScreenLeft()
+{
+	float playerWidth = this->getBoundingBox().size.width;
+	float screenWidth = Director::getInstance()->getWinSize().width;
+	float playerXPos = this->getPositionX();
+
+	if (playerXPos - playerWidth/2 <=0)
+	{
+		return false;
+	}
+	
+
+	return true;
+}
+
+bool Player::onScreenRight()
+{
+	float playerWidth = this->getBoundingBox().size.width;
+	float screenWidth = Director::getInstance()->getWinSize().width;
+	float playerXPos = this->getPositionX();
+
+	if (playerXPos + playerWidth / 2 >= screenWidth)
+	{
+		return false;
+	}
+
+	return true;
 }
