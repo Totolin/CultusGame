@@ -16,11 +16,18 @@ void GameLevel::setBoss(Boss* levelBoss)
 void GameLevel::setBackground(ParallaxBackground* levelBackground)
 {
 	this->levelBackground = levelBackground;
+	this->addChild(levelBackground);
 }
 
 void GameLevel::setPlayer(Player* mainCharacter)
 {
 	this->mainCharacter = mainCharacter;
+	this->addChild(mainCharacter);
+}
+
+void GameLevel::setDistanceToBoss(long long distance)
+{
+	this->distance = distance;
 }
 
 void GameLevel::setAudioEngine(CocosDenshion::SimpleAudioEngine* audioEngine)
@@ -42,6 +49,12 @@ GameLevel* GameLevel::create()
 {
 	GameLevel* gameLevel = new GameLevel();
 	gameLevel->scheduleUpdate();
+
+	Label* scoreLabel = Label::createWithTTF("Score: 0", "font.ttf", 15);
+	scoreLabel->setPosition(70, Director::getInstance()->getWinSize().height - 20);
+	gameLevel->setScoreLabel(scoreLabel);
+
+
 	return gameLevel;
 }
 
@@ -51,4 +64,28 @@ void GameLevel::update(float delta)
 	{
 		objectFactories.at(i)->createObject();
 	}
+
+
+	if (this->distance == this->mainCharacter->getDistanceTravelled())
+	{
+		this->levelBackground->slowlyStop();
+		this->mainCharacter->setBossMode(true);
+	}
+
+	updateScore();
+	
+
+}
+
+void GameLevel::updateScore()
+{
+	int score = mainCharacter->getScore();
+
+	this->scoreLabel->setString("Score: " + to_string(score));
+}
+
+void GameLevel::setScoreLabel(Label* label)
+{
+	this->scoreLabel = label;
+	this->addChild(label,100);
 }
