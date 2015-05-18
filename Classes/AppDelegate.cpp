@@ -4,6 +4,7 @@
 #include "ParallaxBackground.h"
 #include "ResourceLoader.h"
 #include "GameValues.h"
+#include "proj.win32\IntermediaryScene.h"
 
 USING_NS_CC;
 
@@ -58,14 +59,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create music
 	CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
-	audioEngine->playBackgroundMusic("darude.mp3", true);
+	//audioEngine->playBackgroundMusic("darude.mp3", true);
 
-	firstLevel->setBackground(bck);
+	//firstLevel->setBackground(bck);
 	firstLevel->setPlayer(hero);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->setDistanceToBoss(200);
 
-	director->runWithScene(firstLevel);
+	auto startScene = IntermediaryScene::create(IntermediaryScene::CREDITS);
+	startScene->setBackground(bck);
+
+	auto dummy = DummyPlayer::create();
+	dummy->setPosition(Vec2(width / 2, 130));
+	startScene->setPlayer(dummy);
+
+	director->runWithScene(startScene);
 	return true;
 }
 

@@ -20,7 +20,6 @@ void Player::setBossMode(bool b)
 	this->bossMode = b;
 }
 
-
 // Creates an instance of Player
 // @param png - The path to the PNG representation of the sprite
 // @param plist - The path to the PLIST representation of the sprite
@@ -120,7 +119,6 @@ void Player::update(float delta)
 	distanceTravelled++;
 	score++;
 
-
 	if (this->currentAction != Action::RUNNING && this->getPosition().y == this->groundLevel)
 	{
 		// Get resource loader instance
@@ -152,7 +150,6 @@ void Player::update(float delta)
 
 	// Update it's weapon
 	this->weapon->update();
-
 }
 
 // Checks if a key is pressed
@@ -326,11 +323,10 @@ bool Player::onScreenLeft()
 	float screenWidth = Director::getInstance()->getWinSize().width;
 	float playerXPos = this->getPositionX();
 
-	if (playerXPos - playerWidth/2 <=0)
+	if (playerXPos - playerWidth / 2 <= 0)
 	{
 		return false;
 	}
-	
 
 	return true;
 }

@@ -13,7 +13,7 @@ public:
 
 	enum Action
 	{
-		JUMP_START = 0, JUMPING = 1, DOUBLE_JUMPING = 2, SLIDING = 3, RUNNING = 4
+		JUMP_START = 0, JUMPING = 1, DOUBLE_JUMPING = 2, SLIDING = 3, RUNNING = 4, WALKING = 5
 	};
 
 	Player();
