@@ -32,15 +32,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto firstLevel = GameLevel::create();
 
 	// Create a background
-	ParallaxBackground* bck = new ParallaxBackground();
+	ParallaxBackground* bckFirstLevel = new ParallaxBackground();
 
 	int height = director->getWinSize().height;
 	int width = director->getWinSize().width;
 
-	bck->addImage("night.png", Vec2(width / 2, 400), Vec2(0.05, 0));
-	bck->addImage("city.png", Vec2(width / 2, 348), Vec2(0.3, 0));
-	bck->addImage("street.png", Vec2(width / 2, 89), Vec2(1.9, 0));
-	bck->scheduleUpdate();
+	bckFirstLevel->addImage("night.png", Vec2(width / 2, 400), Vec2(0.05, 0));
+	bckFirstLevel->addImage("city.png", Vec2(width / 2, 348), Vec2(0.3, 0));
+	bckFirstLevel->addImage("street.png", Vec2(width / 2, 89), Vec2(1.9, 0));
+	bckFirstLevel->scheduleUpdate();
 
 	// Create animations and bullets
 	ResourceLoader resLoader = ResourceLoader::getInstance();
@@ -62,20 +62,28 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
 	//audioEngine->playBackgroundMusic("darude.mp3", true);
 
-	//firstLevel->setBackground(bck);
+	firstLevel->setBackground(bckFirstLevel);
 	firstLevel->setPlayer(hero);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->setDistanceToBoss(200);
 
+	Director::getInstance()->pushScene(firstLevel);
+
+	ParallaxBackground* bckMenu = new ParallaxBackground();
+	bckMenu->addImage("night.png", Vec2(width / 2, 400), Vec2(0.05, 0));
+	bckMenu->addImage("city.png", Vec2(width / 2, 348), Vec2(0.3, 0));
+	bckMenu->addImage("street.png", Vec2(width / 2, 89), Vec2(1.9, 0));
+	bckMenu->scheduleUpdate();
+
 	auto startScene = IntermediaryScene::create(IntermediaryScene::MENU);
-	startScene->setBackground(bck);
+	startScene->setBackground(bckMenu);
 
 	auto dummy = DummyPlayer::create();
 	dummy->setPosition(Vec2(width / 2, 130));
 	startScene->setPlayer(dummy);
 
 	Label* playButtonLabel = Label::createWithTTF("Play", "font.ttf", 35);
-	MenuItem* playButton = MenuItemLabel::create(playButtonLabel, [&](Ref* sender){log("Clicked play"); });
+	MenuItem* playButton = MenuItemLabel::create(playButtonLabel, [&](Ref* sender){playButtonCallback(); });
 
 	Label* optionsButtonLabel = Label::createWithTTF("Options", "font.ttf", 35);
 	MenuItem* optionsButton = MenuItemLabel::create(optionsButtonLabel);
@@ -98,4 +106,9 @@ void AppDelegate::applicationDidEnterBackground() {
 
 void AppDelegate::applicationWillEnterForeground() {
 	Director::getInstance()->startAnimation();
+}
+
+void AppDelegate::playButtonCallback()
+{
+	Director::getInstance()->popScene();
 }

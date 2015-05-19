@@ -12,4 +12,5 @@ public:
 	virtual bool applicationDidFinishLaunching();
 	virtual void applicationDidEnterBackground();
 	virtual void applicationWillEnterForeground();
+	void playButtonCallback();
 };
