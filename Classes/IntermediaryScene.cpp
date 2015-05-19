@@ -13,7 +13,6 @@ IntermediaryScene* IntermediaryScene::create(Type type)
 	IntermediaryScene* intScene = new IntermediaryScene();
 	intScene->setType(type);
 	intScene->scheduleUpdate();
-
 	return intScene;
 }
 
@@ -34,7 +33,7 @@ void IntermediaryScene::addCreditsText(string text)
 
 void IntermediaryScene::addMenuItem(MenuItem* item)
 {
-	this->menuItems.push_back(item);
+	this->menuItems.pushBack(item);
 }
 
 void IntermediaryScene::setBackground(ParallaxBackground* levelBackground)
@@ -70,4 +69,19 @@ void IntermediaryScene::update(float delta)
 			//TODO Change Scene
 		}
 	}
+}
+
+bool IntermediaryScene::createMenu()
+{
+	if (this->type == Type::CREDITS) { return false; }
+
+	float width = Director::getInstance()->getWinSize().width;
+	float height = Director::getInstance()->getWinSize().height;
+	Vec2 menuPosition(width / 2, height / 1.3);
+
+	this->menu = Menu::createWithArray(menuItems);
+	this->menu->setPosition(menuPosition);
+	this->menu->alignItemsHorizontallyWithPadding(50);
+	this->addChild(menu);
+	return true;
 }

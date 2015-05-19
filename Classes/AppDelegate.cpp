@@ -4,7 +4,8 @@
 #include "ParallaxBackground.h"
 #include "ResourceLoader.h"
 #include "GameValues.h"
-#include "proj.win32\IntermediaryScene.h"
+#include "IntermediaryScene.h"
+#include <iostream>
 
 USING_NS_CC;
 
@@ -66,12 +67,26 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->setDistanceToBoss(200);
 
-	auto startScene = IntermediaryScene::create(IntermediaryScene::CREDITS);
+	auto startScene = IntermediaryScene::create(IntermediaryScene::MENU);
 	startScene->setBackground(bck);
 
 	auto dummy = DummyPlayer::create();
 	dummy->setPosition(Vec2(width / 2, 130));
 	startScene->setPlayer(dummy);
+
+	Label* playButtonLabel = Label::createWithTTF("Play", "font.ttf", 35);
+	MenuItem* playButton = MenuItemLabel::create(playButtonLabel, [&](Ref* sender){log("Clicked play"); });
+
+	Label* optionsButtonLabel = Label::createWithTTF("Options", "font.ttf", 35);
+	MenuItem* optionsButton = MenuItemLabel::create(optionsButtonLabel);
+
+	Label* exitButtonLabel = Label::createWithTTF("Exit", "font.ttf", 35);
+	MenuItem* exitButton = MenuItemLabel::create(exitButtonLabel, [&](Ref* sender){Director::getInstance()->end(); });
+
+	startScene->addMenuItem(playButton);
+	startScene->addMenuItem(optionsButton);
+	startScene->addMenuItem(exitButton);
+	startScene->createMenu();
 
 	director->runWithScene(startScene);
 	return true;
