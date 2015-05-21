@@ -71,8 +71,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	ParallaxBackground* bckMenu = new ParallaxBackground();
 	bckMenu->addImage("night.png", Vec2(width / 2, 400), Vec2(0.05, 0));
-	bckMenu->addImage("city.png", Vec2(width / 2, 348), Vec2(0.3, 0));
-	bckMenu->addImage("street.png", Vec2(width / 2, 89), Vec2(1.9, 0));
+	bckMenu->addImage("city.png", Vec2(width / 2, 400), Vec2(0.3, 0));
+	bckMenu->addImage("street.png", Vec2(width / 2, 200), Vec2(1.0, 0));
 	bckMenu->scheduleUpdate();
 
 	auto startScene = IntermediaryScene::create(IntermediaryScene::MENU);

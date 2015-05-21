@@ -7,6 +7,8 @@
 ParallaxBackground::ParallaxBackground()
 {
 	zOrder = DEFAULT_Z_ORDER;
+	bossMode = false;
+	slowDownSpeed = DEFAULT_SCROLL_SPEED;
 }
 
 // Add an image (creating a ParallaxSprite) to be contained. Will run in the same time
@@ -34,14 +36,31 @@ void ParallaxBackground::update(float delta)
 {
 	Vector<Node*> sprites = this->getChildren();
 
+	float pixelsMoved;
+
+	if (bossMode)
+	{
+		pixelsMoved = slowDownSpeed * delta;
+		if (slowDownSpeed - 10 > 0)
+		{
+			slowDownSpeed -= 3;
+		}
+		else
+		{
+			slowDownSpeed = 0;
+		}
+	}
+	else
+	{
+		pixelsMoved = DEFAULT_SCROLL_SPEED * delta;
+	}
+
 	for (int i = 0; i < sprites.size(); i += 2)
 	{
 		ParallaxSprite* child1 = dynamic_cast<ParallaxSprite*>(sprites.at(i));
 		ParallaxSprite* child2 = dynamic_cast<ParallaxSprite*>(sprites.at(i + 1));
 		Vec2 position1 = child1->getPosition();
 		Vec2 position2 = child2->getPosition();
-
-		float pixelsMoved = DEFAULT_SCROLL_SPEED * delta;
 
 		position1.x -= child1->getVelocityFactor().x * pixelsMoved;
 		position2.x -= child2->getVelocityFactor().x * pixelsMoved;
@@ -57,13 +76,8 @@ void ParallaxBackground::update(float delta)
 	}
 }
 
-
 void ParallaxBackground::slowlyStop()
 {
-	Vector<Node*> sprites = this->getChildren();
-	for (Node* node : sprites)
-	{
-		ParallaxSprite* child =  dynamic_cast<ParallaxSprite*>(node);
-		child->setVelocityFactor(Vec2(0,0));
-	}
+	bossMode = true;
+	slowDownSpeed = DEFAULT_SCROLL_SPEED;
 }
