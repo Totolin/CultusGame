@@ -19,6 +19,8 @@ public:
 	~GameLevel();
 
 	static GameLevel* create();
+	static GameLevel* createWithPhysics();
+
 	void setBoss(Boss* levelBoss);
 	void setBackground(ParallaxBackground* levelBackground);
 	void setPlayer(Player* mainCharacter);

@@ -64,6 +64,13 @@ Player* Player::create()
 		Weapon* weapon = Weapon::create();
 		playerSprite->setWeapon(weapon);
 
+		//Create physical body
+		auto spriteBody = PhysicsBody::createBox(playerSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
+		spriteBody->setAngularVelocityLimit(0.0f);
+		spriteBody->setMass(1);
+		playerSprite->setPhysicsBody(spriteBody);
+
+
 		// Return
 		return playerSprite;
 	}
@@ -119,7 +126,9 @@ void Player::update(float delta)
 	distanceTravelled++;
 	score++;
 
-	if (this->currentAction != Action::RUNNING && this->getPosition().y == this->groundLevel)
+	if (this->currentAction != Action::RUNNING 
+		&& this->getPhysicsBody()->getVelocity().y > -1.0f
+		&& this->getPhysicsBody()->getVelocity().y < 1.0f)
 	{
 		// Get resource loader instance
 		ResourceLoader resLoader = ResourceLoader::getInstance();
@@ -136,16 +145,14 @@ void Player::update(float delta)
 		this->currentAction = Action::RUNNING;
 	}
 
-	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A)) && bossMode)
+	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A)) )
 	{
-		if (onScreenLeft())
-			this->moveX(-PLAYER_MOVE_LEFT_PIXELS);
+		this->getPhysicsBody()->applyImpulse(Vect(-25, 0));
 	}
 
-	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D)) && bossMode)
+	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D)))
 	{
-		if (onScreenRight())
-			this->moveX(PLAYER_MOVE_RIGHT_PIXELS);
+		this->getPhysicsBody()->applyImpulse(Vect(25, 0));
 	}
 
 	// Update it's weapon
@@ -196,12 +203,6 @@ void Player::jump()
 	// Set current action to JUMPING
 	this->currentAction = Action::JUMPING;
 
-	// Save position
-	Vec2 currentPosition = this->getPosition();
-
-	// Set a decayed position to prevent RUNNING/JUMPING collisions
-	Vec2 decayedPosition(currentPosition.x, currentPosition.y + 1);
-
 	//Stop running animation and replace the sprite png to the jumping one
 	this->getActionManager()->removeActionByTag(PLAYER_ANIMATION_RUNNING, this);
 
@@ -214,17 +215,9 @@ void Player::jump()
 	Vector<SpriteFrame*> runningAnimation = resLoader.getAnimation(PLAYER_ANIMATION_RUNNING);
 	this->setDisplayFrame(runningAnimation.at(1));
 
-	// Create smooth jump sequence
-	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 200));
-	auto moveUpSlow = MoveBy::create(0.1, Vec2(0, 20));
-	auto moveDownSlow = MoveBy::create(0.1, Vec2(0, -20));
-	auto moveDownFast = MoveBy::create(0.3, Vec2(0, -201));
-	auto seq = Sequence::create(moveUpFast, moveUpSlow, moveDownSlow, moveDownFast, nullptr);
+	//JUMP
+	this->getPhysicsBody()->applyImpulse(Vect(0, 500));
 
-	// Set tag and run
-	seq->setTag(currentAction);
-	this->runAction(seq);
-	this->setPosition(decayedPosition);
 }
 
 // DoubleJump action of the Player
@@ -236,34 +229,10 @@ void Player::doubleJump()
 	// Set action to DOUBLE_JUMPING
 	this->currentAction = Action::DOUBLE_JUMPING;
 
-	// Save position
-	Vec2 currentPosition = this->getPosition();
-
-	// Create a roundUp position for landing on the ground
-	Vec2 roundUpPosition(currentPosition.x, (int)currentPosition.y);
-
-	// Set landing position
-	this->setPosition(roundUpPosition);
-	int landingPosition = (-1)*(150 + (roundUpPosition.y - groundLevel));
-
-	// Create smooth jump sequence
-	auto moveUpFast = MoveBy::create(0.3, Vec2(0, 150));
-	auto moveUpSlow = MoveBy::create(0.1, Vec2(0, 15));
-	auto moveDownSlow = MoveBy::create(0.1, Vec2(0, -15));
-	auto moveDownFast = MoveBy::create(0.3, Vec2(0, landingPosition));
-
-	// Add the sequence and run
-	auto seq = Sequence::create(moveUpFast, moveUpSlow, moveDownSlow, moveDownFast, nullptr);
-	seq->setTag(currentAction);
-	this->runAction(seq);
+	//JUMP AGAIN
+	this->getPhysicsBody()->applyImpulse(Vect(0, 300));
 }
 
-// Sets the ground level on which the player walks/runs
-// @param groundLevel - Float value of the Y axis position of the ground.
-void Player::setGroundLevel(float groundLevel)
-{
-	this->groundLevel = groundLevel;
-}
 
 void Player::setDistanceTravelled(long long dist)
 {
@@ -300,7 +269,6 @@ void Player::callback_WorUp()
 
 	if (this->currentAction == Action::JUMPING)
 	{
-		this->stopActionByTag(currentAction);
 		doubleJump();
 
 		return;
@@ -310,6 +278,8 @@ void Player::callback_WorUp()
 
 void Player::slide()
 {
+
+
 }
 
 void Player::setWeapon(Weapon* weapon)

@@ -10,7 +10,12 @@ InteractiveObjectFactory::InteractiveObjectFactory()
 {
 }
 
-InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bool isAnimated, bool canBeFiredAt /*= false*/, bool canHitPlayer /*= false*/)
+void InteractiveObjectFactory::setGravityAffected(bool gravityAffected)
+{
+	this->gravityAffected = gravityAffected;
+}
+
+InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bool isAnimated, bool canBeFiredAt /*= false*/, bool canHitPlayer /*= false*/, bool gravityAffected)
 {
 	InteractiveObjectFactory* factory = new InteractiveObjectFactory();
 
@@ -18,6 +23,8 @@ InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bo
 	factory->setCanHitPlayer(canHitPlayer);
 	factory->setResource(resourceIndex);
 	factory->setIsAnimated(isAnimated);
+	factory->setGravityAffected(gravityAffected);
+	factory->scheduleUpdate();
 
 	//Default speed
 	factory->setSpeed(Vec2(-10, 0));
@@ -27,6 +34,8 @@ InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bo
 
 	//Default position interval
 	factory->setPositionInterval(Vec2(0, 0));
+	
+
 
 	return factory;
 }
@@ -63,10 +72,28 @@ void InteractiveObjectFactory::createObject()
 		newObject->setCanBeFiredAt(canBeFiredAt);
 		newObject->setCanHitPlayer(canHitPlayer);
 		newObject->setPosition(Director::getInstance()->getWinSize().width + (newObject->boundingBox().size.width) / 2, randomYpos);
+		newObject->setGravityAffected(gravityAffected);
 
 		Director::getInstance()->getRunningScene()->addChild(newObject);
 		this->objects.push_back(newObject);
 	}
+}
+
+void InteractiveObjectFactory::update(float delta)
+{
+	if (objects.size() > 0)
+	{
+		Size objectSize = objects.at(0)->getBoundingBox().size;
+		Vec2 position = objects.at(0)->getPosition();
+
+		if (position.x + (objectSize.width / 2) <=0)
+		{
+			objects.at(0)->getParent()->removeChild(objects.at(0));
+			objects.erase(objects.begin());
+		}
+
+	}
+
 }
 
 void InteractiveObjectFactory::setIsAnimated(bool isAnimated)

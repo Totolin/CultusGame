@@ -21,7 +21,7 @@ public:
 	~Player();
 	void setBossMode(bool b);
 	static Player* create();
-	//void setPosition(Vec2 position);
+
 	void initOptions();
 
 	virtual void update(float delta) override;
@@ -33,7 +33,6 @@ public:
 	void jump();
 	void slide();
 	void doubleJump();
-	void setGroundLevel(float groundLevel);
 	void setDistanceTravelled(long long dist);
 	long long getDistanceTravelled();
 	int getScore();
@@ -41,7 +40,6 @@ public:
 private:
 	std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
-	float groundLevel;
 	Weapon* weapon;
 	void callback_WorUp();
 	void setWeapon(Weapon* weapon);

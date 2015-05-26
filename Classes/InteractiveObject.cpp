@@ -18,6 +18,8 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 	// Get resource loader instance
 	ResourceLoader resLoader = ResourceLoader::getInstance();
 
+
+
 	if (isAnimated)
 	{
 		// Get running animation
@@ -41,6 +43,14 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 			objectSprite->setScale(2);
 			objectSprite->scheduleUpdate();
 
+			if (objectSprite->getCanBeFireAt() || objectSprite->getCanHitPlayer())
+			{
+				auto spriteBody = PhysicsBody::createBox(objectSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
+				spriteBody->setGravityEnable(objectSprite->isGravityAffected());
+				objectSprite->setPhysicsBody(spriteBody);
+				
+			}
+
 			// Return
 			return objectSprite;
 		}
@@ -52,9 +62,20 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 			objectSprite->autorelease();
 			objectSprite->scheduleUpdate();
 
+			if (objectSprite->getCanBeFireAt() || objectSprite->getCanHitPlayer())
+			{
+				auto spriteBody = PhysicsBody::createBox(objectSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
+				bool affected = objectSprite->isGravityAffected();
+				spriteBody->setGravityEnable(objectSprite->isGravityAffected());
+				objectSprite->setPhysicsBody(spriteBody);
+			}
+
 			return objectSprite;
 		}
 	}
+
+	
+
 
 	CC_SAFE_DELETE(objectSprite);
 	return NULL;
@@ -73,6 +94,27 @@ void InteractiveObject::setCanBeFiredAt(bool canBeFiredAt)
 void InteractiveObject::setCanHitPlayer(bool canHitPlayer)
 {
 	this->canHitPlayer = canHitPlayer;
+}
+
+bool InteractiveObject::getCanBeFireAt()
+{
+	return canBeFiredAt;
+}
+
+bool InteractiveObject::getCanHitPlayer()
+{
+	return canHitPlayer;
+}
+
+void InteractiveObject::setGravityAffected(bool gravityAffected)
+{
+	this->getPhysicsBody()->setGravityEnable(gravityAffected);
+	this->gravityAffected = gravityAffected;
+}
+
+bool InteractiveObject::isGravityAffected()
+{
+	return gravityAffected;
 }
 
 void InteractiveObject::update(float delta)
