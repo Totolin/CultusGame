@@ -47,6 +47,8 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 			{
 				auto spriteBody = PhysicsBody::createBox(objectSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 				spriteBody->setGravityEnable(objectSprite->isGravityAffected());
+				spriteBody->setCollisionBitmask(OBJECT_COLLISION_BITMASK);
+				spriteBody->setContactTestBitmask(true);
 				objectSprite->setPhysicsBody(spriteBody);
 				
 			}

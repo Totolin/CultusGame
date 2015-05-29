@@ -85,7 +85,9 @@ GameLevel* GameLevel::create()
 	gameLevel->addChild(particle,534);
 
 
-
+	auto contactListener = EventListenerPhysicsContact::create();
+	contactListener->onContactBegin = CC_CALLBACK_1(GameLevel::onContactBegin, gameLevel);
+	gameLevel->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, gameLevel);
 
 
 	return gameLevel;
@@ -136,4 +138,18 @@ void GameLevel::setScoreLabel(Label* label)
 {
 	this->scoreLabel = label;
 	this->addChild(label,100);
+}
+
+bool GameLevel::onContactBegin(PhysicsContact& contact)
+{
+	PhysicsBody *a = contact.getShapeA()->getBody();
+	PhysicsBody *b = contact.getShapeB()->getBody();
+
+	// check if the bodies have collided
+	if ((OBJECT_COLLISION_BITMASK == a->getCollisionBitmask() && PLAYER_COLLISION_BITMASK == b->getCollisionBitmask()) || (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && OBJECT_COLLISION_BITMASK == b->getCollisionBitmask()))
+	{
+		CCLOG("COLLISION HAS OCCURED");
+	}
+
+	return true;
 }

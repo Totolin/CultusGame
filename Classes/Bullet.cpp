@@ -9,9 +9,15 @@ Bullet* Bullet::create(int bulletFileIndex)
 	{
 		bullet->autorelease();
 		bullet->scheduleUpdate();
+		auto spriteBody = PhysicsBody::createBox(bullet->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
+		spriteBody->setGravityEnable(false);
+		bullet->setPhysicsBody(spriteBody);
 
 		return bullet;
 	}
+
+
+
 
 	CC_SAFE_DELETE(bullet);
 	return NULL;
