@@ -3,3 +3,5 @@ CMakeLsd
 CMakeLists.txt
 cocos2d/
 proj.win32/
+Resources/Thumbs.db
+Resources/old resources/Thumbs.db

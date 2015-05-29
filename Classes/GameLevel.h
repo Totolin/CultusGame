@@ -31,8 +31,9 @@ public:
 	virtual void update(float delta) override;
 	void updateScore();
 	void setScoreLabel(Label* label);
-
 private:
+	bool onContactBegin(PhysicsContact &contact);
+
 	Boss* levelBoss;
 	Player* mainCharacter;
 	ParallaxBackground* levelBackground;

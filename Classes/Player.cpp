@@ -68,6 +68,8 @@ Player* Player::create()
 		auto spriteBody = PhysicsBody::createBox(playerSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 		spriteBody->setAngularVelocityLimit(0.0f);
 		spriteBody->setMass(1);
+		spriteBody->setCollisionBitmask(PLAYER_COLLISION_BITMASK);
+		spriteBody->setContactTestBitmask(true);
 		playerSprite->setPhysicsBody(spriteBody);
 
 
