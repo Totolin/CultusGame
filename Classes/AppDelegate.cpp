@@ -61,15 +61,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	hero->setTag(PLAYER_TAG);
 
 	// Create Interactive object factory
-	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX, false, true, false, true);
+	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,false, MAILBOX_COLLISION_BITMASK,true, false, true);
 	mailboxFactory->setPositionInterval(Vec2(0, 100));
 
-	InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, false, true, false, false);
+	InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, false,ROCKET_COLLISION_BITMASK,true, false, false);
 	rocketFactory->setPositionInterval(Vec2(200, 700));
 
 	firstLevel->setBackground(bckFirstLevel);
 	firstLevel->setPlayer(hero);
-	firstLevel->setDistanceToBoss(20000);
+	firstLevel->setDistanceToBoss(200);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->addObjectFactory(rocketFactory);
 

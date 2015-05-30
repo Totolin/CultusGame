@@ -10,7 +10,7 @@ InteractiveObject::~InteractiveObject()
 {
 }
 
-InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
+InteractiveObject* InteractiveObject::create(int resourceIndex, int maskValue, bool isAnimated)
 {
 	// Create an instance of Player
 	InteractiveObject* objectSprite = new InteractiveObject();
@@ -18,7 +18,7 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 	// Get resource loader instance
 	ResourceLoader resLoader = ResourceLoader::getInstance();
 
-
+	objectSprite->hasBeenHit = false;
 
 	if (isAnimated)
 	{
@@ -47,8 +47,10 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 			{
 				auto spriteBody = PhysicsBody::createBox(objectSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 				spriteBody->setGravityEnable(objectSprite->isGravityAffected());
-				spriteBody->setCollisionBitmask(OBJECT_COLLISION_BITMASK);
+			//	spriteBody->setCategoryBitmask(1);
+				spriteBody->setCollisionBitmask(maskValue);
 				spriteBody->setContactTestBitmask(true);
+				spriteBody->setMass(1);
 				objectSprite->setPhysicsBody(spriteBody);
 				
 			}
@@ -69,6 +71,10 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, bool isAnimated)
 				auto spriteBody = PhysicsBody::createBox(objectSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 				bool affected = objectSprite->isGravityAffected();
 				spriteBody->setGravityEnable(objectSprite->isGravityAffected());
+			//	spriteBody->setCategoryBitmask(1);
+				spriteBody->setCollisionBitmask(maskValue);
+				spriteBody->setMass(1);
+				spriteBody->setContactTestBitmask(true);
 				objectSprite->setPhysicsBody(spriteBody);
 			}
 
@@ -121,8 +127,16 @@ bool InteractiveObject::isGravityAffected()
 
 void InteractiveObject::update(float delta)
 {
+	if (hasBeenHit) return;
 	//TODO: Replace vec2 with int, put in Values if necessary
 	Vec2 loc = this->getPosition();
 	loc.x += this->speed.x;
 	this->setPosition(loc);
+}
+
+void InteractiveObject::isHit()
+{
+	this->hasBeenHit = true;
+	this->getPhysicsBody()->applyImpulse(Vect(500,500));
+	this->getPhysicsBody()->setAngularVelocity(10);
 }

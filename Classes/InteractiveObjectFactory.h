@@ -9,7 +9,7 @@ using namespace std;
 class InteractiveObjectFactory: public Node
 {
 public:
-	static InteractiveObjectFactory* create(int resourceIndex, bool isAnimated, bool canBeFiredAt = false, bool canHitPlayer = false, bool gravityAffected = true);
+	static InteractiveObjectFactory* create(int resourceIndex, bool isAnimated, int maksValue, bool canBeFiredAt = false, bool canHitPlayer = false, bool gravityAffected = true);
 	void setSpeed(Vec2 speed);
 	void setSpawnFrequency(int frequency);
 	void setGravityAffected(bool gravityAffected);
@@ -26,12 +26,12 @@ public:
 	void update(float delta) override;
 private:
 	int resourceIndex;
-
+	int maskValue;
 	bool isAnimated;
 	bool canBeFiredAt;
 	bool canHitPlayer;
 	bool gravityAffected;
-
+	
 	Vec2 speed;
 	Vec2 spawnInterval;
 

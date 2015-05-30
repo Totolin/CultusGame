@@ -15,10 +15,10 @@ void InteractiveObjectFactory::setGravityAffected(bool gravityAffected)
 	this->gravityAffected = gravityAffected;
 }
 
-InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bool isAnimated, bool canBeFiredAt /*= false*/, bool canHitPlayer /*= false*/, bool gravityAffected)
+InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bool isAnimated, int maskValue, bool canBeFiredAt /*= false*/, bool canHitPlayer /*= false*/, bool gravityAffected)
 {
 	InteractiveObjectFactory* factory = new InteractiveObjectFactory();
-
+	factory->maskValue = maskValue;
 	factory->setCanBeFiredAt(canBeFiredAt);
 	factory->setCanHitPlayer(canHitPlayer);
 	factory->setResource(resourceIndex);
@@ -65,7 +65,7 @@ void InteractiveObjectFactory::createObject()
 		unsigned int randomYpos = rand() % (int)((spawnInterval.y - spawnInterval.x) + spawnInterval.x);
 
 		// Create object
-		InteractiveObject* newObject = InteractiveObject::create(resourceIndex, isAnimated);
+		InteractiveObject* newObject = InteractiveObject::create(resourceIndex,maskValue, isAnimated);
 
 		// Set members
 		newObject->setSpeed(speed);

@@ -146,9 +146,28 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 	PhysicsBody *b = contact.getShapeB()->getBody();
 
 	// check if the bodies have collided
-	if ((OBJECT_COLLISION_BITMASK == a->getCollisionBitmask() && PLAYER_COLLISION_BITMASK == b->getCollisionBitmask()) || (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && OBJECT_COLLISION_BITMASK == b->getCollisionBitmask()))
+	
+	if ((ROCKET_COLLISION_BITMASK == a->getCollisionBitmask() && PLAYER_COLLISION_BITMASK == b->getCollisionBitmask()) || (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == b->getCollisionBitmask()))
 	{
-		CCLOG("COLLISION HAS OCCURED");
+		CCLOG("COLLISION HAS OCCURED WITH PLAYER");
+	}
+
+	if ((ROCKET_COLLISION_BITMASK == a->getCollisionBitmask() && BULLET_COLLISION_BITMASK == b->getCollisionBitmask()) || (BULLET_COLLISION_BITMASK == a->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == b->getCollisionBitmask()))
+	{
+		CCLOG("COLLISION HAS OCCURED WITH BULLET");
+	}
+	
+	if ((MAILBOX_COLLISION_BITMASK == a->getCollisionBitmask() && BULLET_COLLISION_BITMASK == b->getCollisionBitmask()))
+	{
+		InteractiveObject* object = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+		object->isHit();
+		CCLOG("COLLISION MAILBOX = A");
+	}
+	else if ((MAILBOX_COLLISION_BITMASK == b->getCollisionBitmask() && BULLET_COLLISION_BITMASK == a->getCollisionBitmask()))
+	{
+		InteractiveObject* object = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+		object->isHit();
+		CCLOG("COLLISION MAILBOX = B");
 	}
 
 	return true;

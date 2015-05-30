@@ -68,6 +68,7 @@ Player* Player::create()
 		auto spriteBody = PhysicsBody::createBox(playerSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 		spriteBody->setAngularVelocityLimit(0.0f);
 		spriteBody->setMass(1);
+	//	spriteBody->setCategoryBitmask(1);
 		spriteBody->setCollisionBitmask(PLAYER_COLLISION_BITMASK);
 		spriteBody->setContactTestBitmask(true);
 		playerSprite->setPhysicsBody(spriteBody);
@@ -147,12 +148,12 @@ void Player::update(float delta)
 		this->currentAction = Action::RUNNING;
 	}
 
-	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A)) )
+	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A)) &&(bossMode))
 	{
 		this->getPhysicsBody()->applyImpulse(Vect(-25, 0));
 	}
 
-	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D)))
+	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D)) &&(bossMode))
 	{
 		this->getPhysicsBody()->applyImpulse(Vect(25, 0));
 	}

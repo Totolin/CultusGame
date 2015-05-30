@@ -7,7 +7,7 @@ USING_NS_CC;
 class InteractiveObject : public Sprite
 {
 public:
-	static InteractiveObject* create(int resourceIndex, bool isAnimated = false);
+	static InteractiveObject* create(int resourceIndex, int maskValue, bool isAnimated = false);
 	void setSpeed(Vec2 speed);
 
 	void setCanBeFiredAt(bool canBeFiredAt);
@@ -15,7 +15,7 @@ public:
 	
 	bool getCanBeFireAt();
 	bool getCanHitPlayer();
-
+	void isHit();
 	virtual void update(float delta) override;
 	void setGravityAffected(bool dynamic);
 	bool isGravityAffected();
@@ -25,6 +25,7 @@ private:
 
 	Vec2 speed;
 	bool gravityAffected;
+	bool hasBeenHit;
 	InteractiveObject();
 	~InteractiveObject();
 };
