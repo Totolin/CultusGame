@@ -23,7 +23,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("Hello World");
-		glview->setFrameSize(1600, 800);
+		glview->setFrameSize(800, 600);
 		director->setOpenGLView(glview);
 	}
 
@@ -72,8 +72,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	firstLevel->setDistanceToBoss(200);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->addObjectFactory(rocketFactory);
-
-
 
 	director->runWithScene(firstLevel);
 

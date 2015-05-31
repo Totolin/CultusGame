@@ -1,4 +1,5 @@
 #include "GameLevel.h"
+#include "UIBar.h"
 
 GameLevel::GameLevel()
 {
@@ -55,9 +56,9 @@ GameLevel* GameLevel::create()
 	gameLevel->scheduleUpdate();
 
 
-	Label* scoreLabel = Label::createWithTTF("Score: 0", "font.ttf", 15);
-	scoreLabel->setPosition(70, Director::getInstance()->getWinSize().height - 20);
-	gameLevel->setScoreLabel(scoreLabel);
+	gameLevel->scoreLabel = Label::createWithTTF("Score: 0", "font.ttf", 15);
+	gameLevel->scoreLabel->setPosition(70, Director::getInstance()->getWinSize().height - 20);
+	gameLevel->setScoreLabel(gameLevel->scoreLabel);
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -72,21 +73,21 @@ GameLevel* GameLevel::create()
 	edgeNode->setPhysicsBody(edgeBody);
 	gameLevel->addChild(edgeNode);
 
-	ParticleSystemQuad* particle = ParticleSystemQuad::create("particle.plist");
-	particle->setPosition(0, 300);
-	auto spriteBody = PhysicsBody::createBox(particle->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
-	spriteBody->setGravityEnable(false);
-	spriteBody->applyImpulse(Vect(25, 0));
-	particle->setPhysicsBody(spriteBody);
-
-
-	gameLevel->addChild(particle,534);
-
+	gameLevel->loadingBar = LoadingBar::create("loadingbar.png");
+	gameLevel->loadingBar->setDirection(LoadingBar::Direction::RIGHT);
+	gameLevel->loadingBar->setPercent(100);
+	gameLevel->loadingBar->setColor(Color3B::GREEN);
+	gameLevel->loadingBar->setPosition(Vec2(120, Director::getInstance()->getWinSize().height - 50));
+	gameLevel->addChild(gameLevel->loadingBar,500);
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameLevel::onContactBegin, gameLevel);
 	gameLevel->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, gameLevel);
 
+
+	UIBar* bar = UIBar::create("Geo");
+	bar->setPosition(500, 200);
+	gameLevel->addChild(bar, 5000);
 
 	return gameLevel;
 }

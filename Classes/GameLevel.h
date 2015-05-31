@@ -8,9 +8,11 @@
 #include "InteractiveObjectFactory.h"
 #include <vector>
 #include <string>
+#include <cocos2d/cocos/ui/UILoadingBar.h>
 
 USING_NS_CC;
 using namespace std;
+using namespace ui;
 
 class GameLevel : public Scene
 {
@@ -42,4 +44,5 @@ private:
 	string backgroundMusic;
 	long long distance;
 	Label* scoreLabel;
+	LoadingBar* loadingBar;
 };
