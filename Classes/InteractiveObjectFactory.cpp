@@ -71,7 +71,7 @@ void InteractiveObjectFactory::createObject()
 		newObject->setSpeed(speed);
 		newObject->setCanBeFiredAt(canBeFiredAt);
 		newObject->setCanHitPlayer(canHitPlayer);
-		newObject->setPosition(Director::getInstance()->getWinSize().width + (newObject->boundingBox().size.width) / 2, randomYpos);
+		newObject->setPosition(Director::getInstance()->getWinSize().width + (newObject->boundingBox().size.width) / 2 + 20, randomYpos);
 		newObject->setGravityAffected(gravityAffected);
 
 		Director::getInstance()->getRunningScene()->addChild(newObject);
@@ -86,14 +86,20 @@ void InteractiveObjectFactory::update(float delta)
 		Size objectSize = objects.at(0)->getBoundingBox().size;
 		Vec2 position = objects.at(0)->getPosition();
 
-		if (position.x + (objectSize.width / 2) <=0)
+		if (position.x + (objectSize.width / 2) <=0 || position.y < 0)
 		{
 			objects.at(0)->getParent()->removeChild(objects.at(0));
 			objects.erase(objects.begin());
+
+			if (position.y < 0) {
+				CCLOG("Object fell down");
+			}
+			else
+			{
+				CCLOG("Object exit screen (Left Side)");
+			}
 		}
-
 	}
-
 }
 
 void InteractiveObjectFactory::setIsAnimated(bool isAnimated)

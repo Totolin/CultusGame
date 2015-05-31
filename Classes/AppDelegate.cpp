@@ -23,7 +23,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("Hello World");
-		glview->setFrameSize(800, 600);
+		glview->setFrameSize(1600, 800);
 		director->setOpenGLView(glview);
 	}
 
@@ -42,13 +42,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	// Create a background
 	ParallaxBackground* bckFirstLevel = new ParallaxBackground();
 
-	int height = director->getWinSize().height;
-	int width = director->getWinSize().width;
+	float height = director->getWinSize().height;
+	float width = director->getWinSize().width;
 
 	// Create animations and bullets
-	bckFirstLevel->addImage("night.png", Vec2(width / 2, 400), Vec2(0.05, 0));
-	bckFirstLevel->addImage("city.png", Vec2(width / 2, 400), Vec2(0.3, 0));
-	bckFirstLevel->addImage("street.png", Vec2(width / 2, 200), Vec2(1.0, 0));
+	bckFirstLevel->addImage("night.png", Vec2(width / 2,width / 2), Vec2(0.05, 0));
+	bckFirstLevel->addImage("city.png", Vec2(width / 2, width / 2), Vec2(0.3, 0));
+	bckFirstLevel->addImage("street.png", Vec2(width / 2,width / 4), Vec2(1.0, 0));
 	bckFirstLevel->scheduleUpdate();
 
 	// Create music
@@ -62,7 +62,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create Interactive object factory
 	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,false, MAILBOX_COLLISION_BITMASK,true, false, true);
-	mailboxFactory->setPositionInterval(Vec2(0, 100));
+	mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX + 10, height / GROUND_PERCENTAGE_FOR_BOX + 100));
 
 	InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, false,ROCKET_COLLISION_BITMASK,true, false, false);
 	rocketFactory->setPositionInterval(Vec2(200, 700));

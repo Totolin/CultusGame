@@ -137,6 +137,6 @@ void InteractiveObject::update(float delta)
 void InteractiveObject::isHit()
 {
 	this->hasBeenHit = true;
-	this->getPhysicsBody()->applyImpulse(Vect(500,500));
-	this->getPhysicsBody()->setAngularVelocity(10);
+	this->getPhysicsBody()->applyImpulse(Vect(800,500));
+	this->getPhysicsBody()->setAngularVelocity(20);
 }

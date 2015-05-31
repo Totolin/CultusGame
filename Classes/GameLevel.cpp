@@ -63,16 +63,14 @@ GameLevel* GameLevel::create()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	Size finalSize;
-	finalSize.width = visibleSize.width * 2;
+	finalSize.width = visibleSize.width + 20;
 	finalSize.height = visibleSize.height / GROUND_PERCENTAGE_FOR_BOX;
 
 	PhysicsBody* edgeBody = PhysicsBody::createEdgeBox(finalSize, PhysicsMaterial(0.1f, 0.0f, 0.5f), 3);
 	Node* edgeNode = Node::create();
-	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, origin.y));
+	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x + 20, origin.y));
 	edgeNode->setPhysicsBody(edgeBody);
 	gameLevel->addChild(edgeNode);
-
-
 
 	ParticleSystemQuad* particle = ParticleSystemQuad::create("particle.plist");
 	particle->setPosition(0, 300);
