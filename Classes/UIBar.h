@@ -15,12 +15,11 @@ public:
 	void addPercent(float percentage);
 	void substractPercent(float percentage);
 	float getPercent();
-
+	
 	void resetScore();
 	void addScore(int score);
 	int getScore();
-
-	void update(float delta) override;
+	void setScore(int score);
 private:
 	Label* nameLabel;
 	Label* scoreLabel;

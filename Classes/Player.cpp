@@ -128,7 +128,6 @@ void Player::initOptions()
 void Player::update(float delta)
 {
 	distanceTravelled++;
-	score++;
 
 	if (this->currentAction != Action::RUNNING 
 		&& this->getPhysicsBody()->getVelocity().y > -1.0f
@@ -317,4 +316,19 @@ bool Player::onScreenRight()
 	}
 
 	return true;
+}
+
+int Player::getHealth()
+{
+	return this->HP;
+}
+
+void Player::isHit()
+{
+	this->HP -= 10;
+}
+
+void Player::addScore(int toAdd)
+{
+	this->score += toAdd;
 }

@@ -39,5 +39,5 @@ private:
 	int frequency;
 	~InteractiveObjectFactory();
 	InteractiveObjectFactory();
-	vector<InteractiveObject*> objects;
+	Vector<InteractiveObject*> objects;
 };

@@ -15,6 +15,7 @@ Bullet* Bullet::create(int bulletFileIndex)
 		spriteBody->setCollisionBitmask(BULLET_COLLISION_BITMASK);
 		spriteBody->setContactTestBitmask(true);
 		bullet->setPhysicsBody(spriteBody);
+		bullet->hit = false;
 
 		return bullet;
 	}
@@ -39,4 +40,9 @@ void Bullet::update(float delta)
 	//
 	// 	if (this->getPositionX() - bulletWidth / 2 >= screenWidth)
 	// 		release();
+}
+
+void Bullet::isHit()
+{
+	hit = true;
 }

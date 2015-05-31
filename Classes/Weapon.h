@@ -15,6 +15,6 @@ public:
 	void nextLevel();
 	void update();
 private:
-	vector<Bullet*> bullets;
+	Vector<Bullet*> bullets;
 	int bulletLevel = PLAYER_BULLET_LVL_1;
 };

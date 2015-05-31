@@ -22,7 +22,7 @@ void Weapon::fireBullet(float X, float Y)
 {
 	Bullet* bullet = Bullet::create(bulletLevel);
 	bullet->setPosition(X, Y);
-	this->bullets.push_back(bullet);
+	this->bullets.pushBack(bullet);
 
 	Director::getInstance()->getRunningScene()->addChild(bullet);
 }

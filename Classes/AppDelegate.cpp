@@ -23,7 +23,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("Hello World");
-		glview->setFrameSize(800, 600);
+		glview->setFrameSize(1600, 800);
 		director->setOpenGLView(glview);
 	}
 

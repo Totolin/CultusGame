@@ -75,7 +75,7 @@ void InteractiveObjectFactory::createObject()
 		newObject->setGravityAffected(gravityAffected);
 
 		Director::getInstance()->getRunningScene()->addChild(newObject);
-		this->objects.push_back(newObject);
+		this->objects.pushBack(newObject);
 	}
 }
 

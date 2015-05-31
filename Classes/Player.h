@@ -33,10 +33,15 @@ public:
 	void jump();
 	void slide();
 	void doubleJump();
+	void isHit();
 	void setDistanceTravelled(long long dist);
 	long long getDistanceTravelled();
+
+	// UI
 	int getScore();
+	int getHealth();
 	void setScore(int score);
+	void addScore(int toAdd);
 private:
 	std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
@@ -48,5 +53,7 @@ private:
 	Action currentAction = Action::RUNNING;
 	long long distanceTravelled;
 	bool bossMode = false;
+	
 	int score = 0;
+	int HP = 100;
 };

@@ -12,4 +12,7 @@ public:
 	static Bullet* create(int bulletFileIndex);
 	void moveX(int pixelsToMove);
 	virtual void update(float delta) override;
+	void isHit();
+private:
+	bool hit;
 };

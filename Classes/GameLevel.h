@@ -9,6 +9,7 @@
 #include <vector>
 #include <string>
 #include <cocos2d/cocos/ui/UILoadingBar.h>
+#include "UIBar.h"
 
 USING_NS_CC;
 using namespace std;
@@ -31,8 +32,7 @@ public:
 	void setMusic(string backgroundMusic);
 	void addObjectFactory(InteractiveObjectFactory* objectFactory);
 	virtual void update(float delta) override;
-	void updateScore();
-	void setScoreLabel(Label* label);
+	void updateUI();
 private:
 	bool onContactBegin(PhysicsContact &contact);
 
@@ -43,6 +43,5 @@ private:
 	CocosDenshion::SimpleAudioEngine* audioEngine;
 	string backgroundMusic;
 	long long distance;
-	Label* scoreLabel;
-	LoadingBar* loadingBar;
+	UIBar* statusBar;
 };
