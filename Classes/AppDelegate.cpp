@@ -8,6 +8,7 @@
 #include "IntermediaryScene.h"
 #include <iostream>
 #include "proj.win32\FirstBoss.h"
+#include "proj.win32\BossCannon.h"
 
 USING_NS_CC;
 
@@ -24,7 +25,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("Hello World");
-		glview->setFrameSize(1600, 800);
+		glview->setFrameSize(1200, 630);
 		director->setOpenGLView(glview);
 	}
 
@@ -37,6 +38,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("mailbox.png", OBJECT_MAILBOX);
 	resLoader.addImageFile("rocket.png", OBJECT_ROCKET);
 	resLoader.addImageFile("firstboss.png", OBJECT_FIRSTBOSS);
+	resLoader.addImageFile("firstboss_cannon_1.png", OBJECT_FIRSTBOSS_CANNON_1);
+	resLoader.addImageFile("firstboss_cannon_1_d.png", OBJECT_FIRSTBOSS_CANNON_1_D);
+	resLoader.addImageFile("firstboss_cannon_1_pr.png", OBJECT_FIRSTBOSS_CANNON_1_PR);
 
 	// Create a new GameLevel
 	auto firstLevel = GameLevel::create();
@@ -64,6 +68,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create boss
 	FirstBoss* boss = FirstBoss::create(OBJECT_FIRSTBOSS);
+	boss->addCannon_1(OBJECT_FIRSTBOSS_CANNON_1, OBJECT_FIRSTBOSS_CANNON_1_D, OBJECT_FIRSTBOSS_CANNON_1_PR);
 
 	// Create Interactive object factory
 	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,false, MAILBOX_COLLISION_BITMASK,true, false, true);
@@ -79,7 +84,39 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->addObjectFactory(rocketFactory);
 
-	director->runWithScene(firstLevel);
+	// Add first level to stack
+	Director::getInstance()->pushScene(firstLevel);
+
+	// Create start scene
+	ParallaxBackground* bckMenu = new ParallaxBackground();
+	bckMenu->addImage("night.png", Vec2(width / 2, width / 2), Vec2(0.05, 0));
+	bckMenu->addImage("city.png", Vec2(width / 2, width / 2), Vec2(0.3, 0));
+	bckMenu->addImage("street.png", Vec2(width / 2, width / 4), Vec2(1.0, 0));
+	bckMenu->scheduleUpdate();
+
+	auto startScene = IntermediaryScene::create(IntermediaryScene::MENU);
+	startScene->setBackground(bckMenu);
+
+	// Create dummy player
+	auto dummy = DummyPlayer::create();
+	dummy->setPosition(Vec2(width / 2, 130));
+	startScene->setPlayer(dummy);
+
+	Label* playButtonLabel = Label::createWithTTF("Play", "font.ttf", 35);
+	MenuItem* playButton = MenuItemLabel::create(playButtonLabel, [&](Ref* sender){playButtonCallback(); });
+
+	Label* optionsButtonLabel = Label::createWithTTF("Options", "font.ttf", 35);
+	MenuItem* optionsButton = MenuItemLabel::create(optionsButtonLabel);
+
+	Label* exitButtonLabel = Label::createWithTTF("Exit", "font.ttf", 35);
+	MenuItem* exitButton = MenuItemLabel::create(exitButtonLabel, [&](Ref* sender){Director::getInstance()->end(); });
+
+	startScene->addMenuItem(playButton);
+	startScene->addMenuItem(optionsButton);
+	startScene->addMenuItem(exitButton);
+	startScene->createMenu();
+
+	director->runWithScene(startScene);
 
 	return true;
 }

@@ -12,7 +12,7 @@ Boss::~Boss()
 
 void Boss::update(float delta)
 {
-
+	
 }
 
 void Boss::setState(State state)
@@ -48,4 +48,5 @@ void Boss::moveIn(Vec2 position)
 {
 	// must be overridden
 }
+
 

@@ -44,4 +44,5 @@ private:
 	string backgroundMusic;
 	long long distance;
 	UIBar* statusBar;
+	bool bossMode;
 };

@@ -1,5 +1,6 @@
 #include "GameLevel.h"
 #include "UIBar.h"
+#include "proj.win32\BossCannon.h"
 
 GameLevel::GameLevel()
 {
@@ -67,6 +68,7 @@ GameLevel* GameLevel::create()
 	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x + 20, origin.y));
 	edgeNode->setPhysicsBody(edgeBody);
 	gameLevel->addChild(edgeNode);
+	gameLevel->bossMode = false;
 
 	auto contactListener = EventListenerPhysicsContact::create();
 	contactListener->onContactBegin = CC_CALLBACK_1(GameLevel::onContactBegin, gameLevel);
@@ -98,20 +100,23 @@ GameLevel* GameLevel::createWithPhysics()
 
 void GameLevel::update(float delta)
 {
+	updateUI();
+
+	if (bossMode) { return; }
+
 	for (int i = 0; i < objectFactories.size(); i++)
 	{
 		objectFactories.at(i)->createObject();
 	}
 
-
 	if (this->distance == this->mainCharacter->getDistanceTravelled())
 	{
 		this->levelBackground->slowlyStop();
 		this->mainCharacter->setBossMode(true);
-		this->levelBoss->moveIn(Vec2(1400,400));
+		this->levelBoss->moveIn(Vec2(1100,200));
+		this->bossMode = true;
 	}
 
-	updateUI();
 }
 
 void GameLevel::updateUI()
@@ -128,14 +133,20 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 	PhysicsBody *a = contact.getShapeA()->getBody();
 	PhysicsBody *b = contact.getShapeB()->getBody();
 
-	// check if the bodies have collided
+	// COLLISION CHECKING
 	
+	/*
+		ROCKET + PLAYER
+	*/
 	if ((ROCKET_COLLISION_BITMASK == a->getCollisionBitmask() && PLAYER_COLLISION_BITMASK == b->getCollisionBitmask()) || (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == b->getCollisionBitmask()))
 	{
 		CCLOG("COLLISION HAS OCCURED WITH PLAYER");
 		this->mainCharacter->isHit();
 	}
 
+	/*
+		BULLET -> ROCKET
+	*/
 	if ((BULLET_COLLISION_BITMASK == a->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == b->getCollisionBitmask()))
 	{
 		// Cast objects
@@ -160,7 +171,11 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 		// Update score
 		this->mainCharacter->addScore(ROCKET_KILL_POINTS);
 		
-	} else if ((BULLET_COLLISION_BITMASK == b->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == a->getCollisionBitmask()))
+	} 
+	/*
+		BULLET <- ROCKET
+	*/
+	else if ((BULLET_COLLISION_BITMASK == b->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == a->getCollisionBitmask()))
 	{
 		// Cast objects
 		Bullet* bullet = dynamic_cast<Bullet*>(contact.getShapeB()->getBody()->getNode());
@@ -186,6 +201,10 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 		this->mainCharacter->addScore(ROCKET_KILL_POINTS);
 	}
 	
+	/*
+		MAILBOX -> BULLET
+	*/
+
 	if ((MAILBOX_COLLISION_BITMASK == a->getCollisionBitmask() && BULLET_COLLISION_BITMASK == b->getCollisionBitmask()))
 	{
 		InteractiveObject* object = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
@@ -207,7 +226,11 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 
 		CCLOG("COLLISION MAILBOX = A");
 
-	}else if ((MAILBOX_COLLISION_BITMASK == b->getCollisionBitmask() && BULLET_COLLISION_BITMASK == a->getCollisionBitmask()))
+	}
+	/*
+		MAILBOX <- BULLET
+	*/
+	else if ((MAILBOX_COLLISION_BITMASK == b->getCollisionBitmask() && BULLET_COLLISION_BITMASK == a->getCollisionBitmask()))
 	{
 		Bullet* bullet = dynamic_cast<Bullet*>(contact.getShapeA()->getBody()->getNode());
 		InteractiveObject* object = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
@@ -228,5 +251,44 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 		CCLOG("COLLISION MAILBOX = B");
 	}
 
+	/*
+		BULLET -> ENEMY CANNON
+	*/
+	if ((BOSS_CANNON_COLLISION_BITMASK == a->getCollisionBitmask() && BULLET_COLLISION_BITMASK == b->getCollisionBitmask()))
+	{
+		BossCannon* cannon = dynamic_cast<BossCannon*>(contact.getShapeA()->getBody()->getNode());
+		Bullet* bullet = dynamic_cast<Bullet*>(contact.getShapeB()->getBody()->getNode());
+		cannon->reduceHP(25);
+		this->mainCharacter->addScore(MAILBOX_KILL_POINTS);
+
+		// Create explosion
+		Vec2 rocketPosition = bullet->getPosition();
+		rocketPosition.x += bullet->getBoundingBox().size.width / 2;
+		auto explosion = ParticleSun::create();
+		explosion->setDuration(0);
+		explosion->setScale(2);
+		explosion->setPosition(rocketPosition);
+		this->addChild(explosion, 1000);
+
+		bullet->removeFromParentAndCleanup(true);
+	}
+	else if ((BOSS_CANNON_COLLISION_BITMASK == b->getCollisionBitmask() && BULLET_COLLISION_BITMASK == a->getCollisionBitmask()))
+	{
+		BossCannon* cannon = dynamic_cast<BossCannon*>(contact.getShapeB()->getBody()->getNode());
+		Bullet* bullet = dynamic_cast<Bullet*>(contact.getShapeA()->getBody()->getNode());
+		cannon->reduceHP(25);
+		this->mainCharacter->addScore(MAILBOX_KILL_POINTS);
+
+		// Create explosion
+		Vec2 rocketPosition = bullet->getPosition();
+		rocketPosition.x += bullet->getBoundingBox().size.width / 2;
+		auto explosion = ParticleSun::create();
+		explosion->setDuration(0);
+		explosion->setScale(2);
+		explosion->setPosition(rocketPosition);
+		this->addChild(explosion, 1000);
+
+		bullet->removeFromParentAndCleanup(true);
+	}
 	return true;
 }
