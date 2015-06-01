@@ -7,6 +7,7 @@
 #include "GameValues.h"
 #include "IntermediaryScene.h"
 #include <iostream>
+#include "proj.win32\FirstBoss.h"
 
 USING_NS_CC;
 
@@ -35,6 +36,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addBulletFile("bullet.png", PLAYER_BULLET_LVL_1);
 	resLoader.addImageFile("mailbox.png", OBJECT_MAILBOX);
 	resLoader.addImageFile("rocket.png", OBJECT_ROCKET);
+	resLoader.addImageFile("firstboss.png", OBJECT_FIRSTBOSS);
 
 	// Create a new GameLevel
 	auto firstLevel = GameLevel::create();
@@ -60,6 +62,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	hero->setPosition(Vec2(width / 2, 130));
 	hero->setTag(PLAYER_TAG);
 
+	// Create boss
+	FirstBoss* boss = FirstBoss::create(OBJECT_FIRSTBOSS);
+
 	// Create Interactive object factory
 	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,false, MAILBOX_COLLISION_BITMASK,true, false, true);
 	mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX + 10, height / GROUND_PERCENTAGE_FOR_BOX + 100));
@@ -69,6 +74,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	firstLevel->setBackground(bckFirstLevel);
 	firstLevel->setPlayer(hero);
+	firstLevel->setBoss(boss);
 	firstLevel->setDistanceToBoss(200);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->addObjectFactory(rocketFactory);

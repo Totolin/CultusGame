@@ -12,6 +12,7 @@ GameLevel::~GameLevel()
 void GameLevel::setBoss(Boss* levelBoss)
 {
 	this->levelBoss = levelBoss;
+	this->addChild(levelBoss);
 }
 
 void GameLevel::setBackground(ParallaxBackground* levelBackground)
@@ -107,6 +108,7 @@ void GameLevel::update(float delta)
 	{
 		this->levelBackground->slowlyStop();
 		this->mainCharacter->setBossMode(true);
+		this->levelBoss->moveIn(Vec2(1400,400));
 	}
 
 	updateUI();
