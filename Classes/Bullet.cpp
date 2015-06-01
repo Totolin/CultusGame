@@ -35,11 +35,11 @@ void Bullet::update(float delta)
 {
 	this->moveX(20);
 
-	// 	float screenWidth = Director::getInstance()->getWinSize().width;
-	// 	float bulletWidth = this->getBoundingBox().size.width;
-	//
-	// 	if (this->getPositionX() - bulletWidth / 2 >= screenWidth)
-	// 		release();
+	Size screenSize = Director::getInstance()->getWinSize();
+	Size bulletSize = this->getBoundingBox().size;
+	
+	if (this->getPositionX() - bulletSize.width / 2 >= screenSize.width)
+		removeFromParentAndCleanup(true);
 }
 
 void Bullet::isHit()

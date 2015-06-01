@@ -157,9 +157,6 @@ void Player::update(float delta)
 	{
 		this->getPhysicsBody()->applyImpulse(Vect(25, 0));
 	}
-
-	// Update it's weapon
-	this->weapon->update();
 }
 
 // Checks if a key is pressed

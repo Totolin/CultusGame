@@ -95,7 +95,7 @@
 <key>tangentialAcceleration</key>
 <real>0</real>
 <key>textureFileName</key>
-<string>texture.png</string>
+<string>point.png</string>
 <key>textureImageData</key>
 <string></string>
 </dict>

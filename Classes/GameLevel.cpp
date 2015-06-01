@@ -74,7 +74,7 @@ GameLevel* GameLevel::create()
 
 	//TODO: set according to screen and score table height
 	gameLevel->statusBar = UIBar::create("Totolin");
-	gameLevel->statusBar->setPosition(180, Director::getInstance()->getWinSize().height - 100);
+	gameLevel->statusBar->setPosition(180, Director::getInstance()->getWinSize().height - 50);
 	gameLevel->statusBar->setScale(0.7);
 	gameLevel->addChild(gameLevel->statusBar, 5000);
 
@@ -143,10 +143,11 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 
 		// Create explosion
 		Vec2 rocketPosition = rocket->getPosition();
-		auto explosion = ParticleSystemQuad::create("explosion.plist");
-		explosion->setDuration(1);
+		auto explosion = ParticleSun::create();
+		explosion->setDuration(0);
 		explosion->setPosition(rocketPosition);
-		this->addChild(explosion,1000);
+		explosion->setScale(2);
+		this->addChild(explosion, 1000);
 
 		// Remove from the scene
 		bullet->removeFromParentAndCleanup(true);
@@ -166,11 +167,12 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 
 		// Create explosion
 		Vec2 rocketPosition = rocket->getPosition();
-		auto explosion = ParticleSystemQuad::create("explosion.plist");
+		auto explosion = ParticleSun::create();
+		explosion->setDuration(0);
+		explosion->setScale(2);
 		explosion->setPosition(rocketPosition);
-		explosion->setDuration(1);
-
 		this->addChild(explosion, 1000);
+
 
 		// Remove from the scene
 		bullet->removeFromParentAndCleanup(true);

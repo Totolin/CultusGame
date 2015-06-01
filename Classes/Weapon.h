@@ -13,8 +13,6 @@ public:
 	void fireBullet(float X, float Y);
 	~Weapon();
 	void nextLevel();
-	void update();
 private:
-	Vector<Bullet*> bullets;
 	int bulletLevel = PLAYER_BULLET_LVL_1;
 };
