@@ -6,7 +6,7 @@ class GameLevel;
 USING_NS_CC;
 using namespace std;
 
-class InteractiveObjectFactory: public Node
+class InteractiveObjectFactory
 {
 public:
 	static InteractiveObjectFactory* create(int resourceIndex, bool isAnimated, int maksValue, bool canBeFiredAt = false, bool canHitPlayer = false, bool gravityAffected = true);
@@ -23,7 +23,6 @@ public:
 
 	//TODO: remove obsolete occurrences
 
-	void update(float delta) override;
 private:
 	int resourceIndex;
 	int maskValue;
@@ -39,5 +38,4 @@ private:
 	int frequency;
 	~InteractiveObjectFactory();
 	InteractiveObjectFactory();
-	Vector<InteractiveObject*> objects;
 };

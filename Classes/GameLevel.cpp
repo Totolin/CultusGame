@@ -43,7 +43,6 @@ void GameLevel::setMusic(string backgroundMusic)
 
 void GameLevel::addObjectFactory(InteractiveObjectFactory* objectFactory)
 {
-	this->addChild(objectFactory);
 	this->objectFactories.push_back(objectFactory);
 }
 
@@ -188,15 +187,42 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 	if ((MAILBOX_COLLISION_BITMASK == a->getCollisionBitmask() && BULLET_COLLISION_BITMASK == b->getCollisionBitmask()))
 	{
 		InteractiveObject* object = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+		Bullet* bullet = dynamic_cast<Bullet*>(contact.getShapeB()->getBody()->getNode());
 		object->isHit();
 		this->mainCharacter->addScore(MAILBOX_KILL_POINTS);
+
+		// Create spark
+		//auto spark = ParticleSystemQuad::create("spark.plist");
+		//Size bulletSize = bullet->getBoundingBox().size;
+		//spark->setPosition(bullet->getPositionX() + bulletSize.width / 2, bullet->getPositionY());
+		//spark->setDuration(1);
+		//spark->setScale(2);
+		//this->addChild(spark, 1000);
+
+
+		bullet->removeFromParentAndCleanup(true);
+
+
 		CCLOG("COLLISION MAILBOX = A");
 
 	}else if ((MAILBOX_COLLISION_BITMASK == b->getCollisionBitmask() && BULLET_COLLISION_BITMASK == a->getCollisionBitmask()))
 	{
+		Bullet* bullet = dynamic_cast<Bullet*>(contact.getShapeA()->getBody()->getNode());
 		InteractiveObject* object = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
 		object->isHit();
 		this->mainCharacter->addScore(MAILBOX_KILL_POINTS);
+
+		// Create spark
+		//auto spark = ParticleSystemQuad::create("spark.plist");
+		//Size bulletSize = bullet->getBoundingBox().size;
+		//spark->setPosition(bullet->getPositionX() + bulletSize.width / 2, bullet->getPositionY());
+		//spark->setDuration(1);
+		//spark->setScale(2);
+		//this->addChild(spark, 1000);
+
+
+		bullet->removeFromParentAndCleanup(true);
+
 		CCLOG("COLLISION MAILBOX = B");
 	}
 

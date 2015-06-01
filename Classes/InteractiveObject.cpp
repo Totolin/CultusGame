@@ -127,11 +127,21 @@ bool InteractiveObject::isGravityAffected()
 
 void InteractiveObject::update(float delta)
 {
+	Size screenSize = Director::getInstance()->getWinSize();
+	Size objectSize = this->getBoundingBox().size;
+
+	if (getPositionX() + (objectSize.width / 2) <= 0 || getPositionY() < 0){
+		removeFromParentAndCleanup(true);
+		return;
+	}
+
+
 	if (hasBeenHit) return;
 	//TODO: Replace vec2 with int, put in Values if necessary
 	Vec2 loc = this->getPosition();
 	loc.x += this->speed.x;
 	this->setPosition(loc);
+
 }
 
 void InteractiveObject::isHit()
