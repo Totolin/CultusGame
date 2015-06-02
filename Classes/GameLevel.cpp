@@ -1,6 +1,6 @@
 #include "GameLevel.h"
 #include "UIBar.h"
-#include "proj.win32\BossCannon.h"
+#include "BossCannon.h"
 
 GameLevel::GameLevel()
 {
@@ -52,9 +52,10 @@ GameLevel* GameLevel::create()
 {
 	GameLevel* gameLevel = GameLevel::createWithPhysics();
 	gameLevel->getPhysicsWorld()->setGravity(Vect(0.0f, -700.0f));
-	gameLevel->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	gameLevel->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
 	gameLevel->getPhysicsWorld()->setSpeed(2.0f);
 	gameLevel->scheduleUpdate();
+	gameLevel->addEventListener();
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -290,5 +291,83 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 
 		bullet->removeFromParentAndCleanup(true);
 	}
+
+	if ((MAILBOX_COLLISION_BITMASK == a->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == b->getCollisionBitmask()))
+	{
+		InteractiveObject* mailbox = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+		InteractiveObject* rocket = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+
+		// Add score
+		this->mainCharacter->addScore(MAILBOX_KILL_POINTS);
+
+		// Create explosion
+		Vec2 rocketPosition = rocket->getPosition();
+		auto explosion = ParticleSun::create();
+		explosion->setDuration(0);
+		explosion->setScale(2);
+		explosion->setPosition(rocketPosition);
+		this->addChild(explosion, 1000);
+
+		rocket->removeFromParentAndCleanup(true);
+	}
+	else if (MAILBOX_COLLISION_BITMASK == b->getCollisionBitmask() && ROCKET_COLLISION_BITMASK == a->getCollisionBitmask())
+	{
+		InteractiveObject* mailbox = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+		InteractiveObject* rocket = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+
+		// Add score
+		this->mainCharacter->addScore(MAILBOX_KILL_POINTS);
+
+		// Create explosion
+		Vec2 rocketPosition = rocket->getPosition();
+		auto explosion = ParticleSun::create();
+		explosion->setDuration(0);
+		explosion->setScale(2);
+		explosion->setPosition(rocketPosition);
+		this->addChild(explosion, 1000);
+
+		rocket->removeFromParentAndCleanup(true);
+	}
 	return true;
+}
+
+void GameLevel::addEventListener()
+{
+	// Create keyboard mapping
+	auto eventListener = EventListenerKeyboard::create();
+	Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
+
+	// Set events on press and release
+	eventListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event){
+		if (keys.find(keyCode) == keys.end()){
+			keys[keyCode] = std::chrono::high_resolution_clock::now();
+		}
+		switch (keyCode){
+		case EventKeyboard::KeyCode::KEY_P:
+			this->togglePhysicsWorld();
+			break;
+		default:
+			break;
+		}
+	};
+
+	// Set mapping
+	eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event){
+		keys.erase(keyCode);
+	};
+
+	// Set listener
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
+}
+
+void GameLevel::togglePhysicsWorld()
+{
+	if (this->getPhysicsWorld()->getDebugDrawMask() == PhysicsWorld::DEBUGDRAW_ALL)
+	{
+		this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
+	}
+	else
+	{
+		this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	}
 }

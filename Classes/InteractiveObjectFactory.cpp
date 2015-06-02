@@ -26,7 +26,7 @@ InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bo
 	factory->setGravityAffected(gravityAffected);
 
 	//Default speed
-	factory->setSpeed(Vec2(-10, 0));
+	factory->setSpeed(Vec2(-9, 0));
 
 	//Default spawn interval
 	factory->setSpawnFrequency(5);

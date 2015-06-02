@@ -33,6 +33,10 @@ public:
 	void addObjectFactory(InteractiveObjectFactory* objectFactory);
 	virtual void update(float delta) override;
 	void updateUI();
+
+	// TODO : REMOVE THESE METHODS
+	void addEventListener();
+	void togglePhysicsWorld();
 private:
 	bool onContactBegin(PhysicsContact &contact);
 
@@ -45,4 +49,8 @@ private:
 	long long distance;
 	UIBar* statusBar;
 	bool bossMode;
+
+	//TODO: Remove this
+	std::map < cocos2d::EventKeyboard::KeyCode,
+		std::chrono::high_resolution_clock::time_point > keys;
 };

@@ -7,8 +7,8 @@
 #include "GameValues.h"
 #include "IntermediaryScene.h"
 #include <iostream>
-#include "proj.win32\FirstBoss.h"
-#include "proj.win32\BossCannon.h"
+#include "FirstBoss.h"
+#include "BossCannon.h"
 
 USING_NS_CC;
 
@@ -72,15 +72,15 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create Interactive object factory
 	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,false, MAILBOX_COLLISION_BITMASK,true, false, true);
-	mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX + 10, height / GROUND_PERCENTAGE_FOR_BOX + 100));
+	mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX + 30, height / GROUND_PERCENTAGE_FOR_BOX + 100));
 
 	InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, false,ROCKET_COLLISION_BITMASK,true, false, false);
-	rocketFactory->setPositionInterval(Vec2(200, 700));
+	rocketFactory->setPositionInterval(Vec2(340, 700));
 
 	firstLevel->setBackground(bckFirstLevel);
 	firstLevel->setPlayer(hero);
 	firstLevel->setBoss(boss);
-	firstLevel->setDistanceToBoss(200);
+	firstLevel->setDistanceToBoss(500);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->addObjectFactory(rocketFactory);
 
