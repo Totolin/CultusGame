@@ -77,28 +77,6 @@ void InteractiveObjectFactory::createObject()
 	}
 }
 
-//void InteractiveObjectFactory::update(float delta)
-//{
-//	if (objects.size() > 0)
-//	{
-//		Size objectSize = objects.at(0)->getBoundingBox().size;
-//		Vec2 position = objects.at(0)->getPosition();
-//
-//		if (position.x + (objectSize.width / 2) <=0 || position.y < 0)
-//		{
-//			objects.at(0)->getParent()->removeChild(objects.at(0));
-//			objects.erase(objects.begin());
-//
-//			if (position.y < 0) {
-//				CCLOG("Object fell down");
-//			}
-//			else
-//			{
-//				CCLOG("Object exit screen (Left Side)");
-//			}
-//		}
-//	}
-//}
 
 void InteractiveObjectFactory::setIsAnimated(bool isAnimated)
 {

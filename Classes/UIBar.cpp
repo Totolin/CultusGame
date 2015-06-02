@@ -5,7 +5,6 @@ UIBar* UIBar::create(string name)
 {
 	UIBar* bar = new UIBar();
 	bar->initWithFile("heathbarempty.png");
-	bar->score = 0;
 	bar->fillingBar = LoadingBar::create("healthbarfilling.png");
 	bar->fillingBar->setPercent(100);
 	bar->fillingBar->setDirection(LoadingBar::Direction::LEFT);
@@ -31,38 +30,8 @@ void UIBar::setPercent(float percentage)
 	fillingBar->setPercent(percentage);
 }
 
-void UIBar::addPercent(float percentage)
-{
-	fillingBar->setPercent(fillingBar->getPercent() + percentage);
-}
-
-void UIBar::substractPercent(float percentage)
-{
-	fillingBar->setPercent(fillingBar->getPercent() - percentage);
-}
-
-float UIBar::getPercent()
-{
-	return fillingBar->getPercent();
-}
-
-void UIBar::resetScore()
-{
-	score = 0;
-}
-
-void UIBar::addScore(int score)
-{
-	this->score += score;
-}
-
-int UIBar::getScore()
-{
-	return score;
-}
 
 void UIBar::setScore(int score)
 {
-	this->score = score;
-	this->scoreLabel->setString(to_string(this->score));
+	this->scoreLabel->setString(to_string(score));
 }

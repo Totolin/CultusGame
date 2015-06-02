@@ -11,6 +11,7 @@
 #include <cocos2d/cocos/ui/UILoadingBar.h>
 #include "UIBar.h"
 
+class BossCannon;
 USING_NS_CC;
 using namespace std;
 using namespace ui;
@@ -53,4 +54,11 @@ private:
 	//TODO: Remove this
 	std::map < cocos2d::EventKeyboard::KeyCode,
 		std::chrono::high_resolution_clock::time_point > keys;
+
+	void collisionBulletRocket(Bullet* bullet, InteractiveObject* rocket);
+	void collisionBulletMailBox(Bullet* bullet, InteractiveObject* mailbox);
+	void collisionBulletEnemyCannon(Bullet* bullet, BossCannon* cannon);
+	void collisionMailBoxRocket(InteractiveObject* mailbox, InteractiveObject* rocket);
+	void collsionPlayerRocket(Player* player, InteractiveObject* rocket);
+
 };

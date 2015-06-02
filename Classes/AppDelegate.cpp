@@ -1,6 +1,5 @@
 #include "AppDelegate.h"
 #include "TestScene.h"
-#include "HelloWorldScene.h"
 #include "GameLevel.h"
 #include "ParallaxBackground.h"
 #include "ResourceLoader.h"
@@ -72,15 +71,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create Interactive object factory
 	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,false, MAILBOX_COLLISION_BITMASK,true, false, true);
-	mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX + 30, height / GROUND_PERCENTAGE_FOR_BOX + 100));
+	mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX + 100));
 
 	InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, false,ROCKET_COLLISION_BITMASK,true, false, false);
 	rocketFactory->setPositionInterval(Vec2(340, 700));
+	rocketFactory->setSpeed(Vec2(-20, 0));
 
 	firstLevel->setBackground(bckFirstLevel);
 	firstLevel->setPlayer(hero);
 	firstLevel->setBoss(boss);
-	firstLevel->setDistanceToBoss(500);
+	firstLevel->setDistanceToBoss(10000);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->addObjectFactory(rocketFactory);
 

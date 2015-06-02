@@ -26,8 +26,6 @@ public:
 
 	virtual void update(float delta) override;
 	bool isKeyPressed(EventKeyboard::KeyCode code);
-	void moveX(int pixelsToMove);
-	void moveY(int pixelsToMove);
 
 	void fire();
 	void jump();
@@ -48,8 +46,6 @@ private:
 	Weapon* weapon;
 	void callback_WorUp();
 	void setWeapon(Weapon* weapon);
-	bool onScreenLeft();
-	bool onScreenRight();
 	Action currentAction = Action::RUNNING;
 	long long distanceTravelled;
 	bool bossMode = false;

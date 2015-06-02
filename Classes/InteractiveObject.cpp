@@ -71,7 +71,6 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, int maskValue, b
 				auto spriteBody = PhysicsBody::createBox(objectSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 				bool affected = objectSprite->isGravityAffected();
 				spriteBody->setGravityEnable(objectSprite->isGravityAffected());
-			//	spriteBody->setCategoryBitmask(1);
 				spriteBody->setCollisionBitmask(maskValue);
 				spriteBody->setMass(1);
 				spriteBody->setContactTestBitmask(true);
@@ -81,9 +80,6 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, int maskValue, b
 			return objectSprite;
 		}
 	}
-
-	
-
 
 	CC_SAFE_DELETE(objectSprite);
 	return NULL;
@@ -125,6 +121,11 @@ bool InteractiveObject::isGravityAffected()
 	return gravityAffected;
 }
 
+Vec2 InteractiveObject::getSpeed()
+{
+	return speed;
+}
+
 void InteractiveObject::update(float delta)
 {
 	Size screenSize = Director::getInstance()->getWinSize();
@@ -147,6 +148,7 @@ void InteractiveObject::update(float delta)
 void InteractiveObject::isHit()
 {
 	this->hasBeenHit = true;
-	this->getPhysicsBody()->applyImpulse(Vect(800,500));
-	this->getPhysicsBody()->setAngularVelocity(20);
+	this->getPhysicsBody()->setGravityEnable(false);
+	this->getPhysicsBody()->applyImpulse(Vect(1000, 1000));
+	this->getPhysicsBody()->setAngularVelocity(10);
 }

@@ -21,7 +21,6 @@ public:
 	void setResource(int resource);
 	void createObject();
 
-	//TODO: remove obsolete occurrences
 
 private:
 	int resourceIndex;

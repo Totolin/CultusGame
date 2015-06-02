@@ -19,6 +19,7 @@ public:
 	virtual void update(float delta) override;
 	void setGravityAffected(bool dynamic);
 	bool isGravityAffected();
+	Vec2 getSpeed();
 private:
 	bool canBeFiredAt;
 	bool canHitPlayer;

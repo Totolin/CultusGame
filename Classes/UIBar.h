@@ -12,17 +12,9 @@ public:
 	static UIBar* create(string name);
 
 	void setPercent(float percentage);
-	void addPercent(float percentage);
-	void substractPercent(float percentage);
-	float getPercent();
-	
-	void resetScore();
-	void addScore(int score);
-	int getScore();
 	void setScore(int score);
 private:
 	Label* nameLabel;
 	Label* scoreLabel;
 	LoadingBar* fillingBar;
-	int score;
 };

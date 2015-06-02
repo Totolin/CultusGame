@@ -68,12 +68,9 @@ Player* Player::create()
 		auto spriteBody = PhysicsBody::createBox(playerSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 		spriteBody->setAngularVelocityLimit(0.0f);
 		spriteBody->setMass(1);
-	//	spriteBody->setCategoryBitmask(1);
 		spriteBody->setCollisionBitmask(PLAYER_COLLISION_BITMASK);
 		spriteBody->setContactTestBitmask(true);
 		playerSprite->setPhysicsBody(spriteBody);
-	
-
 
 		// Return
 		return playerSprite;
@@ -168,24 +165,6 @@ bool Player::isKeyPressed(EventKeyboard::KeyCode code) {
 	return false;
 }
 
-// Move a player on the X axis by a set number of pixels
-// @param pixelsToMove - Number of pixels to move
-// @return - Bool which states if the key is pressed or not
-void Player::moveX(int pixelsToMove)
-{
-	Vec2 loc = this->getPosition();
-	loc.x += pixelsToMove;
-	this->setPosition(loc);
-}
-
-// Move a player on the Y axis by a set number of pixels
-// @param pixelsToMove - Number of pixels to move
-void Player::moveY(int pixelsToMove)
-{
-	Vec2 loc = this->getPosition();
-	loc.y += pixelsToMove;
-	this->setPosition(loc);
-}
 
 void Player::fire()
 {
@@ -287,33 +266,6 @@ void Player::setWeapon(Weapon* weapon)
 	this->weapon = weapon;
 }
 
-bool Player::onScreenLeft()
-{
-	float playerWidth = this->getBoundingBox().size.width;
-	float screenWidth = Director::getInstance()->getWinSize().width;
-	float playerXPos = this->getPositionX();
-
-	if (playerXPos - playerWidth / 2 <= 0)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-bool Player::onScreenRight()
-{
-	float playerWidth = this->getBoundingBox().size.width;
-	float screenWidth = Director::getInstance()->getWinSize().width;
-	float playerXPos = this->getPositionX();
-
-	if (playerXPos + playerWidth / 2 >= screenWidth)
-	{
-		return false;
-	}
-
-	return true;
-}
 
 int Player::getHealth()
 {
