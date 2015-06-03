@@ -258,6 +258,8 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 		return false;
 	}
 
+	if ()
+
 
 	return true;
 }
