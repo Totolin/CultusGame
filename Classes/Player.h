@@ -49,7 +49,8 @@ private:
 	Action currentAction = Action::RUNNING;
 	long long distanceTravelled;
 	bool bossMode = false;
-	
+	bool invurnerable = false;
+	int invurnerableTime = 0;
 	int score = 0;
 	int HP = 100;
 };

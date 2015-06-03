@@ -154,6 +154,13 @@ void Player::update(float delta)
 	{
 		this->getPhysicsBody()->applyImpulse(Vect(25, 0));
 	}
+
+	if (invurnerableTime != 0)
+		invurnerableTime--;
+
+	if (invurnerable && invurnerableTime == 0)
+		invurnerable = false;
+
 }
 
 // Checks if a key is pressed
@@ -274,9 +281,22 @@ int Player::getHealth()
 
 void Player::isHit()
 {
-	this->HP -= 10;
-}
+	if (invurnerable)
+		return;
 
+	this->HP -= 10;
+	this->invurnerable = true;
+	this->invurnerableTime = 90;
+
+	// TODO: discuss if this is neccesary
+	//this->getPhysicsBody()->applyImpulse(Vect(-70, 0));
+
+	FadeIn* fadeIn = FadeIn::create(0.5f);
+	FadeOut* fadeOut = FadeOut::create(0.5f);
+
+	Sequence* sequence = Sequence::create(fadeOut, fadeIn, fadeOut,fadeIn,fadeOut, fadeIn, nullptr);
+	this->runAction(sequence);
+}
 void Player::addScore(int toAdd)
 {
 	this->score += toAdd;
