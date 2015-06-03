@@ -60,5 +60,6 @@ private:
 	void collisionBulletEnemyCannon(Bullet* bullet, BossCannon* cannon);
 	void collisionMailBoxRocket(InteractiveObject* mailbox, InteractiveObject* rocket);
 	void collsionPlayerRocket(Player* player, InteractiveObject* rocket);
+	void collsionPlayerHole(Player* player, InteractiveObject* hole);
 
 };

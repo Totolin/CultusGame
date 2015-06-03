@@ -15,10 +15,11 @@ void InteractiveObjectFactory::setGravityAffected(bool gravityAffected)
 	this->gravityAffected = gravityAffected;
 }
 
-InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bool isAnimated, int maskValue, bool canBeFiredAt /*= false*/, bool canHitPlayer /*= false*/, bool gravityAffected)
+InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, float scaleFactor, bool isAnimated, int maskValue, bool canBeFiredAt /*= false*/, bool canHitPlayer /*= false*/, bool gravityAffected)
 {
 	InteractiveObjectFactory* factory = new InteractiveObjectFactory();
 	factory->maskValue = maskValue;
+	factory->scaleFactor = scaleFactor;
 	factory->setCanBeFiredAt(canBeFiredAt);
 	factory->setCanHitPlayer(canHitPlayer);
 	factory->setResource(resourceIndex);
@@ -29,13 +30,11 @@ InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, bo
 	factory->setSpeed(Vec2(-9, 0));
 
 	//Default spawn interval
-	factory->setSpawnFrequency(5);
+	factory->setSpawnFrequency(20);
 
 	//Default position interval
 	factory->setPositionInterval(Vec2(0, 0));
 	
-
-
 	return factory;
 }
 
@@ -56,12 +55,12 @@ void InteractiveObjectFactory::setPositionInterval(Vec2 interval)
 
 void InteractiveObjectFactory::createObject()
 {
-	unsigned int randomNumber = rand() % 501;
+	 unsigned int randomNumber = RandomHelper::random_int<int>(1, 500);
 
 	if (randomNumber < frequency)
 	{
 		// Get random spawn position
-		unsigned int randomYpos = rand() % (int)((spawnInterval.y - spawnInterval.x) + spawnInterval.x);
+		unsigned int randomYpos = RandomHelper::random_int<int>(spawnInterval.x,spawnInterval.y);
 
 		// Create object
 		InteractiveObject* newObject = InteractiveObject::create(resourceIndex,maskValue, isAnimated);
@@ -72,6 +71,7 @@ void InteractiveObjectFactory::createObject()
 		newObject->setCanHitPlayer(canHitPlayer);
 		newObject->setPosition(Director::getInstance()->getWinSize().width + (newObject->boundingBox().size.width) / 2 + 20, randomYpos);
 		newObject->setGravityAffected(gravityAffected);
+		newObject->setScale(scaleFactor);
 
 		Director::getInstance()->getRunningScene()->addChild(newObject);
 	}

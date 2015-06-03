@@ -9,7 +9,7 @@ using namespace std;
 class InteractiveObjectFactory
 {
 public:
-	static InteractiveObjectFactory* create(int resourceIndex, bool isAnimated, int maksValue, bool canBeFiredAt = false, bool canHitPlayer = false, bool gravityAffected = true);
+	static InteractiveObjectFactory* create(int resourceIndex, float scaleFactor ,bool isAnimated, int maksValue, bool canBeFiredAt = false, bool canHitPlayer = false, bool gravityAffected = true);
 	void setSpeed(Vec2 speed);
 	void setSpawnFrequency(int frequency);
 	void setGravityAffected(bool gravityAffected);
@@ -35,6 +35,7 @@ private:
 
 	GameLevel* parent;
 	int frequency;
+	float scaleFactor;
 	~InteractiveObjectFactory();
 	InteractiveObjectFactory();
 };

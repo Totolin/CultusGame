@@ -25,7 +25,7 @@ void GameLevel::setBackground(ParallaxBackground* levelBackground)
 void GameLevel::setPlayer(Player* mainCharacter)
 {
 	this->mainCharacter = mainCharacter;
-	this->addChild(mainCharacter);
+	this->addChild(mainCharacter,1000);
 }
 
 void GameLevel::setDistanceToBoss(long long distance)
@@ -245,6 +245,19 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 			return false;
 	}
 
+	if (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && HOLE_COLLISION_BITMASK == b->getCollisionBitmask())
+	{
+		InteractiveObject* hole = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+		collsionPlayerHole(mainCharacter, hole);
+		return false;
+	}
+	else if (PLAYER_COLLISION_BITMASK == b->getCollisionBitmask() && HOLE_COLLISION_BITMASK == a->getCollisionBitmask())
+	{
+		InteractiveObject* hole = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+		collsionPlayerHole(mainCharacter, hole);
+		return false;
+	}
+
 
 	return true;
 }
@@ -279,6 +292,16 @@ void GameLevel::collisionBulletMailBox(Bullet* bullet, InteractiveObject* mailbo
 
 	CCLOG("COLLISION BULLET <=> MAILBOX");
 }
+
+void GameLevel::collsionPlayerHole(Player* player, InteractiveObject* hole)
+{
+	// Log event
+	CCLOG("COLLISION PLAYER <=> HOLE");
+
+	// Player is hit
+	this->mainCharacter->isHit();
+}
+
 
 void GameLevel::collisionBulletEnemyCannon(Bullet* bullet, BossCannon* cannon)
 {
@@ -375,3 +398,4 @@ void GameLevel::togglePhysicsWorld()
 		this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	}
 }
+

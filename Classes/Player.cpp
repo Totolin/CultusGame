@@ -288,13 +288,16 @@ void Player::isHit()
 	this->invurnerable = true;
 	this->invurnerableTime = 90;
 
-	// TODO: discuss if this is neccesary
-	//this->getPhysicsBody()->applyImpulse(Vect(-70, 0));
+	// TODO: discuss if this is neccessary
+	this->getPhysicsBody()->applyImpulse(Vect(-70, 0));
 
-	FadeIn* fadeIn = FadeIn::create(0.5f);
-	FadeOut* fadeOut = FadeOut::create(0.5f);
-
-	Sequence* sequence = Sequence::create(fadeOut, fadeIn, fadeOut,fadeIn,fadeOut, fadeIn, nullptr);
+	//FadeIn* fadeIn = FadeIn::create(0.5f);
+	//FadeOut* fadeOut = FadeOut::create(0.5f);
+	TintBy* tintToWhite = TintBy::create(1, 255, 255, 255);
+	TintBy* tintBack = tintToWhite->reverse();
+	//Sequence* sequence = Sequence::create(fadeOut, fadeIn, fadeOut,fadeIn,fadeOut, fadeIn, nullptr);
+	Sequence* sequence = Sequence::create(tintToWhite, tintToWhite, tintToWhite, nullptr);
+	
 	this->runAction(sequence);
 }
 void Player::addScore(int toAdd)
