@@ -11,9 +11,8 @@ class BossCannon : public Sprite
 public:
 	enum FireState{
 		DONT_FIRE = 0,
-		METHOD1 = 1,
-		METHOD2 = 2,
-		METHOD3 = 3
+		FIRE= 1,
+		DESTROYED = 2
 	};
 
 	BossCannon();
@@ -26,15 +25,22 @@ public:
 	void reduceHP(int amount);
 	void setPhysics();
 	bool isDestroyed();
-	//void setFireMethod1(int numberOfBullets, int bulletInterval, int timeToTravel, Vector<Vec2> positions, int pauseTime);
+	void nextState();
+	void updatePlayerPosition(Vec2 position);
+	void setFireMethod(int fireMethod,int numberOfBullets, int pauseTime);
 private:
 
-	void fireMethod1();
+	void fire();
 	int HP;
 	int destroyedSpriteIndex;
 	int cannonProjectile;
-	bool destroyed;
 	int currentFireState;
 	int framesPassed;
+	Vec2 playerPosition;
+
+	// Firing properties
+	int fireMethod;
+	int numberOfBullets;
+	int pauseTime;
 };
 

@@ -102,6 +102,7 @@ GameLevel* GameLevel::createWithPhysics()
 void GameLevel::update(float delta)
 {
 	updateUI();
+	this->levelBoss->updatePlayerPosition(this->mainCharacter->getPosition());
 
 	if (bossMode) { return; }
 
@@ -117,7 +118,6 @@ void GameLevel::update(float delta)
 		this->levelBoss->moveIn(Vec2(1100,200));
 		this->bossMode = true;
 	}
-
 }
 
 void GameLevel::updateUI()
@@ -245,21 +245,18 @@ bool GameLevel::onContactBegin(PhysicsContact& contact)
 			return false;
 	}
 
-	if (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && HOLE_COLLISION_BITMASK == b->getCollisionBitmask())
+	if (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && SPIKES_COLLISION_BITMASK == b->getCollisionBitmask())
 	{
 		InteractiveObject* hole = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
 		collsionPlayerHole(mainCharacter, hole);
 		return false;
 	}
-	else if (PLAYER_COLLISION_BITMASK == b->getCollisionBitmask() && HOLE_COLLISION_BITMASK == a->getCollisionBitmask())
+	else if (PLAYER_COLLISION_BITMASK == b->getCollisionBitmask() && SPIKES_COLLISION_BITMASK == a->getCollisionBitmask())
 	{
 		InteractiveObject* hole = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
 		collsionPlayerHole(mainCharacter, hole);
 		return false;
 	}
-
-	if ()
-
 
 	return true;
 }
@@ -298,7 +295,7 @@ void GameLevel::collisionBulletMailBox(Bullet* bullet, InteractiveObject* mailbo
 void GameLevel::collsionPlayerHole(Player* player, InteractiveObject* hole)
 {
 	// Log event
-	CCLOG("COLLISION PLAYER <=> HOLE");
+	CCLOG("COLLISION PLAYER <=> SPIKES");
 
 	// Player is hit
 	this->mainCharacter->isHit();

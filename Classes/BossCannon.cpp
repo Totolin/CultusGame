@@ -1,6 +1,7 @@
 #include "BossCannon.h"
 #include "ResourceLoader.h"
 #include "GameValues.h"
+#include "BossBullet.h"
 
 
 BossCannon::BossCannon()
@@ -14,23 +15,14 @@ BossCannon::~BossCannon()
 
 void BossCannon::update(float delta)
 {
+	// Not firing or dead
+	if (currentFireState != FIRE) { return; }
+	
 	framesPassed++;
 
-	switch (currentFireState){
-		case DONT_FIRE:
-			break;
-		case METHOD1:
-			fireMethod1();
-			break;
-		case METHOD2:
-			//fireMethod2();
-			break;
-		case METHOD3:
-			//fireMethod3();
-			break;
-		default:
-			break;
-	}
+	// Needs to fire
+	fire();
+
 }
 
 BossCannon* BossCannon::create(int spriteIndex, int destroyedSpriteIndex, int cannonProjectile)
@@ -44,7 +36,9 @@ BossCannon* BossCannon::create(int spriteIndex, int destroyedSpriteIndex, int ca
 		cannon->HP = 100;
 		cannon->destroyedSpriteIndex = destroyedSpriteIndex;
 		cannon->cannonProjectile = cannonProjectile;
-		cannon->destroyed = false;
+		cannon->playerPosition = Vec2(0, 0);
+		cannon->numberOfBullets = 0;
+		cannon->pauseTime = 0;
 		cannon->currentFireState = FireState::DONT_FIRE;
 		cannon->framesPassed = 0;
 		return cannon;
@@ -68,7 +62,7 @@ void BossCannon::destroyCannon()
 {
 	this->removeFromPhysicsWorld();
 	this->initWithFile(ResourceLoader::getImageFile(destroyedSpriteIndex));
-	this->destroyed = true;
+	this->currentFireState = FireState::DESTROYED;
 }
 
 void BossCannon::setPhysics()
@@ -83,22 +77,50 @@ void BossCannon::setPhysics()
 
 bool BossCannon::isDestroyed()
 {
-	return this->destroyed;
+	return currentFireState == FireState::DESTROYED;
 }
 
-void BossCannon::fireMethod1()
+void BossCannon::fire()
 {
-	Vec2 startPosition;
-	startPosition.x = this->getPositionX() - this->getBoundingBox().size.width / 2;
-	startPosition.y = this->getPositionY();
+	if (framesPassed == 50){
+		// Reset counter 
+		framesPassed = 0;
 
-	if (framesPassed >= 10){
-		//BossBullet* bullet = BossBullet::create();
+		// Create bullet
+		BossBullet* bullet = BossBullet::create(cannonProjectile);
 
+		// Calculate where to fire it
+		Vec2 startPosition = convertToWindowSpace(this->getPosition());
+		//startPosition.x -= 200;
+		startPosition.x -= this->getBoundingBox().size.width / 2;
+		startPosition.x -= bullet->getBoundingBox().size.width;
+
+		float dx = playerPosition.x - startPosition.x;
+		float dy = playerPosition.y - startPosition.y;
+		float dlt = sqrt(dx*dx + dy*dy);
+
+		Vec2 velocity(dx/dlt * 300, dy/dlt * 300);
+		bullet->setPosition(startPosition);
+		bullet->getPhysicsBody()->setVelocity(velocity);
+		// Add to scene
+		Director::getInstance()->getRunningScene()->addChild(bullet);
 	}
 }
 
-// void BossCannon::setFireMethod1(int numberOfBullets, int bulletInterval, int timeToTravel, Vector<Vec2> positions, int pauseTime)
-// {
-// 
-// }
+void BossCannon::updatePlayerPosition(Vec2 position)
+{
+	//CCLOG((to_string(this->getPositionX()) + " " + to_string(this->getPositionY())).c_str());	
+	this->playerPosition = position;
+}
+
+void BossCannon::setFireMethod(int fireMethod, int numberOfBullets, int pauseTime)
+{
+	this->numberOfBullets = numberOfBullets;
+	this->pauseTime = pauseTime;
+	this->fireMethod = fireMethod;
+}
+
+void BossCannon::nextState()
+{
+	this->currentFireState++;
+}

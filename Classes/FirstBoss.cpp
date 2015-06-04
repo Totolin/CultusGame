@@ -30,6 +30,7 @@ void FirstBoss::update(float delta)
 			break;
 		case State::GO_TO_MODE_1:
 			cannon1->setPhysics();
+			cannon1->nextState();
 			nextState();
 			break;
 		case State::FIRST_MODE:
@@ -87,7 +88,12 @@ void FirstBoss::setPhysics()
 void FirstBoss::addCannon_1(int cannonIndexAlive, int cannonIndexDestroyed, int cannonProjectile)
 {
 	BossCannon* cannon = BossCannon::create(cannonIndexAlive, cannonIndexDestroyed, cannonProjectile);
-	cannon->setPosition(Vec2(70, 90));
+	cannon->setPosition(Vec2(70, 100));
 	this->addChild(cannon);
 	cannon1 = cannon;
+}
+ 
+void FirstBoss::updatePlayerPosition(Vec2 playerPosition)
+{
+	this->cannon1->updatePlayerPosition(playerPosition);
 }

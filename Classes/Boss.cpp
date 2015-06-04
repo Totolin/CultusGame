@@ -49,4 +49,9 @@ void Boss::moveIn(Vec2 position)
 	// must be overridden
 }
 
+void Boss::updatePlayerPosition(Vec2 playerPosition)
+{
+	// must be overridden
+}
+
 

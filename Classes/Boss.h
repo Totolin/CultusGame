@@ -35,6 +35,7 @@ public:
 	void moveX(int pixelsToMove);
 	void moveY(int pixelsToMove);
 	virtual void moveIn(Vec2 position);
+	virtual void updatePlayerPosition(Vec2 playerPosition);
 protected:
 	int currentState;
 };

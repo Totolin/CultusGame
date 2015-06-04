@@ -247,7 +247,6 @@ void Player::callback_WorUp()
 	// If no action is occurring, and the player is RUNNING , JUMP
 	// If JUMP action is occurring, DOUBLE JUMP
 	// If DOUBLE JUMP action is occurring, do nothing
-
 	if (this->currentAction == Action::DOUBLE_JUMPING)
 	{
 		return;
@@ -293,7 +292,7 @@ void Player::isHit()
 
 	//FadeIn* fadeIn = FadeIn::create(0.5f);
 	//FadeOut* fadeOut = FadeOut::create(0.5f);
-	TintBy* tintToWhite = TintBy::create(1, 255, 255, 255);
+	TintBy* tintToWhite = TintBy::create(1, 0, 255, 255);
 	TintBy* tintBack = tintToWhite->reverse();
 	//Sequence* sequence = Sequence::create(fadeOut, fadeIn, fadeOut,fadeIn,fadeOut, fadeIn, nullptr);
 	Sequence* sequence = Sequence::create(tintToWhite, tintToWhite, tintToWhite, nullptr);

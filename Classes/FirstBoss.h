@@ -12,7 +12,7 @@ public:
 	void setPhysics();
 	void addCannon_1(int cannonIndexAlive, int cannonIndexDestroyed, int cannonProjectile);
 	virtual void moveIn(Vec2 position);
-
+	void updatePlayerPosition(Vec2 playerPosition);
 private:
 	Vec2 positionToMove;
 	BossCannon* cannon1;

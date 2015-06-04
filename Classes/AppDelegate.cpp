@@ -39,8 +39,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("firstboss.png", OBJECT_FIRSTBOSS);
 	resLoader.addImageFile("firstboss_cannon_1.png", OBJECT_FIRSTBOSS_CANNON_1);
 	resLoader.addImageFile("firstboss_cannon_1_d.png", OBJECT_FIRSTBOSS_CANNON_1_D);
-	resLoader.addImageFile("firstboss_cannon_1_pr.png", OBJECT_FIRSTBOSS_CANNON_1_PR);
-	resLoader.addImageFile("groundhole.png", OBJECT_HOLE);
+	resLoader.addImageFile("firstboss_cannon_1_pr.png", OBJECT_BOSSBULLET);
+	resLoader.addImageFile("spikes.png", OBJECT_SPIKES);
 
 	// Create a new GameLevel
 	auto firstLevel = GameLevel::create();
@@ -68,7 +68,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	// Create boss
 	FirstBoss* boss = FirstBoss::create(OBJECT_FIRSTBOSS);
-	boss->addCannon_1(OBJECT_FIRSTBOSS_CANNON_1, OBJECT_FIRSTBOSS_CANNON_1_D, OBJECT_FIRSTBOSS_CANNON_1_PR);
+	boss->addCannon_1(OBJECT_FIRSTBOSS_CANNON_1, OBJECT_FIRSTBOSS_CANNON_1_D, OBJECT_BOSSBULLET);
 
 	// Create Interactive object factory
 	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,1,false, MAILBOX_COLLISION_BITMASK,true, false, true);
@@ -80,17 +80,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	rocketFactory->setSpeed(Vec2(-20, 0));
 	rocketFactory->setSpawnFrequency(30);
 
-	InteractiveObjectFactory* holeFactory = InteractiveObjectFactory::create(OBJECT_HOLE,0.5, false, HOLE_COLLISION_BITMASK, false, true, true);
-	holeFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX + 50));
-	holeFactory->setSpawnFrequency(5);
+	InteractiveObjectFactory* spikesFactory = InteractiveObjectFactory::create(OBJECT_SPIKES,0.5, false, SPIKES_COLLISION_BITMASK, false, true, true);
+	spikesFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX + 50));
+	spikesFactory->setSpawnFrequency(5);
 
 	firstLevel->setBackground(bckFirstLevel);
 	firstLevel->setPlayer(hero);
 	firstLevel->setBoss(boss);
-	firstLevel->setDistanceToBoss(10000);
+	firstLevel->setDistanceToBoss(100);
 	firstLevel->addObjectFactory(mailboxFactory);
 	firstLevel->addObjectFactory(rocketFactory);
-	firstLevel->addObjectFactory(holeFactory);
+	firstLevel->addObjectFactory(spikesFactory);
 
 	// Add first level to stack
 	Director::getInstance()->pushScene(firstLevel);
