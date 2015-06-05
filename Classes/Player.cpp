@@ -20,6 +20,11 @@ void Player::setBossMode(bool b)
 	this->bossMode = b;
 }
 
+bool Player::isInvurnerable()
+{
+	return invurnerable;
+}
+
 // Creates an instance of Player
 // @param png - The path to the PNG representation of the sprite
 // @param plist - The path to the PLIST representation of the sprite

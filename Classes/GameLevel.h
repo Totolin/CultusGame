@@ -10,6 +10,7 @@
 #include <string>
 #include <cocos2d/cocos/ui/UILoadingBar.h>
 #include "UIBar.h"
+#include "BossBullet.h"
 
 class BossCannon;
 USING_NS_CC;
@@ -39,6 +40,9 @@ public:
 	void addEventListener();
 	void togglePhysicsWorld();
 private:
+	bool collisionPlayerBossBulet(Player* player, BossBullet* bossBullet);
+	void collisionBulletBossBullet(Bullet* bullet, BossBullet* bossBullet);
+	bool collisionBossBulletGround(BossBullet* bossBullet);
 	bool onContactBegin(PhysicsContact &contact);
 
 	Boss* levelBoss;

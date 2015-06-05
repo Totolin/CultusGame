@@ -89,6 +89,7 @@ void FirstBoss::addCannon_1(int cannonIndexAlive, int cannonIndexDestroyed, int 
 {
 	BossCannon* cannon = BossCannon::create(cannonIndexAlive, cannonIndexDestroyed, cannonProjectile);
 	cannon->setPosition(Vec2(70, 100));
+	cannon->setFireMethod(2, 10, 50);
 	this->addChild(cannon);
 	cannon1 = cannon;
 }

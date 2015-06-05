@@ -41,6 +41,8 @@ BossCannon* BossCannon::create(int spriteIndex, int destroyedSpriteIndex, int ca
 		cannon->pauseTime = 0;
 		cannon->currentFireState = FireState::DONT_FIRE;
 		cannon->framesPassed = 0;
+		cannon->numberOfFiredBullets = 0;
+		cannon->cooldown = 0;
 		return cannon;
 	}
 
@@ -82,28 +84,75 @@ bool BossCannon::isDestroyed()
 
 void BossCannon::fire()
 {
-	if (framesPassed == 50){
-		// Reset counter 
-		framesPassed = 0;
+	if (cooldown > 0){
+		cooldown--;
+		framesPassed--;
+		return;
+	}
 
-		// Create bullet
-		BossBullet* bullet = BossBullet::create(cannonProjectile);
+	if (fireMethod == 1){
+		if (numberOfFiredBullets == numberOfBullets && cooldown == 0)
+		{
+			cooldown = pauseTime;
+			numberOfFiredBullets = 0;
+		}
 
-		// Calculate where to fire it
-		Vec2 startPosition = convertToWindowSpace(this->getPosition());
-		//startPosition.x -= 200;
-		startPosition.x -= this->getBoundingBox().size.width / 2;
-		startPosition.x -= bullet->getBoundingBox().size.width;
+		if (framesPassed == 10){
+			// Reset counter 
+			framesPassed = 0;
 
-		float dx = playerPosition.x - startPosition.x;
-		float dy = playerPosition.y - startPosition.y;
-		float dlt = sqrt(dx*dx + dy*dy);
+			// Create bullet
+			BossBullet* bullet = BossBullet::create(cannonProjectile);
 
-		Vec2 velocity(dx/dlt * 300, dy/dlt * 300);
-		bullet->setPosition(startPosition);
-		bullet->getPhysicsBody()->setVelocity(velocity);
-		// Add to scene
-		Director::getInstance()->getRunningScene()->addChild(bullet);
+			// Calculate where to fire it
+			Vec2 startPosition = this->getParent()->convertToWorldSpace(this->getPosition());
+			startPosition.x -= this->getBoundingBox().size.width / 2;
+			startPosition.x -= bullet->getBoundingBox().size.width / 2;
+
+			float dx = playerPosition.x - startPosition.x;
+			float dy = playerPosition.y - startPosition.y;
+			float dlt = sqrt(dx*dx + dy*dy);
+
+			Vec2 velocity(dx / dlt * 300, dy / dlt * 300);
+			bullet->setPosition(startPosition);
+			bullet->getPhysicsBody()->setVelocity(velocity);
+			// Add to scene
+			Director::getInstance()->getRunningScene()->addChild(bullet);
+
+			numberOfFiredBullets++;
+		}
+	}
+	else if (fireMethod == 2)
+	{
+		if (numberOfFiredBullets == numberOfBullets && cooldown == 0)
+		{
+			cooldown = pauseTime;
+			numberOfFiredBullets = 0;
+		}
+
+		if (framesPassed == 50){
+			
+			framesPassed = 0;
+
+			// Create bullet
+			BossBullet* bullet = BossBullet::create(cannonProjectile);
+			// Calculate where to fire it
+			Vec2 startPosition = this->getParent()->convertToWorldSpace(this->getPosition());
+			startPosition.x -= this->getBoundingBox().size.width / 2;
+			startPosition.x -= bullet->getBoundingBox().size.width / 2;
+			bullet->setPosition(startPosition);
+			bullet->setExplodeOnGround(true);
+
+			JumpTo* jump = JumpTo::create(1, playerPosition, 300, 1);
+			MoveTo* move = MoveTo::create(0.3f, Vec2(playerPosition.x, playerPosition.y - 200));
+			Sequence* sequence = Sequence::create(jump, move, nullptr);
+
+			bullet->runAction(sequence);
+			
+			Director::getInstance()->getRunningScene()->addChild(bullet);
+
+			numberOfFiredBullets++;
+		}
 	}
 }
 
@@ -113,7 +162,7 @@ void BossCannon::updatePlayerPosition(Vec2 position)
 	this->playerPosition = position;
 }
 
-void BossCannon::setFireMethod(int fireMethod, int numberOfBullets, int pauseTime)
+void BossCannon::setFireMethod(int fireMethod,int numberOfBullets, int pauseTime)
 {
 	this->numberOfBullets = numberOfBullets;
 	this->pauseTime = pauseTime;

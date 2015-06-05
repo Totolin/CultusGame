@@ -41,6 +41,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("firstboss_cannon_1_d.png", OBJECT_FIRSTBOSS_CANNON_1_D);
 	resLoader.addImageFile("firstboss_cannon_1_pr.png", OBJECT_BOSSBULLET);
 	resLoader.addImageFile("spikes.png", OBJECT_SPIKES);
+	resLoader.addImageFile("firtboss_cannon_2.png", OBJECT_FIRSTBOSS_CANNON_2);
+	resLoader.addImageFile("firstboss_cannon_2_d.png", OBJECT_FIRSTBOSS_CANNON_2_D);
+	resLoader.addImageFile("firstboss_cannon_2_pr.png", OBJECT_BOSSBULLET);
+
 
 	// Create a new GameLevel
 	auto firstLevel = GameLevel::create();

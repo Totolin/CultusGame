@@ -11,6 +11,7 @@ BossBullet* BossBullet::create(int bulletFileIndex)
 		bullet->autorelease();
 		bullet->scheduleUpdate();
 		bullet->hit = false;
+		bullet->explodeOnGround = false;
 		auto spriteBody = PhysicsBody::createCircle(bullet->boundingBox().size.width/2, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 		spriteBody->setGravityEnable(false);
 		spriteBody->setCollisionBitmask(BOSSBULLET_COLLISION_BITMASK);
@@ -43,4 +44,14 @@ void BossBullet::update(float delta)
 void BossBullet::isHit()
 {
 	hit = true;
+}
+
+void BossBullet::setExplodeOnGround(bool b)
+{
+	explodeOnGround = b;
+}
+
+bool BossBullet::getExplodeOnGround()
+{
+	return explodeOnGround;
 }

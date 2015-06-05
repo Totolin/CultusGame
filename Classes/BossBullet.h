@@ -10,6 +10,9 @@ public:
 	static BossBullet* create(int bulletFileIndex);
 	virtual void update(float delta) override;
 	void isHit();
+	void setExplodeOnGround(bool b);
+	bool getExplodeOnGround();
 private:
 	bool hit;
+	bool explodeOnGround;
 };

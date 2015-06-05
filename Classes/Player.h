@@ -20,6 +20,7 @@ public:
 
 	~Player();
 	void setBossMode(bool b);
+	bool isInvurnerable();
 	static Player* create();
 
 	void initOptions();

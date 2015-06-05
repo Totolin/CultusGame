@@ -12,7 +12,7 @@ public:
 	enum FireState{
 		DONT_FIRE = 0,
 		FIRE= 1,
-		DESTROYED = 2
+		DESTROYED = 2,
 	};
 
 	BossCannon();
@@ -36,11 +36,13 @@ private:
 	int cannonProjectile;
 	int currentFireState;
 	int framesPassed;
+	int cooldown;
 	Vec2 playerPosition;
 
 	// Firing properties
 	int fireMethod;
 	int numberOfBullets;
 	int pauseTime;
+	int numberOfFiredBullets;
 };
 
