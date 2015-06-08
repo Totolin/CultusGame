@@ -1,42 +1,53 @@
 #pragma once
-#include "cocos2d.h"
-#include <string>
-USING_NS_CC;
-
-using namespace std;
-
+#include "Boss.h"
+#include "BossCannon.h"
+#include <vector>
+#define STATE_LEFT_SHIFT -2
 class Boss : public Sprite
 {
-public:
-
 	enum State
 	{
 		AWAITING = -1,
 
 		MOVE_IN = 0,
-		GO_TO_MODE_1 =1,
+		GO_TO_MODE_1 = 1,
 
-		FIRST_MODE=2,
+		FIRST_MODE = 2,
 		GO_TO_MODE_2 = 3,
 
-		SECOND = 4,
+		SECOND_MODE = 4,
 		GO_TO_MODE_3 = 5,
 
-		THIRD = 6,
+		THIRD_MODE = 6,
 		GO_TO_DIE = 7,
 		DYING = 8
 	};
 
+public:
 	Boss();
 	~Boss();
+
 	virtual void update(float delta) override;
-	void setState(State state);
+	static Boss* create(int spriteIndex);
+	void setPhysics();
+	void addCannon(int stateOfParent, BossCannon* cannon);
+	void moveIn(Vec2 position);
+	void updatePlayerPosition(Vec2 playerPosition);
 	void nextState();
 	void moveX(int pixelsToMove);
 	void moveY(int pixelsToMove);
-	virtual void moveIn(Vec2 position);
-	virtual void updatePlayerPosition(Vec2 playerPosition);
-protected:
+	void setState(State state);
+
+private:
+	Vec2 positionToMove;
 	int currentState;
+	void changeCannons();
+	bool checkCannonsStatus();
+	int numberOfDestroyedCannons;
+	int cannonsArrayStateIndex;
+
+	// We will consider a maximum number of states to be 3. Meaning that only
+	// 3 arrays of cannons are necessary.
+	Vector<BossCannon*> cannons[3];
 };
 

@@ -469,7 +469,7 @@ bool GameLevel::collisionPlayerBossBulet(Player* player, BossBullet* bossBullet)
 
 bool GameLevel::collisionBossBulletGround(BossBullet* bossBullet)
 {
-	if (!bossBullet->getExplodeOnGround())
+	if (!bossBullet->getExplodeOnGround() || bossBullet == nullptr)
 		return false;
 
 	// Create explosion

@@ -6,7 +6,7 @@
 #include "GameValues.h"
 #include "IntermediaryScene.h"
 #include <iostream>
-#include "FirstBoss.h"
+#include "Boss.h"
 #include "BossCannon.h"
 
 USING_NS_CC;
@@ -39,11 +39,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("firstboss.png", OBJECT_FIRSTBOSS);
 	resLoader.addImageFile("firstboss_cannon_1.png", OBJECT_FIRSTBOSS_CANNON_1);
 	resLoader.addImageFile("firstboss_cannon_1_d.png", OBJECT_FIRSTBOSS_CANNON_1_D);
-	resLoader.addImageFile("firstboss_cannon_1_pr.png", OBJECT_BOSSBULLET);
+	resLoader.addImageFile("firstboss_cannon_1_pr.png", OBJECT_BOSSBULLET_LASER);
 	resLoader.addImageFile("spikes.png", OBJECT_SPIKES);
-	resLoader.addImageFile("firtboss_cannon_2.png", OBJECT_FIRSTBOSS_CANNON_2);
+	resLoader.addImageFile("firstboss_cannon_2.png", OBJECT_FIRSTBOSS_CANNON_2);
 	resLoader.addImageFile("firstboss_cannon_2_d.png", OBJECT_FIRSTBOSS_CANNON_2_D);
-	resLoader.addImageFile("firstboss_cannon_2_pr.png", OBJECT_BOSSBULLET);
+	resLoader.addImageFile("firstboss_cannon_2_pr.png", OBJECT_BOSSBULLET_SPIKEBALL);
 
 
 	// Create a new GameLevel
@@ -71,8 +71,18 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	hero->setTag(PLAYER_TAG);
 
 	// Create boss
-	FirstBoss* boss = FirstBoss::create(OBJECT_FIRSTBOSS);
-	boss->addCannon_1(OBJECT_FIRSTBOSS_CANNON_1, OBJECT_FIRSTBOSS_CANNON_1_D, OBJECT_BOSSBULLET);
+	Boss* boss = Boss::create(OBJECT_FIRSTBOSS);
+
+	BossCannon* cannon1 = BossCannon::create(OBJECT_FIRSTBOSS_CANNON_1, OBJECT_FIRSTBOSS_CANNON_1_D, OBJECT_BOSSBULLET_LASER);
+	cannon1->setPosition(Vec2(70, 100));
+	cannon1->setFireMethod(1, 10, 50);
+
+	BossCannon* cannon2 = BossCannon::create(OBJECT_FIRSTBOSS_CANNON_2, OBJECT_FIRSTBOSS_CANNON_2_D, OBJECT_BOSSBULLET_SPIKEBALL);
+	cannon2->setPosition(Vec2(50, 50));
+	cannon2->setFireMethod(2, 10, 50);
+
+	boss->addCannon(1,cannon2);
+	boss->addCannon(2,cannon1);
 
 	// Create Interactive object factory
 	InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX,1,false, MAILBOX_COLLISION_BITMASK,true, false, true);
