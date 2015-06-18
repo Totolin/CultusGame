@@ -131,8 +131,11 @@ void BossCannon::fire()
 		}
 
 		if (framesPassed == 50){
-			
+			// Reset frames counter
 			framesPassed = 0;
+
+			// Set bullet to shoot at ground level
+			this->playerPosition.y = PLAYER_GROUND;
 
 			// Create bullet
 			BossBullet* bullet = BossBullet::create(cannonProjectile);

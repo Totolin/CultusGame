@@ -28,7 +28,7 @@ void IntermediaryScene::setCreditsInterval(int framesDelay)
 
 void IntermediaryScene::addCreditsText(string text)
 {
-	this->credits.push_back(text);
+	this->creditsText = text;
 }
 
 void IntermediaryScene::addMenuItem(MenuItem* item)
@@ -83,5 +83,13 @@ bool IntermediaryScene::createMenu()
 	this->menu->setPosition(menuPosition);
 	this->menu->alignItemsHorizontallyWithPadding(50);
 	this->addChild(menu);
+	return true;
+}
+
+bool IntermediaryScene::createCredits()
+{
+	this->label = Label::createWithTTF("0", "font.ttf", 20);
+	this->label->setDimensions(Director::getInstance()->getWinSize().width - 200, Director::getInstance()->getWinSize().height * 3);
+
 	return true;
 }

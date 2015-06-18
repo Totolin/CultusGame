@@ -27,6 +27,7 @@ public:
 
 	void addMenuItem(MenuItem* item);
 	bool createMenu();
+	bool createCredits();
 	void setBackground(ParallaxBackground* levelBackground);
 	void setPlayer(DummyPlayer* mainCharacter);
 	void setMusic(string backgroundMusic);
@@ -38,10 +39,11 @@ public:
 private:
 	IntermediaryScene();
 	~IntermediaryScene();
-
-	vector<string> credits;
+	string creditsText;
 	Vector<MenuItem*> menuItems;
+	
 	Menu* menu;
+	Label* label;
 
 	Type type;
 	int creditsInterval;

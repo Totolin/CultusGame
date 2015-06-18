@@ -8,6 +8,7 @@
 #include <iostream>
 #include "Boss.h"
 #include "BossCannon.h"
+#include "proj.win32\SceneManager.h"
 
 USING_NS_CC;
 
@@ -107,7 +108,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	firstLevel->addObjectFactory(spikesFactory);
 
 	// Add first level to stack
-	Director::getInstance()->pushScene(firstLevel);
+	//Director::getInstance()->pushScene(firstLevel);
+	SceneManager::getInstance().pushScene(firstLevel);
 
 	// Create start scene
 	ParallaxBackground* bckMenu = new ParallaxBackground();
@@ -137,6 +139,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	startScene->addMenuItem(optionsButton);
 	startScene->addMenuItem(exitButton);
 	startScene->createMenu();
+	SceneManager::getInstance().setMenuScene(startScene);
 
 	director->runWithScene(startScene);
 
@@ -153,5 +156,6 @@ void AppDelegate::applicationWillEnterForeground() {
 
 void AppDelegate::playButtonCallback()
 {
-	Director::getInstance()->popScene();
+	//Director::getInstance()->popScene();
+	SceneManager::getInstance().popScene();
 }

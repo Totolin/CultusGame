@@ -2,6 +2,7 @@
 #include "UIBar.h"
 #include "BossCannon.h"
 #include "BossBullet.h"
+#include "proj.win32\SceneManager.h"
 
 GameLevel::GameLevel()
 {
@@ -447,6 +448,8 @@ void GameLevel::addEventListener()
 
 void GameLevel::togglePhysicsWorld()
 {
+	SceneManager::getInstance().openMenu(this);
+	/*
 	if (this->getPhysicsWorld()->getDebugDrawMask() == PhysicsWorld::DEBUGDRAW_ALL)
 	{
 		this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
@@ -455,6 +458,7 @@ void GameLevel::togglePhysicsWorld()
 	{
 		this->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	}
+	*/
 }
 
 bool GameLevel::collisionPlayerBossBulet(Player* player, BossBullet* bossBullet)

@@ -102,6 +102,7 @@ void Boss::updatePlayerPosition(Vec2 playerPosition)
 
 	for (int i = 0; i < cannons[cannonsArrayStateIndex].size(); i++)
 	{
+		if (cannons[cannonsArrayStateIndex].at(i) == nullptr) { continue; }
 		cannons[cannonsArrayStateIndex].at(i)->updatePlayerPosition(playerPosition);
 	}
 }
