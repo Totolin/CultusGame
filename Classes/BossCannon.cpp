@@ -117,7 +117,7 @@ void BossCannon::fire()
 			bullet->setPosition(startPosition);
 			bullet->getPhysicsBody()->setVelocity(velocity);
 			// Add to scene
-			Director::getInstance()->getRunningScene()->addChild(bullet);
+			Director::getInstance()->getRunningScene()->getChildByTag(LAYER_TAG)->addChild(bullet);
 
 			numberOfFiredBullets++;
 		}
@@ -152,7 +152,8 @@ void BossCannon::fire()
 
 			bullet->runAction(sequence);
 			
-			Director::getInstance()->getRunningScene()->addChild(bullet);
+			Director::getInstance()->getRunningScene()->getChildByTag(LAYER_TAG)->addChild(bullet);
+
 
 			numberOfFiredBullets++;
 		}

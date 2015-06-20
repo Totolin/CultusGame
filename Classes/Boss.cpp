@@ -45,6 +45,7 @@ void Boss::update(float delta)
 			cannonsArrayStateIndex++;
 			changeCannons();
 			nextState();
+			break;
 		case State::SECOND_MODE:
  			if (checkCannonsStatus()) {
 				nextState();
@@ -53,6 +54,8 @@ void Boss::update(float delta)
 		case State::GO_TO_MODE_3:
 			cannonsArrayStateIndex++;
 			setPhysics();
+			nextState();
+			break;
 		default:
 			break;
 	}

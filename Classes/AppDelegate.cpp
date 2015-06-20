@@ -1,6 +1,6 @@
 #include "AppDelegate.h"
 #include "TestScene.h"
-#include "GameLevel.h"
+#include "GameLayer.h"
 #include "ParallaxBackground.h"
 #include "ResourceLoader.h"
 #include "GameValues.h"
@@ -8,7 +8,7 @@
 #include <iostream>
 #include "Boss.h"
 #include "BossCannon.h"
-#include "proj.win32\SceneManager.h"
+#include "GameLevel.h"
 
 USING_NS_CC;
 
@@ -47,8 +47,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("firstboss_cannon_2_pr.png", OBJECT_BOSSBULLET_SPIKEBALL);
 
 
-	// Create a new GameLevel
-	auto firstLevel = GameLevel::create();
+	// Create a new GameLayer
+	GameLayer* firstLevelLayer = GameLayer::create();
 
 	// Create a background
 	ParallaxBackground* bckFirstLevel = new ParallaxBackground();
@@ -99,17 +99,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	spikesFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX + 50));
 	spikesFactory->setSpawnFrequency(5);
 
-	firstLevel->setBackground(bckFirstLevel);
-	firstLevel->setPlayer(hero);
-	firstLevel->setBoss(boss);
-	firstLevel->setDistanceToBoss(100);
-	firstLevel->addObjectFactory(mailboxFactory);
-	firstLevel->addObjectFactory(rocketFactory);
-	firstLevel->addObjectFactory(spikesFactory);
+	firstLevelLayer->setBackground(bckFirstLevel);
+	firstLevelLayer->setPlayer(hero);
+	firstLevelLayer->setBoss(boss);
+	firstLevelLayer->setDistanceToBoss(1000);
+	firstLevelLayer->addObjectFactory(mailboxFactory);
+	firstLevelLayer->addObjectFactory(rocketFactory);
+	firstLevelLayer->addObjectFactory(spikesFactory);
+
+
+	//Create Scene
+	GameLevel* firstLevel = GameLevel::create(firstLevelLayer, nullptr);
+
 
 	// Add first level to stack
-	//Director::getInstance()->pushScene(firstLevel);
-	SceneManager::getInstance().pushScene(firstLevel);
+	Director::getInstance()->pushScene(firstLevel);
 
 	// Create start scene
 	ParallaxBackground* bckMenu = new ParallaxBackground();
@@ -139,7 +143,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	startScene->addMenuItem(optionsButton);
 	startScene->addMenuItem(exitButton);
 	startScene->createMenu();
-	SceneManager::getInstance().setMenuScene(startScene);
 
 	director->runWithScene(startScene);
 
@@ -156,6 +159,5 @@ void AppDelegate::applicationWillEnterForeground() {
 
 void AppDelegate::playButtonCallback()
 {
-	//Director::getInstance()->popScene();
-	SceneManager::getInstance().popScene();
+	Director::getInstance()->popScene();
 }

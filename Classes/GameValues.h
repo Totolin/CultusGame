@@ -55,3 +55,5 @@
 
 #define ROCKET_KILL_POINTS 30
 #define MAILBOX_KILL_POINTS 10
+
+#define LAYER_TAG 111

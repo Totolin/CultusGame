@@ -1,5 +1,5 @@
 #include "InteractiveObjectFactory.h"
-#include <math.h>
+#include "GameValues.h"
 #include "InteractiveObject.h"
 
 InteractiveObjectFactory::~InteractiveObjectFactory()
@@ -73,7 +73,7 @@ void InteractiveObjectFactory::createObject()
 		newObject->setGravityAffected(gravityAffected);
 		newObject->setScale(scaleFactor);
 
-		Director::getInstance()->getRunningScene()->addChild(newObject);
+		Director::getInstance()->getRunningScene()->getChildByTag(LAYER_TAG)->addChild(newObject);
 	}
 }
 
@@ -98,7 +98,7 @@ void InteractiveObjectFactory::setResource(int resource)
 	this->resourceIndex = resource;
 }
 
-void InteractiveObjectFactory::setParent(GameLevel* parent)
+void InteractiveObjectFactory::setParent(GameLayer* parent)
 {
 	this->parent = parent;
 }

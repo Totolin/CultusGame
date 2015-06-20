@@ -23,7 +23,7 @@ void Weapon::fireBullet(float X, float Y)
 	Bullet* bullet = Bullet::create(bulletLevel);
 	bullet->setPosition(X + bullet->getBoundingBox().size.width/2, Y);
 
-	Director::getInstance()->getRunningScene()->addChild(bullet);
+	Director::getInstance()->getRunningScene()->getChildByTag(LAYER_TAG)->addChild(bullet);
 }
 
 
