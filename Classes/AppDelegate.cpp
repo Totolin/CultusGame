@@ -9,6 +9,7 @@
 #include "Boss.h"
 #include "BossCannon.h"
 #include "GameLevel.h"
+#include "SceneManager.h"
 
 USING_NS_CC;
 
@@ -107,13 +108,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	firstLevelLayer->addObjectFactory(rocketFactory);
 	firstLevelLayer->addObjectFactory(spikesFactory);
 
+	// Create Pause Menu
 
 	//Create Scene
-	GameLevel* firstLevel = GameLevel::create(firstLevelLayer, nullptr);
+	GameLevel* firstLevel = GameLevel::create(firstLevelLayer);
 
 
 	// Add first level to stack
-	Director::getInstance()->pushScene(firstLevel);
+	SceneManager::getInstance().addSceneToMainStack(firstLevel);
 
 	// Create start scene
 	ParallaxBackground* bckMenu = new ParallaxBackground();
@@ -159,5 +161,5 @@ void AppDelegate::applicationWillEnterForeground() {
 
 void AppDelegate::playButtonCallback()
 {
-	Director::getInstance()->popScene();
+	SceneManager::getInstance().fillStack();
 }

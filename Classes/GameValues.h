@@ -57,3 +57,4 @@
 #define MAILBOX_KILL_POINTS 10
 
 #define LAYER_TAG 111
+#define PAUSE_TAG 222
