@@ -8,7 +8,7 @@ using namespace std;
 class PauseMenu : public Layer
 {
 public:
-	static PauseMenu* create(GameLevel* parentRefference);
+	static PauseMenu* create();
 private:
 	PauseMenu();
 	~PauseMenu();

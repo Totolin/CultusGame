@@ -76,7 +76,7 @@ Player* Player::create()
 		spriteBody->setCollisionBitmask(PLAYER_COLLISION_BITMASK);
 		spriteBody->setContactTestBitmask(true);
 		playerSprite->setPhysicsBody(spriteBody);
-
+		
 		// Return
 		return playerSprite;
 	}

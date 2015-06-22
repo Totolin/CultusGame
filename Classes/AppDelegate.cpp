@@ -103,7 +103,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	firstLevelLayer->setBackground(bckFirstLevel);
 	firstLevelLayer->setPlayer(hero);
 	firstLevelLayer->setBoss(boss);
-	firstLevelLayer->setDistanceToBoss(1000);
+	firstLevelLayer->setDistanceToBoss(100);
 	firstLevelLayer->addObjectFactory(mailboxFactory);
 	firstLevelLayer->addObjectFactory(rocketFactory);
 	firstLevelLayer->addObjectFactory(spikesFactory);
@@ -112,7 +112,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	//Create Scene
 	GameLevel* firstLevel = GameLevel::create(firstLevelLayer);
-
 
 	// Add first level to stack
 	SceneManager::getInstance().addSceneToMainStack(firstLevel);

@@ -11,7 +11,7 @@ PauseMenu::~PauseMenu()
 {
 }
 
-PauseMenu* PauseMenu::create(GameLevel* parentRefference)
+PauseMenu* PauseMenu::create()
 {
 	// Initialize PauseMenu object
 	PauseMenu* pauseMenu = new PauseMenu();
@@ -21,7 +21,7 @@ PauseMenu* PauseMenu::create(GameLevel* parentRefference)
 
 	// Create default menu items
 	Label* resumeButtonLabel = Label::createWithTTF("Resume", "font.ttf", 35);
-	MenuItem* resumeButton= MenuItemLabel::create(resumeButtonLabel, [&](Ref* sender){parentRefference->resumeButtonCallback(); });
+	MenuItem* resumeButton = MenuItemLabel::create(resumeButtonLabel, [&](Ref* sender){pauseMenu->resumeButtonCallback(); });
 
 	Label* mainMenuButtonLabel = Label::createWithTTF("Return to menu", "font.ttf", 35);
 	MenuItem* mainMenuButton = MenuItemLabel::create(mainMenuButtonLabel);
@@ -47,6 +47,6 @@ PauseMenu* PauseMenu::create(GameLevel* parentRefference)
 
 void PauseMenu::resumeButtonCallback()
 {
-	this->getParent();
-	//parent->resumeButtonCallback();
+	GameLevel* gameLevel = dynamic_cast<GameLevel*>(Director::getInstance()->getRunningScene());
+	gameLevel->resumeButtonCallback();
 }

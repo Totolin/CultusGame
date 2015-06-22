@@ -14,7 +14,8 @@ GameLevel* GameLevel::create(GameLayer* layer)
 {
 	GameLevel* gameLevel = createWithPhysics();
 	gameLevel->getPhysicsWorld()->setGravity(Vect(0.0f, -700.0f));
-	gameLevel->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
+	gameLevel->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+
 	gameLevel->getPhysicsWorld()->setSpeed(2.0f);
 	gameLevel->gameLayer = layer;
 	//gameLevel->pauseMenu = menu;
@@ -45,8 +46,19 @@ GameLevel* GameLevel::createWithPhysics()
 void GameLevel::resumeButtonCallback()
 {
 	this->gameLayer->resume();
-	this->gameLayer->setOpacity(255);
-	this->removeChildByTag(1234,false);
+	Vector<Node*> children = this->gameLayer->getChildren();
+	for (Node* child : children)
+	{
+		child->resume();
+		child->setOpacity(255);
+		Vector<Node*> children2 = child->getChildren();
+		for (Node* child2 : children2)
+		{
+			child2->resume();
+			child2->setOpacity(255);
+		}
+	}
+	this->removeChildByTag(PAUSE_TAG, false);
 }
 
 // Set initial predefined options for the Player
@@ -74,15 +86,22 @@ void GameLevel::initOptions()
 void GameLevel::escapeButtonCallback()
 {
 	Vector<Node*> children = this->gameLayer->getChildren();
-	this->gameLayer->setOpacity(40);
 	this->gameLayer->pause();
 	for (Node* child : children)
 	{
 		child->pause();
+		child->setOpacity(40);
+		Vector<Node*> children2 = child->getChildren();
+		for (Node* child2 : children2)
+		{
+			child2->pause();
+			child2->setOpacity(40);
+		}
 	}
 	//this->gameLayer->pause();
 
-	PauseMenu* newPauseMenu = PauseMenu::create(this);
-	newPauseMenu->setTag(1234);
-	this->addChild(newPauseMenu,10000);
+	PauseMenu* newPauseMenu = PauseMenu::create();
+	newPauseMenu->setTag(PAUSE_TAG);
+	this->addChild(newPauseMenu,900);
 }
+

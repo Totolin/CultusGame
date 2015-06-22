@@ -29,7 +29,8 @@ Bullet* Bullet::create(int bulletFileIndex)
 void Bullet::update(float delta)
 {
 	// Move the bullet
-	this->getPhysicsBody()->setVelocity(Vect(300, 0));
+	//this->getPhysicsBody()->setVelocity(Vect(300, 0));
+	this->setPositionX(this->getPositionX() + 30);
 
 	Size screenSize = Director::getInstance()->getWinSize();
 	Size bulletSize = this->getBoundingBox().size;
