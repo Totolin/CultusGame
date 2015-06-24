@@ -25,6 +25,19 @@ bool Player::isInvurnerable()
 	return invurnerable;
 }
 
+void Player::pausePlayer()
+{
+	velocityOnPause = this->getPhysicsBody()->getVelocity();
+	this->getPhysicsBody()->setVelocity(Vect(0, 0));
+	this->getPhysicsBody()->setGravityEnable(false);
+}
+
+void Player::resumePlayer()
+{
+	this->getPhysicsBody()->setVelocity(velocityOnPause);
+	this->getPhysicsBody()->setGravityEnable(true);
+}
+
 // Creates an instance of Player
 // @param png - The path to the PNG representation of the sprite
 // @param plist - The path to the PLIST representation of the sprite

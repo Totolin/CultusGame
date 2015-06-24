@@ -12,6 +12,11 @@ GameLayer::~GameLayer()
 {
 }
 
+Player* GameLayer::getMainCharacter()
+{
+	return mainCharacter;
+}
+
 void GameLayer::setBoss(Boss* levelBoss)
 {
 	this->levelBoss = levelBoss;

@@ -76,7 +76,10 @@ PauseMenu* PauseMenu::create(MenuType menuType)
 		Vec2 gameOverTextPosition(width / 2, height / 1.3);
 		GAMEOVER->setPosition(gameOverTextPosition);
 
-		Label* scoreText = Label::createWithTTF("Score : 123125123", "font.ttf", 40);
+		GameLevel* gameLevel = dynamic_cast<GameLevel*>(Director::getInstance()->getRunningScene());
+		int score = gameLevel->getGameLayer()->getMainCharacter()->getScore();
+		string lb = "Score: " + to_string(score);
+		Label* scoreText = Label::createWithTTF(lb, "font.ttf", 40);
 		Vec2 scoreTextPosition(width / 2, height / 1.59);
 		scoreText->setPosition(scoreTextPosition);
 

@@ -27,6 +27,8 @@ public:
 	Boss();
 	~Boss();
 
+	bool smallExplosions();
+	void bigExplosion();
 	virtual void update(float delta) override;
 	static Boss* create(int spriteIndex);
 	void setPhysics();
@@ -45,9 +47,11 @@ private:
 	bool checkCannonsStatus();
 	int numberOfDestroyedCannons;
 	int cannonsArrayStateIndex;
-
+	int framesForExplosions;
 	// We will consider a maximum number of states to be 3. Meaning that only
 	// 3 arrays of cannons are necessary.
 	Vector<BossCannon*> cannons[3];
+	vector<Vec2> explosionPositions;
+	int explosionIndex;
 };
 

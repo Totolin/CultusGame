@@ -21,6 +21,8 @@ public:
 	~Player();
 	void setBossMode(bool b);
 	bool isInvurnerable();
+	void pausePlayer();
+	void resumePlayer();
 	static Player* create();
 
 	void initOptions();
@@ -55,4 +57,5 @@ private:
 	int invurnerableTime = 0;
 	int score = 0;
 	int HP = 100;
+	Vec2 velocityOnPause;
 };

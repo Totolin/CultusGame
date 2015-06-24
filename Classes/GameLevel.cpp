@@ -59,6 +59,9 @@ void GameLevel::resumeButtonCallback()
 		}
 	}
 	this->removeChildByTag(PAUSE_TAG, false);
+
+	Player* player = dynamic_cast<Player*>(this->gameLayer->getChildByTag(PLAYER_TAG));
+	player->resumePlayer();
 }
 
 // Set initial predefined options for the Player
@@ -101,7 +104,9 @@ void GameLevel::escapeButtonCallback()
 			child2->setOpacity(40);
 		}
 	}
-	//this->gameLayer->pause();
+	
+	Player* player = dynamic_cast<Player*>(this->gameLayer->getChildByTag(PLAYER_TAG));
+	player->pausePlayer();
 
 	PauseMenu* newPauseMenu = PauseMenu::create(PauseMenu::PAUSE);
 	newPauseMenu->setTag(PAUSE_TAG);
@@ -125,10 +130,13 @@ void GameLevel::gameOver()
 			child2->setOpacity(100);
 		}
 	}
-	//this->gameLayer->pause();
 
 	PauseMenu* newPauseMenu = PauseMenu::create(PauseMenu::DEAD);
 	newPauseMenu->setTag(PAUSE_TAG);
 	this->addChild(newPauseMenu, 900);
 }
 
+GameLayer* GameLevel::getGameLayer()
+{
+	return gameLayer;
+}

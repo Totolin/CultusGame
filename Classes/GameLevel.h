@@ -14,6 +14,7 @@ public:
 	void resumeButtonCallback();
 	void escapeButtonCallback();
 	void gameOver();
+	GameLayer* getGameLayer();
 private:
 	GameLevel();
 	~GameLevel();

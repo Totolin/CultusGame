@@ -13,6 +13,43 @@ Boss::~Boss()
 {
 }
 
+bool Boss::smallExplosions()
+{
+	if (framesForExplosions == 0)
+		return false;
+
+	if (framesForExplosions % 20 == 0)
+	{
+		// Create explosion
+
+		Vec2 worldPosition = this->getParent()->convertToWorldSpace(this->getPosition());
+		worldPosition.add(explosionPositions.at(explosionIndex));
+		auto explosion = ParticleSun::create();
+		explosion->setDuration(0);
+		explosion->setScale(2);
+		explosion->setPosition(worldPosition);
+		explosionIndex++;
+
+		Director::getInstance()->getRunningScene()->addChild(explosion,1000000);
+
+	}
+
+	framesForExplosions--;
+
+	return true;
+}
+
+void Boss::bigExplosion()
+{
+	// Create explosion
+	Vec2 worldPosition = this->getParent()->convertToWorldSpace(this->getPosition());
+	auto explosion = ParticleSun::create();
+	explosion->setDuration(0);
+	explosion->setPosition(worldPosition);
+	explosion->setScale(6);
+	Director::getInstance()->getRunningScene()->addChild(explosion, 1000000);
+}
+
 void Boss::update(float delta)
 {
 	for (int i = 0; i < cannons[cannonsArrayStateIndex].size(); i++)
@@ -52,9 +89,24 @@ void Boss::update(float delta)
 			}
 			break;
 		case State::GO_TO_MODE_3:
-			cannonsArrayStateIndex++;
-			setPhysics();
+			//cannonsArrayStateIndex++;
+			//setPhysics();
 			nextState();
+			break;
+		case State::THIRD_MODE:
+			nextState();
+			break;
+		case State::GO_TO_DIE:
+  			framesForExplosions = 100;
+			explosionIndex = 0;
+			nextState();
+			break;
+		case State::DYING:
+			if (!smallExplosions())
+			{
+				bigExplosion();
+				nextState();
+			}
 			break;
 		default:
 			break;
@@ -77,6 +129,13 @@ Boss* Boss::create(int spriteIndex)
 		boss->cannonsArrayStateIndex = 0;
 		boss->setPosition(Vec2(positionX, positionY));
 		boss->setState(State::AWAITING);
+		boss->framesForExplosions = 0;
+		boss->explosionPositions.push_back(Vec2(-boundingBox.width/2, boundingBox.height / 2));
+		boss->explosionPositions.push_back(Vec2(boundingBox.width / 2, -boundingBox.height / 2));
+		boss->explosionPositions.push_back(Vec2(boundingBox.width / 2, boundingBox.height / 2));
+		boss->explosionPositions.push_back(Vec2(-boundingBox.width / 2, -boundingBox.height / 2));
+		boss->explosionPositions.push_back(Vec2(0,0));
+
 		return boss;
 	}
 

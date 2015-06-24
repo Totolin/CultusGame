@@ -20,7 +20,7 @@ class GameLayer : public Layer
 public:
 	GameLayer();
 	~GameLayer();
-
+	Player* getMainCharacter();
 	static GameLayer* create();
 
 	void setBoss(Boss* levelBoss);
