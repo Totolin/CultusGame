@@ -9,6 +9,7 @@ class SceneManager
 {
 public:
 	static SceneManager& getInstance();
+	static Scene* generateLevel(int levelIndex);
 	void addSceneToMainStack(Scene* newScene);
 	void fillStack();
 private:

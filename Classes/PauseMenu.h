@@ -8,7 +8,9 @@ using namespace std;
 class PauseMenu : public Layer
 {
 public:
-	static PauseMenu* create();
+	enum MenuType { PAUSE, DEAD };
+
+	static PauseMenu* create(MenuType menuType);
 private:
 	PauseMenu();
 	~PauseMenu();

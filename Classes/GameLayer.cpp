@@ -2,6 +2,7 @@
 #include "UIBar.h"
 #include "BossCannon.h"
 #include "BossBullet.h"
+#include "GameLevel.h"
 
 GameLayer::GameLayer()
 {
@@ -80,6 +81,18 @@ void GameLayer::update(float delta)
 {
 	updateUI();
 	this->levelBoss->updatePlayerPosition(this->mainCharacter->getPosition());
+
+	// Check if the main character is dead
+	if (mainCharacter->getHealth() <= 0 || mainCharacter->getPosition().y < 0)
+	{
+		// Kill it with fire
+		mainCharacter->isDead();
+
+		// Display a GAME OVER screen
+		GameLevel* gameLevel = dynamic_cast<GameLevel*>(Director::getInstance()->getRunningScene());
+
+		gameLevel->gameOver();
+	}
 
 	if (bossMode) { return; }
 
@@ -393,6 +406,9 @@ bool GameLayer::collisionPlayerBossBulet(Player* player, BossBullet* bossBullet)
 {
 	if (player->isInvurnerable())
 		return false;
+	if (bossBullet == nullptr)
+		return false;
+
 	player->isHit();
 	
  	bossBullet->removeFromParentAndCleanup(true);

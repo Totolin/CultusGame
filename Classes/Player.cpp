@@ -104,15 +104,12 @@ void Player::initOptions()
 		case EventKeyboard::KeyCode::KEY_W:
 			this->callback_WorUp();
 			break;
-		case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-			this->slide();
-			break;
-		case EventKeyboard::KeyCode::KEY_S:
-			this->slide();
-			break;
 		case EventKeyboard::KeyCode::KEY_SPACE:
 			this->fire();
 			break;
+		//TODO REMOVE THIS
+		case EventKeyboard::KeyCode::KEY_Y:
+			this->HP = 0;
 		default:
 			break;
 		}
@@ -266,11 +263,6 @@ void Player::callback_WorUp()
 	jump();
 }
 
-void Player::slide()
-{
-
-
-}
 
 void Player::setWeapon(Weapon* weapon)
 {
@@ -292,7 +284,7 @@ void Player::isHit()
 	this->invurnerable = true;
 	this->invurnerableTime = 90;
 
-	// TODO: discuss if this is neccessary
+	// TODO: discuss if this is necessary
 	this->getPhysicsBody()->applyImpulse(Vect(-70, 0));
 
 	//FadeIn* fadeIn = FadeIn::create(0.5f);
@@ -307,4 +299,22 @@ void Player::isHit()
 void Player::addScore(int toAdd)
 {
 	this->score += toAdd;
+}
+
+void Player::isDead()
+{
+	// Don't kill him if he's already dead
+	if (dead) { return; }
+
+	// Remember if he's dead or not
+	dead = true;
+
+	// Get the 'dead' sprite
+	ResourceLoader resLoader = ResourceLoader::getInstance();
+
+	//Stop running animation and replace the sprite png to the DEAD one
+	this->getActionManager()->removeActionByTag(PLAYER_ANIMATION_RUNNING, this);
+	
+	// Reinitialize with 'dead' sprite
+	this->initWithFile(resLoader.getImageFile(PLAYER_ANIMATION_DEAD));
 }

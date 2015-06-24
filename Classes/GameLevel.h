@@ -13,6 +13,7 @@ public:
 	static GameLevel* create(GameLayer* layer);
 	void resumeButtonCallback();
 	void escapeButtonCallback();
+	void gameOver();
 private:
 	GameLevel();
 	~GameLevel();

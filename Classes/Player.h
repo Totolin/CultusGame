@@ -30,13 +30,13 @@ public:
 
 	void fire();
 	void jump();
-	void slide();
 	void doubleJump();
 	void isHit();
 	void setDistanceTravelled(long long dist);
 	long long getDistanceTravelled();
 
 	// UI
+	void isDead();
 	int getScore();
 	int getHealth();
 	void setScore(int score);
@@ -51,6 +51,7 @@ private:
 	long long distanceTravelled;
 	bool bossMode = false;
 	bool invurnerable = false;
+	bool dead = false;
 	int invurnerableTime = 0;
 	int score = 0;
 	int HP = 100;
