@@ -16,7 +16,7 @@ ParallaxBackground::ParallaxBackground()
 // @param imageName - Path to the background image
 // @param imagePosition - Vec2 position to start
 // @param imageVelocity - Vec2 speed at which the background is moved
-void ParallaxBackground::addImage(string imageName, Vec2 imagePosition, Vec2 imageVelocity)
+void ParallaxBackground::addImage(string imageName, Vec2 imagePosition, Vec2 imageVelocity, bool bigImage)
 {
 	int height = Director::getInstance()->getWinSize().height;
 	int width = Director::getInstance()->getWinSize().width;
@@ -24,10 +24,18 @@ void ParallaxBackground::addImage(string imageName, Vec2 imagePosition, Vec2 ima
 	for (int i = 0; i <= 1; i++)
 	{
 		ParallaxSprite* sprite = ParallaxSprite::create(imageName);
-		sprite->setPosition(imagePosition.x + i * width, imagePosition.y);
 		sprite->setVelocityFactor(imageVelocity);
-		sprite->setScale(width / sprite->getBoundingBox().size.width);
+		if (!bigImage){
+			sprite->setScale(width / sprite->getBoundingBox().size.width);
+		}
+		else
+		{
+			sprite->setScale(0.8);
+		}
+
+		sprite->setPosition(imagePosition.x + sprite->getBoundingBox().size.width * i, imagePosition.y);
 		this->addChild(sprite, zOrder, imageName);
+
 	}
 	zOrder++;
 }

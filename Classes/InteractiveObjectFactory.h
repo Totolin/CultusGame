@@ -29,7 +29,7 @@ private:
 	bool canBeFiredAt;
 	bool canHitPlayer;
 	bool gravityAffected;
-	
+	int framePassed;
 	Vec2 speed;
 	Vec2 spawnInterval;
 

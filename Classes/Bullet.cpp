@@ -10,6 +10,7 @@ Bullet* Bullet::create(int bulletFileIndex)
 	{
 		bullet->autorelease();
 		bullet->scheduleUpdate();
+		bullet->setScale(Director::getInstance()->getWinSize().width * 0.8 / 800);
 		bullet->hit = false;
 		auto spriteBody = PhysicsBody::createBox(bullet->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 		spriteBody->setGravityEnable(false);

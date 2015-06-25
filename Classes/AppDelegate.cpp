@@ -25,8 +25,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
 	if (!glview) {
-		glview = GLViewImpl::create("CULTUS ACOLO MARE");
-		glview->setFrameSize(1200, 630);
+		glview = GLViewImpl::create("CULTUS");
+		glview->setFrameSize(1366, 780);
 		director->setOpenGLView(glview);
 	}
 
@@ -47,6 +47,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("firstboss_cannon_2_d.png", OBJECT_FIRSTBOSS_CANNON_2_D);
 	resLoader.addImageFile("firstboss_cannon_2_pr.png", OBJECT_BOSSBULLET_SPIKEBALL);
 	resLoader.addImageFile("runner_dead.png", PLAYER_ANIMATION_DEAD);
+
 
 	director->runWithScene(SceneManager::getInstance().generateLevel(0));
 

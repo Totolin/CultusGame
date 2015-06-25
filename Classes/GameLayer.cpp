@@ -55,12 +55,12 @@ GameLayer* GameLayer::create()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	Size finalSize;
-	finalSize.width = visibleSize.width + 50;
+	finalSize.width = visibleSize.width + 200;
 	finalSize.height = visibleSize.height / GROUND_PERCENTAGE_FOR_BOX;
 
 	PhysicsBody* edgeBody = PhysicsBody::createEdgeBox(finalSize, PhysicsMaterial(0.1f, 0.0f, 0.5f), 3);
 	Node* edgeNode = Node::create();
-	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x + 25, origin.y));
+	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x + 100, origin.y));
 	edgeBody->setCollisionBitmask(GROUND_COLLISION_BITMASK);
 	edgeBody->setContactTestBitmask(true);
 	edgeNode->setPhysicsBody(edgeBody);
@@ -243,13 +243,13 @@ bool GameLayer::onContactBegin(PhysicsContact& contact)
 	if (PLAYER_COLLISION_BITMASK == a->getCollisionBitmask() && SPIKES_COLLISION_BITMASK == b->getCollisionBitmask())
 	{
 		InteractiveObject* hole = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
-		collsionPlayerHole(mainCharacter, hole);
+		collsionPlayerSpike(mainCharacter, hole);
 		return false;
 	}
 	else if (PLAYER_COLLISION_BITMASK == b->getCollisionBitmask() && SPIKES_COLLISION_BITMASK == a->getCollisionBitmask())
 	{
 		InteractiveObject* hole = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
-		collsionPlayerHole(mainCharacter, hole);
+		collsionPlayerSpike(mainCharacter, hole);
 		return false;
 	}
 
@@ -303,6 +303,39 @@ bool GameLayer::onContactBegin(PhysicsContact& contact)
 		collisionBulletBossBullet(bullet, bossBullet);
 	}
 
+	if (MAILBOX_COLLISION_BITMASK == a->getCollisionBitmask() && SPIKES_COLLISION_BITMASK == b->getCollisionBitmask())
+	{
+		InteractiveObject* mailbox = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+		InteractiveObject* spike = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+
+		collisionMailBoxSpike(mailbox, spike);
+	}
+	else if (MAILBOX_COLLISION_BITMASK == b->getCollisionBitmask() && SPIKES_COLLISION_BITMASK == a->getCollisionBitmask())
+	{
+		InteractiveObject* mailbox = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+		InteractiveObject* spike = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+
+		collisionMailBoxSpike(mailbox, spike);
+	}
+
+
+	if (MAILBOX_COLLISION_BITMASK == a->getCollisionBitmask() && MAILBOX_COLLISION_BITMASK == b->getCollisionBitmask())
+	{
+		InteractiveObject* mailbox1 = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+		InteractiveObject* mailbox2 = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+
+
+		collisionMailBoxMailBox(mailbox1, mailbox2);
+	}
+
+	if (SPIKES_COLLISION_BITMASK == a->getCollisionBitmask() && SPIKES_COLLISION_BITMASK == b->getCollisionBitmask())
+	{
+		InteractiveObject* spike1 = dynamic_cast<InteractiveObject*>(contact.getShapeA()->getBody()->getNode());
+		InteractiveObject* spike2 = dynamic_cast<InteractiveObject*>(contact.getShapeB()->getBody()->getNode());
+
+
+		collsionSpikeSpike(spike1, spike2);
+	}
 
 	return true;
 }
@@ -338,7 +371,7 @@ void GameLayer::collisionBulletMailBox(Bullet* bullet, InteractiveObject* mailbo
 	CCLOG("COLLISION BULLET <=> MAILBOX");
 }
 
-void GameLayer::collsionPlayerHole(Player* player, InteractiveObject* hole)
+void GameLayer::collsionPlayerSpike(Player* player, InteractiveObject* hole)
 {
 	// Log event
 	CCLOG("COLLISION PLAYER <=> SPIKES");
@@ -347,6 +380,35 @@ void GameLayer::collsionPlayerHole(Player* player, InteractiveObject* hole)
 	this->mainCharacter->isHit();
 }
 
+void GameLayer::collisionMailBoxSpike(InteractiveObject* mailbox, InteractiveObject* spike)
+{
+	if (mailbox == nullptr)
+		return;
+	mailbox->removeFromParentAndCleanup(true);
+}
+
+void GameLayer::collisionMailBoxMailBox(InteractiveObject* mailbox1, InteractiveObject* mailbox2)
+{
+	if (mailbox1 == nullptr || mailbox2 == nullptr)
+		return;
+	
+	if (mailbox1->getPositionY() > mailbox2->getPositionY())
+		mailbox2->removeFromParentAndCleanup(true);
+	else
+		mailbox1->removeFromParentAndCleanup(true);
+
+}
+
+void GameLayer::collsionSpikeSpike(InteractiveObject* spike1, InteractiveObject* spike2)
+{
+	if (spike1 == nullptr || spike2 == nullptr)
+		return;
+
+	if (spike1->getPositionY() > spike2->getPositionY())
+		spike2->removeFromParentAndCleanup(true);
+	else
+		spike1->removeFromParentAndCleanup(true);
+}
 
 void GameLayer::collisionBulletEnemyCannon(Bullet* bullet, BossCannon* cannon)
 {
@@ -388,6 +450,8 @@ void GameLayer::collisionMailBoxRocket(InteractiveObject* mailbox, InteractiveOb
 
 void GameLayer::collsionPlayerRocket(Player* player, InteractiveObject* rocket)
 {
+	if (rocket == nullptr)
+		return;
 	// Log event
 	CCLOG("COLLISION PLAYER <=> ROCKET");
 

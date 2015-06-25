@@ -28,14 +28,18 @@ bool Player::isInvurnerable()
 void Player::pausePlayer()
 {
 	velocityOnPause = this->getPhysicsBody()->getVelocity();
-	this->getPhysicsBody()->setVelocity(Vect(0, 0));
-	this->getPhysicsBody()->setGravityEnable(false);
+	this->getPhysicsBody()->removeFromWorld();
 }
 
 void Player::resumePlayer()
 {
+	auto spriteBody = PhysicsBody::createBox(this->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
+	spriteBody->setAngularVelocityLimit(0.0f);
+	spriteBody->setMass(1);
+	spriteBody->setCollisionBitmask(PLAYER_COLLISION_BITMASK);
+	spriteBody->setContactTestBitmask(true);
+	this->setPhysicsBody(spriteBody);
 	this->getPhysicsBody()->setVelocity(velocityOnPause);
-	this->getPhysicsBody()->setGravityEnable(true);
 }
 
 // Creates an instance of Player
@@ -75,7 +79,7 @@ Player* Player::create()
 		// Set properties
 		playerSprite->autorelease();
 		playerSprite->initOptions();
-		playerSprite->setScale(2);
+		playerSprite->setScale(Director::getInstance()->getWinSize().width * 1.8 / 800);
 		playerSprite->scheduleUpdate();
 
 		// Add weapon
@@ -118,7 +122,10 @@ void Player::initOptions()
 			this->callback_WorUp();
 			break;
 		case EventKeyboard::KeyCode::KEY_SPACE:
-			this->fire();
+			if (framePassed <= 0){
+				this->fire();
+				framePassed = 10;
+			}
 			break;
 		//TODO REMOVE THIS
 		case EventKeyboard::KeyCode::KEY_Y:
@@ -140,6 +147,7 @@ void Player::initOptions()
 void Player::update(float delta)
 {
 	distanceTravelled++;
+	framePassed--;
 
 	if (this->currentAction != Action::RUNNING 
 		&& this->getPhysicsBody()->getVelocity().y > -1.0f
@@ -217,7 +225,9 @@ void Player::jump()
 	this->setDisplayFrame(runningAnimation.at(1));
 
 	//JUMP
-	this->getPhysicsBody()->applyImpulse(Vect(0, 500));
+	//this->getPhysicsBody()->applyImpulse(Vect(0, Director::getInstance()->getWinSize().height *500.0 / 600));
+	this->getPhysicsBody()->applyImpulse(Vect(0, (Director::getInstance()->getWinSize().height - 600)/3.5 + 500));
+
 
 }
 
@@ -231,7 +241,9 @@ void Player::doubleJump()
 	this->currentAction = Action::DOUBLE_JUMPING;
 
 	//JUMP AGAIN
-	this->getPhysicsBody()->applyImpulse(Vect(0, 300));
+	//this->getPhysicsBody()->applyImpulse(Vect(0, Director::getInstance()->getWinSize().height *300.0 / 600));
+	this->getPhysicsBody()->applyImpulse(Vect(0, (Director::getInstance()->getWinSize().height - 600) / 3.5 + 300));
+
 }
 
 

@@ -48,7 +48,7 @@ DummyPlayer* DummyPlayer::create()
 
 		// Set properties
 		DummyPlayerSprite->autorelease();
-		DummyPlayerSprite->setScale(2);
+		DummyPlayerSprite->setScale(Director::getInstance()->getWinSize().width * 1.8 / 800);
 		DummyPlayerSprite->scheduleUpdate();
 
 		// Return

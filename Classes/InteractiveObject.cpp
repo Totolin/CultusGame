@@ -40,14 +40,13 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, int maskValue, b
 
 			// Set properties
 			objectSprite->autorelease();
-			objectSprite->setScale(2);
+			objectSprite->setScale(Director::getInstance()->getWinSize().width * 2 / 800);
 			objectSprite->scheduleUpdate();
 
 			if (objectSprite->getCanBeFireAt() || objectSprite->getCanHitPlayer())
 			{
 				auto spriteBody = PhysicsBody::createBox(objectSprite->boundingBox().size, PhysicsMaterial(1.0f, 0.5f, 0.5f));
 				spriteBody->setGravityEnable(objectSprite->isGravityAffected());
-			//	spriteBody->setCategoryBitmask(1);
 				spriteBody->setCollisionBitmask(maskValue);
 				spriteBody->setContactTestBitmask(true);
 				spriteBody->setMass(1);
@@ -65,6 +64,7 @@ InteractiveObject* InteractiveObject::create(int resourceIndex, int maskValue, b
 		{
 			objectSprite->autorelease();
 			objectSprite->scheduleUpdate();
+			objectSprite->setScale(Director::getInstance()->getWinSize().width *0.5 / 800);
 
 			if (objectSprite->getCanBeFireAt() || objectSprite->getCanHitPlayer())
 			{
@@ -150,5 +150,6 @@ void InteractiveObject::isHit()
 	this->hasBeenHit = true;
 	this->getPhysicsBody()->setGravityEnable(false);
 	this->getPhysicsBody()->applyImpulse(Vect(1000, 1000));
+	this->getPhysicsBody()->applyForce(Vect(1000, 1000));
 	this->getPhysicsBody()->setAngularVelocity(10);
 }

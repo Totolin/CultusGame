@@ -25,7 +25,7 @@ InteractiveObjectFactory* InteractiveObjectFactory::create(int resourceIndex, fl
 	factory->setResource(resourceIndex);
 	factory->setIsAnimated(isAnimated);
 	factory->setGravityAffected(gravityAffected);
-
+	factory->framePassed = 15;
 	//Default speed
 	factory->setSpeed(Vec2(-9, 0));
 
@@ -55,7 +55,13 @@ void InteractiveObjectFactory::setPositionInterval(Vec2 interval)
 
 void InteractiveObjectFactory::createObject()
 {
-	 unsigned int randomNumber = RandomHelper::random_int<int>(1, 500);
+	if (framePassed > 0)
+	{
+		framePassed--;
+		return;
+	}
+
+	unsigned int randomNumber = RandomHelper::random_int<int>(1, 500);
 
 	if (randomNumber < frequency)
 	{
@@ -72,7 +78,8 @@ void InteractiveObjectFactory::createObject()
 		newObject->setPosition(Director::getInstance()->getWinSize().width + (newObject->boundingBox().size.width) / 2 + 20, randomYpos);
 		newObject->setGravityAffected(gravityAffected);
 		newObject->setScale(scaleFactor);
-
+		framePassed = 15;
+			
 		Director::getInstance()->getRunningScene()->getChildByTag(LAYER_TAG)->addChild(newObject);
 	}
 }

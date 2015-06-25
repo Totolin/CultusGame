@@ -50,7 +50,7 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		ParallaxBackground* bckMenu = new ParallaxBackground();
 		bckMenu->addImage("night.png", Vec2(width / 2, height / 1.3), Vec2(0.05, 0));
 		bckMenu->addImage("city.png", Vec2(width / 2, height / 1.6), Vec2(0.3, 0));
-		bckMenu->addImage("street.png", Vec2(width / 2, height / 2.4), Vec2(1.0, 0));
+		bckMenu->addImage("street.png", Vec2(width / 2, height / 2.6), Vec2(1.0, 0), true);
 		bckMenu->scheduleUpdate();
 
 		auto startScene = IntermediaryScene::create(IntermediaryScene::MENU);
@@ -92,7 +92,7 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		// Create animations and bullets
 		bckFirstLevel->addImage("night.png", Vec2(width / 2, height / 1.3), Vec2(0.05, 0));
 		bckFirstLevel->addImage("city.png", Vec2(width / 2, height / 1.6), Vec2(0.3, 0));
-		bckFirstLevel->addImage("street.png", Vec2(width / 2, height / 2.4), Vec2(1.0, 0));
+		bckFirstLevel->addImage("street.png", Vec2(width / 2, height / 2.6), Vec2(1.0, 0),true);
 		bckFirstLevel->scheduleUpdate();
 
 		// Create music
@@ -119,17 +119,17 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		boss->addCannon(2, cannon1);
 
 		// Create Interactive object factory
-		InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX, 1, false, MAILBOX_COLLISION_BITMASK, true, false, true);
-		mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX + 100));
-		mailboxFactory->setSpawnFrequency(8);
+		InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX, director->getWinSize().height * 1.6 / 800, false, MAILBOX_COLLISION_BITMASK, true, false, true);
+		mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX));
+		mailboxFactory->setSpawnFrequency(5);
 
-		InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, 1, false, ROCKET_COLLISION_BITMASK, true, false, false);
-		rocketFactory->setPositionInterval(Vec2(340, 700));
+		InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, director->getWinSize().height * 1.6 / 800, false, ROCKET_COLLISION_BITMASK, true, false, false);
+		rocketFactory->setPositionInterval(Vec2(100, height));
 		rocketFactory->setSpeed(Vec2(-20, 0));
-		rocketFactory->setSpawnFrequency(30);
+		rocketFactory->setSpawnFrequency(20);
 
-		InteractiveObjectFactory* spikesFactory = InteractiveObjectFactory::create(OBJECT_SPIKES, 0.5, false, SPIKES_COLLISION_BITMASK, false, true, true);
-		spikesFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX + 50));
+		InteractiveObjectFactory* spikesFactory = InteractiveObjectFactory::create(OBJECT_SPIKES, director->getWinSize().height * 0.5 / 800, false, SPIKES_COLLISION_BITMASK, false, true, true);
+		spikesFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX ));
 		spikesFactory->setSpawnFrequency(5);
 
 		firstLevelLayer->setBackground(bckFirstLevel);

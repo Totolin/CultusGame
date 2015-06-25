@@ -16,7 +16,7 @@ GameLevel* GameLevel::create(GameLayer* layer)
 	gameLevel->getPhysicsWorld()->setGravity(Vect(0.0f, -700.0f));
 	gameLevel->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
-	gameLevel->getPhysicsWorld()->setSpeed(2.0f);
+	gameLevel->getPhysicsWorld()->setSpeed(2.0+ (3* Director::getInstance()->getWinSize().height/4.0)/600.0);
 	gameLevel->gameLayer = layer;
 	//gameLevel->pauseMenu = menu;
 	gameLevel->isPaused = false;
