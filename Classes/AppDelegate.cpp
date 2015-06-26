@@ -26,7 +26,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("CULTUS");
-		glview->setFrameSize(1366, 780);
+		glview->setFrameSize(1920, 1080);
 		director->setOpenGLView(glview);
 	}
 
@@ -50,6 +50,20 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("firstboss_cannon_3.png", OBJECT_FIRSTBOSS_CANNON_3);
 	resLoader.addImageFile("firstboss_cannon_3_d.png", OBJECT_FIRSTBOSS_CANNON_3_D);
 	resLoader.addImageFile("firstboss_cannon_3_pr.png", OBJECT_BOSSBULLET_BALL);
+
+	resLoader.addImageFile("secondboss_cannon_1.png", OBJECT_SECONDBOSS_CANNON_1);
+	resLoader.addImageFile("secondboss_cannon_1_d.png", OBJECT_SECONDBOSS_CANNON_1_D);
+	resLoader.addImageFile("secondboss_cannon_1_pr.png", OBJECT_BOSSBULLET_ENERGYBALL);
+
+	resLoader.addImageFile("secondboss_cannon_2.png", OBJECT_SECONDBOSS_CANNON_2);
+	resLoader.addImageFile("secondboss_cannon_2_d.png", OBJECT_SECONDBOSS_CANNON_2_D);
+	resLoader.addImageFile("secondboss_cannon_2_pr.png", OBJECT_BOSSBULLET_SAWBLADE);
+
+	resLoader.addImageFile("secondboss_cannon_3.png", OBJECT_SECONDBOSS_CANNON_3);
+	resLoader.addImageFile("secondboss_cannon_3_d.png", OBJECT_SECONDBOSS_CANNON_3_D);
+	resLoader.addImageFile("secondboss_cannon_3_pr.png", OBJECT_BOSSBULLET_FLAMEBALL);
+
+	resLoader.addImageFile("secondboss.png", OBJECT_SECONDBOSS);
 
 
 	director->runWithScene(SceneManager::getInstance().generateLevel(0));

@@ -30,7 +30,8 @@ public:
 	bool smallExplosions();
 	void bigExplosion();
 	virtual void update(float delta) override;
-	static Boss* create(int spriteIndex);
+	bool isFlying();
+	static Boss* create(int spriteIndex, bool flying = false);
 	void setPhysics();
 	void addCannon(int stateOfParent, BossCannon* cannon);
 	void moveIn(Vec2 position);
@@ -53,5 +54,6 @@ private:
 	Vector<BossCannon*> cannons[3];
 	vector<Vec2> explosionPositions;
 	int explosionIndex;
+	bool flying;
 };
 

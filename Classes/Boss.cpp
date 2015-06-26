@@ -115,7 +115,12 @@ void Boss::update(float delta)
 	}
 }
 
-Boss* Boss::create(int spriteIndex)
+bool Boss::isFlying()
+{
+	return flying;
+}
+
+Boss* Boss::create(int spriteIndex, bool flying)
 {
 	Boss* boss = new Boss();
 
@@ -137,6 +142,7 @@ Boss* Boss::create(int spriteIndex)
 		boss->explosionPositions.push_back(Vec2(boundingBox.width / 2, boundingBox.height / 2));
 		boss->explosionPositions.push_back(Vec2(-boundingBox.width / 2, -boundingBox.height / 2));
 		boss->explosionPositions.push_back(Vec2(0,0));
+		boss->flying = flying;
 
 		return boss;
 	}

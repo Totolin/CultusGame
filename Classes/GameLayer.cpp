@@ -112,8 +112,14 @@ void GameLayer::update(float delta)
 	{
 		this->levelBackground->slowlyStop();
 		this->mainCharacter->setBossMode(true);
-		this->levelBoss->moveIn(Vec2(Director::getInstance()->getWinSize().width
-			,(Director::getInstance()->getWinSize().height / GROUND_PERCENTAGE_FOR_BOX / 2) + levelBoss->getBoundingBox().size.height / 2));
+		if (!levelBoss->isFlying())
+			this->levelBoss->moveIn(Vec2(Director::getInstance()->getWinSize().width
+				,(Director::getInstance()->getWinSize().height / GROUND_PERCENTAGE_FOR_BOX / 2) + levelBoss->getBoundingBox().size.height / 2));
+		else
+		{
+			this->levelBoss->moveIn(Vec2(Director::getInstance()->getWinSize().width
+				, Director::getInstance()->getWinSize().height/2));
+		}
 		this->bossMode = true;
 	}
 }
