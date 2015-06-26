@@ -9,12 +9,14 @@ class SceneManager
 {
 public:
 	static SceneManager& getInstance();
-	static Scene* generateLevel(int levelIndex);
+	static Scene* generateLevel(int levelIndex, int score);
 	void addSceneToMainStack(Scene* newScene);
 	void fillStack();
+	void nextLevel(int score);
 private:
 	SceneManager();
 	~SceneManager();
 	static Vector<Scene*> mainStack;
+	int level;
 };
 

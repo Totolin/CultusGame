@@ -55,5 +55,6 @@ private:
 	vector<Vec2> explosionPositions;
 	int explosionIndex;
 	bool flying;
+	int delayAfterExplosion;
 };
 

@@ -33,12 +33,17 @@ void SceneManager::fillStack()
 	director->popToRootScene();
 
 	// Add scenes to stack
-	//director->pushScene(generateLevel(3));
-	director->pushScene(generateLevel(2));
-	director->replaceScene(generateLevel(1));
+	director->replaceScene(generateLevel(1,0));
+	level = 1;
 }
 
-Scene* SceneManager::generateLevel(int levelIndex)
+void SceneManager::nextLevel(int score)
+{
+	level++;
+	Director::getInstance()->replaceScene(TransitionFade::create(0.5, generateLevel(level,score), Color3B::BLACK));
+}
+
+Scene* SceneManager::generateLevel(int levelIndex, int score)
 {
 	if (levelIndex == 0) {
 		Director* director = Director::getInstance();
@@ -60,6 +65,10 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		auto dummy = DummyPlayer::create();
 		dummy->setPosition(Vec2(width / 2, 130));
 		startScene->setPlayer(dummy);
+
+		// Create music
+		CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+		audioEngine->playBackgroundMusic("level0.mp3", true);
 
 		Label* playButtonLabel = Label::createWithTTF("Play", "font.ttf", 35);
 		MenuItem* playButton = MenuItemLabel::create(playButtonLabel, [&](Ref* sender){SceneManager::getInstance().fillStack();});
@@ -96,13 +105,14 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		bckFirstLevel->scheduleUpdate();
 
 		// Create music
-		//CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
-		//audioEngine->playBackgroundMusic("darude.mp3", true);
+		CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+		audioEngine->playBackgroundMusic("level1.mp3", true);
 
 		// Create player
 		Player* hero = Player::create();
 		hero->setPosition(Vec2(width / 2, 130));
 		hero->setTag(PLAYER_TAG);
+		hero->setScore(score);
 
 		// Create boss
 		Boss* boss = Boss::create(OBJECT_FIRSTBOSS);
@@ -173,13 +183,14 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		bckSecondLevel->scheduleUpdate();
 
 		// Create music
-		//CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
-		//audioEngine->playBackgroundMusic("darude.mp3", true);
+		CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+		audioEngine->playBackgroundMusic("level2.mp3", true);
 
 		// Create player
 		Player* hero = Player::create();
 		hero->setPosition(Vec2(width / 2, 130));
 		hero->setTag(PLAYER_TAG);
+		hero->setScore(score);
 
 		// Create boss
 		Boss* boss = Boss::create(OBJECT_SECONDBOSS,true);
@@ -250,13 +261,14 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		bckThirdLevel->scheduleUpdate();
 
 		// Create music
-		//CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
-		//audioEngine->playBackgroundMusic("darude.mp3", true);
+		CocosDenshion::SimpleAudioEngine* audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+		audioEngine->playBackgroundMusic("level3.mp3", true);
 
 		// Create player
 		Player* hero = Player::create();
 		hero->setPosition(Vec2(width / 2, 130));
 		hero->setTag(PLAYER_TAG);
+		hero->setScore(score);
 
 		// Create boss
 		Boss* boss = Boss::create(OBJECT_THIRDBOSS);

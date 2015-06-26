@@ -90,7 +90,7 @@ void GameLayer::update(float delta)
 	this->levelBoss->updatePlayerPosition(this->mainCharacter->getPosition());
 
 	// Check if the main character is dead
-	if (mainCharacter->getHealth() <= 0 || mainCharacter->getPosition().y < 0)
+	if (mainCharacter->getHealth() <= 0 || mainCharacter->getPosition().x  + mainCharacter->getBoundingBox().size.width / 2< 0)
 	{
 		// Kill it with fire
 		mainCharacter->isDead();

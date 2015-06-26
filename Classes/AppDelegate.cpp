@@ -26,7 +26,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("CULTUS");
-		glview->setFrameSize(800, 600);
+		glview->setFrameSize(1920, 1080);
 		director->setOpenGLView(glview);
 	}
 
@@ -66,7 +66,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("secondboss.png", OBJECT_SECONDBOSS);
 
 
-	director->runWithScene(SceneManager::getInstance().generateLevel(0));
+	director->runWithScene(SceneManager::getInstance().generateLevel(0,0));
 
 	return true;
 }

@@ -2,6 +2,8 @@
 #include "ResourceLoader.h"
 #include "GameValues.h"
 #include "BossCannon.h"
+#include "SceneManager.h"
+#include "Player.h"
 
 
 Boss::Boss()
@@ -48,10 +50,24 @@ void Boss::bigExplosion()
 	explosion->setPosition(worldPosition);
 	explosion->setScale(10);
 	Director::getInstance()->getRunningScene()->addChild(explosion, 1000000);
+	delayAfterExplosion = 30;
 }
 
 void Boss::update(float delta)
 {
+	if (delayAfterExplosion > 0)
+	{
+		if (delayAfterExplosion == 1)
+		{
+			SceneManager::getInstance().nextLevel(dynamic_cast<Player*>(this->getParent()->getChildByTag(PLAYER_TAG))->getScore());
+			delayAfterExplosion = 0;
+		}
+		else
+		{
+			delayAfterExplosion--;
+		}
+	}
+
 	for (int i = 0; i < cannons[cannonsArrayStateIndex].size(); i++)
 	{
 		if (cannons[cannonsArrayStateIndex].at(i)->getHP() <= 0 && !cannons[cannonsArrayStateIndex].at(i)->isDestroyed())
@@ -143,6 +159,7 @@ Boss* Boss::create(int spriteIndex, bool flying)
 		boss->explosionPositions.push_back(Vec2(-boundingBox.width / 2, -boundingBox.height / 2));
 		boss->explosionPositions.push_back(Vec2(0,0));
 		boss->flying = flying;
+		boss->delayAfterExplosion = 0;
 
 		return boss;
 	}

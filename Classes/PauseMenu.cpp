@@ -26,7 +26,7 @@ PauseMenu* PauseMenu::create(MenuType menuType)
 		MenuItem* resumeButton = MenuItemLabel::create(resumeButtonLabel, [&](Ref* sender){pauseMenu->resumeButtonCallback(); });
 
 		Label* mainMenuButtonLabel = Label::createWithTTF("Return to menu", "font.ttf", 35);
-		MenuItem* mainMenuButton = MenuItemLabel::create(mainMenuButtonLabel, [&](Ref* sender){Director::getInstance()->replaceScene(SceneManager::getInstance().generateLevel(0)); });
+		MenuItem* mainMenuButton = MenuItemLabel::create(mainMenuButtonLabel, [&](Ref* sender){Director::getInstance()->replaceScene(SceneManager::getInstance().generateLevel(0,0)); });
 
 		Label* exitButtonLabel = Label::createWithTTF("Exit", "font.ttf", 35);
 		MenuItem* exitButton = MenuItemLabel::create(exitButtonLabel, [&](Ref* sender){Director::getInstance()->end(); });
@@ -56,7 +56,7 @@ PauseMenu* PauseMenu::create(MenuType menuType)
 
 		// Create default menu items
 		Label* mainMenuButtonLabel = Label::createWithTTF("Return to menu", "font.ttf", 35);
-		MenuItem* mainMenuButton = MenuItemLabel::create(mainMenuButtonLabel, [&](Ref* sender){Director::getInstance()->replaceScene(SceneManager::getInstance().generateLevel(0)); });
+		MenuItem* mainMenuButton = MenuItemLabel::create(mainMenuButtonLabel, [&](Ref* sender){Director::getInstance()->replaceScene(SceneManager::getInstance().generateLevel(0,0)); });
 
 		Label* exitButtonLabel = Label::createWithTTF("Exit", "font.ttf", 35);
 		MenuItem* exitButton = MenuItemLabel::create(exitButtonLabel, [&](Ref* sender){Director::getInstance()->end(); });
