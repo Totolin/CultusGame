@@ -4,6 +4,7 @@
 #include "BossBullet.h"
 #include "GameLevel.h"
 
+
 GameLayer::GameLayer()
 {
 }
@@ -58,7 +59,7 @@ GameLayer* GameLayer::create()
 	finalSize.width = visibleSize.width + 200;
 	finalSize.height = visibleSize.height / GROUND_PERCENTAGE_FOR_BOX;
 
-	PhysicsBody* edgeBody = PhysicsBody::createEdgeBox(finalSize, PhysicsMaterial(100.0f, 0.0f, 0.5f), 3);
+	PhysicsBody* edgeBody = PhysicsBody::createEdgeBox(finalSize, PhysicsMaterial(1000.0f, 0.0f, 0.5f), 3);
 	Node* edgeNode = Node::create();
 	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x + 100, origin.y));
 	edgeBody->setCollisionBitmask(GROUND_COLLISION_BITMASK);
@@ -66,6 +67,7 @@ GameLayer* GameLayer::create()
 	edgeNode->setPhysicsBody(edgeBody);
 
 	gameLayer->addChild(edgeNode);
+
 	gameLayer->bossMode = false;
 
 	auto contactListener = EventListenerPhysicsContact::create();
@@ -74,8 +76,8 @@ GameLayer* GameLayer::create()
 
 	//TODO: set according to screen and score table height
 	gameLayer->statusBar = UIBar::create("Geo");
-	gameLayer->statusBar->setPosition(180, Director::getInstance()->getWinSize().height - 50);
 	gameLayer->statusBar->setScale(0.7);
+	gameLayer->statusBar->setPosition(180, Director::getInstance()->getWinSize().height - 50);
 	gameLayer->addChild(gameLayer->statusBar, 5000);
 
 	return gameLayer;
@@ -110,7 +112,8 @@ void GameLayer::update(float delta)
 	{
 		this->levelBackground->slowlyStop();
 		this->mainCharacter->setBossMode(true);
-		this->levelBoss->moveIn(Vec2(1100,200));
+		this->levelBoss->moveIn(Vec2(Director::getInstance()->getWinSize().width
+			,(Director::getInstance()->getWinSize().height / GROUND_PERCENTAGE_FOR_BOX / 2) + levelBoss->getBoundingBox().size.height / 2));
 		this->bossMode = true;
 	}
 }

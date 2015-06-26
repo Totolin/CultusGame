@@ -89,12 +89,14 @@ void Boss::update(float delta)
 			}
 			break;
 		case State::GO_TO_MODE_3:
-			//cannonsArrayStateIndex++;
-			//setPhysics();
+			cannonsArrayStateIndex++;
+			changeCannons();
 			nextState();
 			break;
 		case State::THIRD_MODE:
-			nextState();
+			if (checkCannonsStatus()) {
+				nextState();
+			}
 			break;
 		case State::GO_TO_DIE:
   			framesForExplosions = 100;
@@ -121,7 +123,7 @@ Boss* Boss::create(int spriteIndex)
 	{
 		boss->autorelease();
 		boss->scheduleUpdate();
-		boss->setScale(1.7);
+		boss->setScale(Director::getInstance()->getWinSize().height * 1.7 / 600);
 
 		Size boundingBox = boss->getBoundingBox().size;
 		int positionX = Director::getInstance()->getWinSize().width + boundingBox.width / 2;
@@ -146,6 +148,7 @@ Boss* Boss::create(int spriteIndex)
 void Boss::moveIn(Vec2 position)
 {
 	this->positionToMove = position;
+	this->setPosition(Vec2(this->getPosition().x,position.y));
 	this->nextState();
 }
 

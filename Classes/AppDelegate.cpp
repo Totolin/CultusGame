@@ -47,6 +47,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	resLoader.addImageFile("firstboss_cannon_2_d.png", OBJECT_FIRSTBOSS_CANNON_2_D);
 	resLoader.addImageFile("firstboss_cannon_2_pr.png", OBJECT_BOSSBULLET_SPIKEBALL);
 	resLoader.addImageFile("runner_dead.png", PLAYER_ANIMATION_DEAD);
+	resLoader.addImageFile("firstboss_cannon_3.png", OBJECT_FIRSTBOSS_CANNON_3);
+	resLoader.addImageFile("firstboss_cannon_3_d.png", OBJECT_FIRSTBOSS_CANNON_3_D);
+	resLoader.addImageFile("firstboss_cannon_3_pr.png", OBJECT_BOSSBULLET_BALL);
 
 
 	director->runWithScene(SceneManager::getInstance().generateLevel(0));

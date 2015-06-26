@@ -146,11 +146,19 @@ void Player::initOptions()
 
 void Player::update(float delta)
 {
+	CCLOG(to_string(this->getPosition().y).c_str());
 	distanceTravelled++;
 	framePassed--;
 
-	//if (this->getPosition().y <= 127) { this->setPosition(this->getPosition().x, 127); }
-
+	if (this->getPhysicsBody()->getVelocity().y > 1000)
+	{
+		this->getPhysicsBody()->setVelocity(Vec2(this->getPhysicsBody()->getVelocity().x, 0));
+	}
+	if (this->getPosition().y < Director::getInstance()->getWinSize().height / GROUND_PERCENTAGE_FOR_BOX)
+	{
+		this->getPhysicsBody()->setVelocity(Vec2(this->getPhysicsBody()->getVelocity().x, 0));
+		this->setPosition(Vec2(this->getPosition().x, Director::getInstance()->getWinSize().height / GROUND_PERCENTAGE_FOR_BOX));
+	}
 	if (this->currentAction != Action::RUNNING 
 		&& this->getPhysicsBody()->getVelocity().y > -1.0f
 		&& this->getPhysicsBody()->getVelocity().y < 1.0f)

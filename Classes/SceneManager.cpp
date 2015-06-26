@@ -115,8 +115,13 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		cannon2->setPosition(Vec2(50, 50));
 		cannon2->setFireMethod(2, 10, 50);
 
+		BossCannon* cannon3 = BossCannon::create(OBJECT_FIRSTBOSS_CANNON_3, OBJECT_FIRSTBOSS_CANNON_3_D, OBJECT_BOSSBULLET_BALL);
+		cannon3->setPosition(Vec2(70, 200));
+		cannon3->setFireMethod(3, 3, 50);
+
 		boss->addCannon(1, cannon2);
 		boss->addCannon(2, cannon1);
+		boss->addCannon(3, cannon3);
 
 		// Create Interactive object factory
 		InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX, director->getWinSize().height * 1.6 / 800, false, MAILBOX_COLLISION_BITMASK, true, false, true);
