@@ -58,7 +58,7 @@ GameLayer* GameLayer::create()
 	finalSize.width = visibleSize.width + 200;
 	finalSize.height = visibleSize.height / GROUND_PERCENTAGE_FOR_BOX;
 
-	PhysicsBody* edgeBody = PhysicsBody::createEdgeBox(finalSize, PhysicsMaterial(0.1f, 0.0f, 0.5f), 3);
+	PhysicsBody* edgeBody = PhysicsBody::createEdgeBox(finalSize, PhysicsMaterial(100.0f, 0.0f, 0.5f), 3);
 	Node* edgeNode = Node::create();
 	edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x + 100, origin.y));
 	edgeBody->setCollisionBitmask(GROUND_COLLISION_BITMASK);
@@ -486,7 +486,8 @@ bool GameLayer::collisionPlayerBossBulet(Player* player, BossBullet* bossBullet)
 
 bool GameLayer::collisionBossBulletGround(BossBullet* bossBullet)
 {
-	if (!bossBullet->getExplodeOnGround() || bossBullet == nullptr)
+	if (bossBullet == nullptr) { return false; }
+	if (!bossBullet->getExplodeOnGround())
 		return false;
 
 	// Create explosion

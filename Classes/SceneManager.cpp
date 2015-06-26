@@ -135,7 +135,7 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		firstLevelLayer->setBackground(bckFirstLevel);
 		firstLevelLayer->setPlayer(hero);
 		firstLevelLayer->setBoss(boss);
-		firstLevelLayer->setDistanceToBoss(100);
+		firstLevelLayer->setDistanceToBoss(1000);
 		firstLevelLayer->addObjectFactory(mailboxFactory);
 		firstLevelLayer->addObjectFactory(rocketFactory);
 		firstLevelLayer->addObjectFactory(spikesFactory);

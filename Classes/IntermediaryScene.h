@@ -26,8 +26,11 @@ public:
 	void addCreditsText(string text);
 
 	void addMenuItem(MenuItem* item);
+
 	bool createMenu();
 	bool createCredits();
+	bool createUpgrade();
+
 	void setBackground(ParallaxBackground* levelBackground);
 	void setPlayer(DummyPlayer* mainCharacter);
 	void setMusic(string backgroundMusic);

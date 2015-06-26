@@ -149,6 +149,8 @@ void Player::update(float delta)
 	distanceTravelled++;
 	framePassed--;
 
+	//if (this->getPosition().y <= 127) { this->setPosition(this->getPosition().x, 127); }
+
 	if (this->currentAction != Action::RUNNING 
 		&& this->getPhysicsBody()->getVelocity().y > -1.0f
 		&& this->getPhysicsBody()->getVelocity().y < 1.0f)

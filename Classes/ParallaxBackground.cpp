@@ -33,9 +33,8 @@ void ParallaxBackground::addImage(string imageName, Vec2 imagePosition, Vec2 ima
 			sprite->setScale(0.8);
 		}
 
-		sprite->setPosition(imagePosition.x + sprite->getBoundingBox().size.width * i, imagePosition.y);
+		sprite->setPosition(sprite->getBoundingBox().size.width * i, imagePosition.y);
 		this->addChild(sprite, zOrder, imageName);
-
 	}
 	zOrder++;
 }
@@ -75,8 +74,8 @@ void ParallaxBackground::update(float delta)
 
 		if (position1.x < 0 - child1->getBoundingBox().size.width / 2)
 		{
-			position1.x = Director::getInstance()->getWinSize().width / 2;
-			position2.x = 3 * Director::getInstance()->getWinSize().width / 2;
+			position1.x = child1->getBoundingBox().size.width / 2;
+			position2.x = 3 * child1->getBoundingBox().size.width / 2;
 		}
 
 		child1->setPosition(position1);

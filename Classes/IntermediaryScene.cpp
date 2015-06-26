@@ -93,3 +93,8 @@ bool IntermediaryScene::createCredits()
 
 	return true;
 }
+
+bool IntermediaryScene::createUpgrade()
+{
+	return false;
+}
