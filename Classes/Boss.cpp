@@ -227,7 +227,7 @@ void Boss::setState(State state)
 void Boss::addCannon(int stateOfParent, BossCannon* cannon)
 {
 	cannons[stateOfParent - 1].pushBack(cannon);
-	this->addChild(cannon);
+	this->addChild(cannon,1000);
 }
 
 void Boss::changeCannons()

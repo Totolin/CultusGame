@@ -79,8 +79,11 @@ void InteractiveObjectFactory::createObject()
 		newObject->setGravityAffected(gravityAffected);
 		newObject->setScale(scaleFactor);
 		framePassed = 15;
-			
-		Director::getInstance()->getRunningScene()->getChildByTag(LAYER_TAG)->addChild(newObject);
+		
+		Node* runningSceneLayer = Director::getInstance()->getRunningScene()->getChildByTag(LAYER_TAG);
+		if (runningSceneLayer != nullptr){
+			runningSceneLayer->addChild(newObject);
+		}
 	}
 }
 

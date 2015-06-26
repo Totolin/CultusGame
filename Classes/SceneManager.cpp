@@ -33,14 +33,14 @@ void SceneManager::fillStack()
 	director->popToRootScene();
 
 	// Add scenes to stack
-	director->replaceScene(generateLevel(1,0));
+	director->replaceScene(TransitionFade::create(4, generateLevel(1, 0), Color3B::BLACK));
 	level = 1;
 }
 
 void SceneManager::nextLevel(int score)
 {
 	level++;
-	Director::getInstance()->replaceScene(TransitionFade::create(0.5, generateLevel(level,score), Color3B::BLACK));
+	Director::getInstance()->replaceScene(TransitionFade::create(4, generateLevel(level,score), Color3B::BLACK));
 }
 
 Scene* SceneManager::generateLevel(int levelIndex, int score)
@@ -118,15 +118,15 @@ Scene* SceneManager::generateLevel(int levelIndex, int score)
 		Boss* boss = Boss::create(OBJECT_FIRSTBOSS);
 
 		BossCannon* cannon1 = BossCannon::create(OBJECT_FIRSTBOSS_CANNON_1, OBJECT_FIRSTBOSS_CANNON_1_D, OBJECT_BOSSBULLET_LASER);
-		cannon1->setPosition(Vec2(70, 100));
+		cannon1->setPosition(Vec2(123, 105));
 		cannon1->setFireMethod(1, 10, 50);
 
 		BossCannon* cannon2 = BossCannon::create(OBJECT_FIRSTBOSS_CANNON_2, OBJECT_FIRSTBOSS_CANNON_2_D, OBJECT_BOSSBULLET_SPIKEBALL);
-		cannon2->setPosition(Vec2(50, 50));
+		cannon2->setPosition(Vec2(150, 183));
 		cannon2->setFireMethod(2, 10, 50);
 
 		BossCannon* cannon3 = BossCannon::create(OBJECT_FIRSTBOSS_CANNON_3, OBJECT_FIRSTBOSS_CANNON_3_D, OBJECT_BOSSBULLET_BALL);
-		cannon3->setPosition(Vec2(70, 200));
+		cannon3->setPosition(Vec2(59, 148));
 		cannon3->setFireMethod(3, 3, 50);
 
 		boss->addCannon(1, cannon2);
@@ -153,7 +153,7 @@ Scene* SceneManager::generateLevel(int levelIndex, int score)
 		firstLevelLayer->setBackground(bckFirstLevel);
 		firstLevelLayer->setPlayer(hero);
 		firstLevelLayer->setBoss(boss);
-		firstLevelLayer->setDistanceToBoss(100);
+		firstLevelLayer->setDistanceToBoss(1000);
 		firstLevelLayer->addObjectFactory(mailboxFactory);
 		firstLevelLayer->addObjectFactory(rocketFactory);
 		firstLevelLayer->addObjectFactory(spikesFactory);
@@ -274,13 +274,12 @@ Scene* SceneManager::generateLevel(int levelIndex, int score)
 		Boss* boss = Boss::create(OBJECT_THIRDBOSS);
 
 		BossCannon* cannon1 = BossCannon::create(OBJECT_THIRDBOSS_CANNON_1, OBJECT_THIRDBOSS_CANNON_1_D, OBJECT_BOSSBULLET_BOMB);
-		cannon1->setPosition(Vec2(70, 100));
-		cannon1->setFireMethod(1, 10, 50);
+		cannon1->setPosition(Vec2(68, 218));
+		cannon1->setFireMethod(2, 10, 10);
 
 		BossCannon* cannon2 = BossCannon::create(OBJECT_THIRDBOSS_CANNON_2, OBJECT_THIRDBOSS_CANNON_2_D, OBJECT_BOSSBULLET_RASENGAN);
-		cannon2->setPosition(Vec2(50, 50));
-		cannon2->setFireMethod(2, 10, 50);
-
+		cannon2->setPosition(Vec2(28, 148));
+		cannon2->setFireMethod(3, 1, 10);
 
 		boss->addCannon(1, cannon1);
 		boss->addCannon(2, cannon2);
@@ -301,11 +300,10 @@ Scene* SceneManager::generateLevel(int levelIndex, int score)
 		spikesFactory->setSpawnFrequency(5);
 		spikesFactory->setSpeed(Vec2(-(Director::getInstance()->getWinSize().width * 10.0 / 800), 0));
 
-
 		thirdLevelLayer->setBackground(bckThirdLevel);
 		thirdLevelLayer->setPlayer(hero);
 		thirdLevelLayer->setBoss(boss);
-		thirdLevelLayer->setDistanceToBoss(100);
+		thirdLevelLayer->setDistanceToBoss(1000);
 		thirdLevelLayer->addObjectFactory(mailboxFactory);
 		thirdLevelLayer->addObjectFactory(rocketFactory);
 		thirdLevelLayer->addObjectFactory(spikesFactory);
@@ -318,6 +316,5 @@ Scene* SceneManager::generateLevel(int levelIndex, int score)
 
 	return nullptr;
 }
-
 
 Vector<Scene*> SceneManager::mainStack;
