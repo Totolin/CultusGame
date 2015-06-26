@@ -46,7 +46,7 @@ void Boss::bigExplosion()
 	auto explosion = ParticleSun::create();
 	explosion->setDuration(0);
 	explosion->setPosition(worldPosition);
-	explosion->setScale(6);
+	explosion->setScale(10);
 	Director::getInstance()->getRunningScene()->addChild(explosion, 1000000);
 }
 

@@ -135,7 +135,7 @@ void BossCannon::fire()
 			framesPassed = 0;
 
 			// Set bullet to shoot at ground level
-			this->playerPosition.y = PLAYER_GROUND;
+			this->playerPosition.y = Director::getInstance()->getWinSize().height / GROUND_PERCENTAGE_FOR_BOX;
 
 			// Create bullet
 			BossBullet* bullet = BossBullet::create(cannonProjectile);

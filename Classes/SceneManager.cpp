@@ -34,8 +34,8 @@ void SceneManager::fillStack()
 
 	// Add scenes to stack
 	//director->pushScene(generateLevel(3));
-	//director->pushScene(generateLevel(2));
-	director->replaceScene(generateLevel(2));
+	director->pushScene(generateLevel(2));
+	director->replaceScene(generateLevel(1));
 }
 
 Scene* SceneManager::generateLevel(int levelIndex)
@@ -185,15 +185,15 @@ Scene* SceneManager::generateLevel(int levelIndex)
 		Boss* boss = Boss::create(OBJECT_SECONDBOSS,true);
 
 		BossCannon* cannon1 = BossCannon::create(OBJECT_SECONDBOSS_CANNON_1, OBJECT_SECONDBOSS_CANNON_1_D, OBJECT_BOSSBULLET_ENERGYBALL);
-		cannon1->setPosition(Vec2(70, 100));
+		cannon1->setPosition(Vec2(85, 38));
 		cannon1->setFireMethod(1, 10, 50);
 
 		BossCannon* cannon2 = BossCannon::create(OBJECT_SECONDBOSS_CANNON_2, OBJECT_SECONDBOSS_CANNON_2_D, OBJECT_BOSSBULLET_SAWBLADE);
-		cannon2->setPosition(Vec2(50, 50));
+		cannon2->setPosition(Vec2(34, 137));
 		cannon2->setFireMethod(2, 10, 50);
 
 		BossCannon* cannon3 = BossCannon::create(OBJECT_SECONDBOSS_CANNON_3, OBJECT_SECONDBOSS_CANNON_3_D, OBJECT_BOSSBULLET_FLAMEBALL);
-		cannon3->setPosition(Vec2(70, 200));
+		cannon3->setPosition(Vec2(20, 135));
 		cannon3->setFireMethod(3, 3, 50);
 
 		boss->addCannon(1, cannon1);

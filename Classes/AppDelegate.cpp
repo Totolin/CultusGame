@@ -26,7 +26,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview) {
 		glview = GLViewImpl::create("CULTUS");
-		glview->setFrameSize(1920, 1080);
+		glview->setFrameSize(800, 600);
 		director->setOpenGLView(glview);
 	}
 
