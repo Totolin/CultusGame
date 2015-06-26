@@ -172,12 +172,12 @@ void Player::update(float delta)
 
 	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_A)) &&(bossMode))
 	{
-		this->getPhysicsBody()->applyImpulse(Vect(-25, 0));
+		this->getPhysicsBody()->applyImpulse(Vect(-((Director::getInstance()->getWinSize().height - 600)/32 + 25), 0));
 	}
 
 	if ((isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW) || isKeyPressed(EventKeyboard::KeyCode::KEY_D)) &&(bossMode))
 	{
-		this->getPhysicsBody()->applyImpulse(Vect(25, 0));
+		this->getPhysicsBody()->applyImpulse(Vect(((Director::getInstance()->getWinSize().height - 600) / 32 + 25), 0));
 	}
 
 	if (invurnerableTime != 0)

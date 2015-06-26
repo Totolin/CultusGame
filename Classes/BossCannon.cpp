@@ -146,7 +146,7 @@ void BossCannon::fire()
 			bullet->setPosition(startPosition);
 			bullet->setExplodeOnGround(true);
 
-			JumpTo* jump = JumpTo::create(1, playerPosition, 300, 1);
+			JumpTo* jump = JumpTo::create(800.0 / Director::getInstance()->getWinSize().width , playerPosition, 300, 1);
 			MoveTo* move = MoveTo::create(0.3f, Vec2(playerPosition.x, playerPosition.y - 200));
 			Sequence* sequence = Sequence::create(jump, move, nullptr);
 

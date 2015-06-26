@@ -10,6 +10,7 @@ BossBullet* BossBullet::create(int bulletFileIndex)
 	{
 		bullet->autorelease();
 		bullet->scheduleUpdate();
+		bullet->setScale(Director::getInstance()->getWinSize().width * 0.8 / 800);
 		bullet->hit = false;
 		bullet->explodeOnGround = false;
 		auto spriteBody = PhysicsBody::createCircle(bullet->boundingBox().size.width/2, PhysicsMaterial(1.0f, 0.5f, 0.5f));

@@ -120,22 +120,25 @@ Scene* SceneManager::generateLevel(int levelIndex)
 
 		// Create Interactive object factory
 		InteractiveObjectFactory* mailboxFactory = InteractiveObjectFactory::create(OBJECT_MAILBOX, director->getWinSize().height * 1.6 / 800, false, MAILBOX_COLLISION_BITMASK, true, false, true);
-		mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX));
+		mailboxFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX + 10, height / GROUND_PERCENTAGE_FOR_BOX + 10));
 		mailboxFactory->setSpawnFrequency(5);
+		mailboxFactory->setSpeed(Vec2(-(Director::getInstance()->getWinSize().width * 10.0 / 800), 0));
 
 		InteractiveObjectFactory* rocketFactory = InteractiveObjectFactory::create(OBJECT_ROCKET, director->getWinSize().height * 1.6 / 800, false, ROCKET_COLLISION_BITMASK, true, false, false);
 		rocketFactory->setPositionInterval(Vec2(100, height));
-		rocketFactory->setSpeed(Vec2(-20, 0));
+		rocketFactory->setSpeed(Vec2(-(Director::getInstance()->getWinSize().width * 25.0 / 800), 0));
 		rocketFactory->setSpawnFrequency(20);
 
 		InteractiveObjectFactory* spikesFactory = InteractiveObjectFactory::create(OBJECT_SPIKES, director->getWinSize().height * 0.5 / 800, false, SPIKES_COLLISION_BITMASK, false, true, true);
-		spikesFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX, height / GROUND_PERCENTAGE_FOR_BOX ));
+		spikesFactory->setPositionInterval(Vec2(height / GROUND_PERCENTAGE_FOR_BOX + 10, height / GROUND_PERCENTAGE_FOR_BOX + 10));
 		spikesFactory->setSpawnFrequency(5);
+		spikesFactory->setSpeed(Vec2(-(Director::getInstance()->getWinSize().width * 10.0 / 800), 0));
+
 
 		firstLevelLayer->setBackground(bckFirstLevel);
 		firstLevelLayer->setPlayer(hero);
 		firstLevelLayer->setBoss(boss);
-		firstLevelLayer->setDistanceToBoss(1000);
+		firstLevelLayer->setDistanceToBoss(100);
 		firstLevelLayer->addObjectFactory(mailboxFactory);
 		firstLevelLayer->addObjectFactory(rocketFactory);
 		firstLevelLayer->addObjectFactory(spikesFactory);
